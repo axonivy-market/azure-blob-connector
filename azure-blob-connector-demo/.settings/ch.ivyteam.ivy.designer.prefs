@@ -1,5 +1,5 @@
-ch.ivyteam.ivy.designer.preferences.DataClassPreferencePage\:DEFAULT_DATA_CLASS=com.axonivy.cloud.storage.azure.blob.connector.demo.Data
-ch.ivyteam.ivy.designer.preferences.DataClassPreferencePage\:DEFAULT_NAMESPACE=com.axonivy.cloud.storage.azure.blob.connector.demo
+ch.ivyteam.ivy.designer.preferences.DataClassPreferencePage\:DEFAULT_DATA_CLASS=com.axonivy.cloud.storage.demo.Data
+ch.ivyteam.ivy.designer.preferences.DataClassPreferencePage\:DEFAULT_NAMESPACE=com.axonivy.cloud.storage.demo
 ch.ivyteam.ivy.project.preferences\:PRIMEFACES_VERSION=11
-ch.ivyteam.ivy.project.preferences\:PROJECT_VERSION=112000
+ch.ivyteam.ivy.project.preferences\:PROJECT_VERSION=100000
 eclipse.preferences.version=1

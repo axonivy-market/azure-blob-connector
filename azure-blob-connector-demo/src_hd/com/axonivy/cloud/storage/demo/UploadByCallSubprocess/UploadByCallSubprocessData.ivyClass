@@ -1,0 +1,8 @@
+UploadByCallSubprocessData #class
+com.axonivy.cloud.storage.demo.UploadByCallSubprocess #namespace
+bean com.axonivy.cloud.storage.bean.UploadByCallSubprocess #field
+bean PERSISTENT #fieldModifier
+link String #field
+link PERSISTENT #fieldModifier
+isSuccess Boolean #field
+isSuccess PERSISTENT #fieldModifier

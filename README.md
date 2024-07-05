@@ -1,15 +1,8 @@
-# Advanced Process Analyzer
+# Azure Blob Connector
 
-[![CI Build](https://github.com/axonivy-professional-services/market-process-analyzer/actions/workflows/ci.yml/badge.svg)](https://github.com/axonivy-professional-services/market-process-analyzer/actions/workflows/ci.yml)
+[![CI Build](https://github.com/axonivy-professional-services/market-azure-blob-connector/actions/workflows/ci.yml/badge.svg)](https://github.com/axonivy-professional-services/market-market-azure-blob-connector/actions/workflows/ci.yml)
 
-- Configure needed information directly in the process model
-	- Default duration of a task for multiple use cases. Each task can have multiple named default durations.
-	- Different “happy path” flows. It’s possible to set multiple named process paths.
-- Possibilities to override settings of the process model
-	- Override duration
-	- Override default path for the gateways
-- Create a list of all tasks in the process.
-- Get configured duration for a task.
-- Get all upcoming tasks on a configured process path with expected start timestamp for each task.
+- Upload file to Azure blob
+- Get temporary download link
 
-Read our [documentation](process-analyzer-product/README.md).
+Read our [documentation](azure-blob-connector-product/README.md).
