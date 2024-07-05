@@ -1,0 +1,152 @@
+
+<html xmlns="http://www.w3.org/1999/xhtml"
+	xmlns:f="http://xmlns.jcp.org/jsf/core"
+	xmlns:h="http://xmlns.jcp.org/jsf/html"
+	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:ic="http://ivyteam.ch/jsf/component"
+	xmlns:p="http://primefaces.org/ui"
+	xmlns:pe="http://primefaces.org/ui/extensions">
+<h:body>
+	<ui:composition template="/layouts/basic-10.xhtml">
+		<ui:define name="title">UploadDialog</ui:define>
+		<ui:define name="content">
+
+			<h:form id="form" enctype="multipart/form-data">
+			<p:growl id="growl" showDetail="false" />
+			<h:outputStylesheet name="uploadDialog.css" library="ivy-dialog" />
+				<p:fieldset id="uploadWithPrimefaces"
+					legend="Upload by Primefaces">
+					<p:panelGrid layout="grid" columns="3"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="Upload File" />
+						<p:fileUpload id="fileUploader" auto="true"
+							dragDropSupport="false" listener="#{logic.uploadFileHandle}"
+							mode="advanced" label="Choose" />
+						<p:commandButton id="addBlob" actionListener="#{logic.addBlob}" styleClass="margin-top-15px"
+							icon="fa fa-plus" value="Add file" update="blobTable growl existFilePanel"/>
+					</p:panelGrid>
+					<p:panelGrid layout="grid" columns="3" columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Upload to folder" />
+						<p:inputText value="#{data.bean.uploadToFolderByPrimefaces}" placeholder="h1 or h1/h2" />
+					</p:panelGrid>
+					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanel">
+						<h:outputText value="The following file already exist: #{data.bean.fileName}" rendered="#{data.bean.isFileAlreadyExist}" styleClass="color-red"/>
+					</p:panelGrid>
+					<p:panelGrid layout="grid" columns="1"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
+						<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFile}"
+							itemLabel="Overwrite if files already exist">
+							<p:ajax update="existFilePanel" listener="#{logic.overwriteFile}"/>
+						</p:selectBooleanCheckbox>
+					</p:panelGrid>
+				</p:fieldset>
+				
+				<p:fieldset id="uploadByLocalPath" styleClass="margin-top-10-px"
+					legend="Upload by local path">
+					<p:panelGrid layout="grid" columns="3"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="Upload File" />
+						<p:inputText value="#{data.bean.localPath}" placeholder="C:\yourFolder\yourPicture.png" />
+						<p:commandButton id="addBlobByLocalPath" actionListener="#{logic.addBlobByLocalPath}"
+							icon="fa fa-plus" value="Add file" update="blobTable growl existFilePanelPath"/>
+					</p:panelGrid>
+					<p:panelGrid layout="grid" columns="3" columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Upload to folder" />
+						<p:inputText value="#{data.bean.uploadToFolderByLocalPath}" placeholder="h1 or h1/h2" />
+					</p:panelGrid>
+					
+					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanelPath">
+						<h:outputText value="The following file already exist: #{data.bean.fileNamePath}" rendered="#{data.bean.isFileAlreadyExistPath}" styleClass="color-red"/>
+					</p:panelGrid>
+					<p:panelGrid layout="grid" columns="1"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
+						<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFilePath}"
+							itemLabel="Overwrite if files already exist">
+							<p:ajax update="existFilePanelPath" listener="#{logic.overwriteFilePath}"/>
+						</p:selectBooleanCheckbox>
+					</p:panelGrid>
+					
+				</p:fieldset>
+				
+				<p:fieldset id="uploadByURL" style="margin-top:10px;"
+					legend="Upload by URL">
+					<p:panelGrid layout="grid" columns="3"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="Upload File" />
+						<p:inputText value="#{data.bean.url}"/>
+						<p:commandButton id="addBlobByURL" actionListener="#{logic.addBlobByURL}"
+							icon="fa fa-plus" value="Add file" update="blobTable growl existFilePanelURL"/>
+					</p:panelGrid>
+					<p:panelGrid layout="grid" columns="3" columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3">
+						<p:outputLabel value="Upload to folder" />
+						<p:inputText value="#{data.bean.uploadToFolderByURL}" placeholder="h1 or h1/h2"/>
+					</p:panelGrid>
+					
+					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanelURL">
+						<h:outputText value="The following file already exist: #{data.bean.fileNameURL}" rendered="#{data.bean.isFileAlreadyExistURL}" styleClass="color-red"/>
+					</p:panelGrid>
+					<p:panelGrid layout="grid" columns="1"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
+						<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFileURL}"
+							itemLabel="Overwrite if files already exist">
+							<p:ajax update="existFilePanelURL" listener="#{logic.overwriteFileURL}"/>
+						</p:selectBooleanCheckbox>
+					</p:panelGrid>
+				</p:fieldset>
+				
+				<p:fieldset legend="Delete blob" style="margin-top:10px;">
+					<p:panelGrid columns="3" layout="grid"
+						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
+						styleClass="ui-panelgrid-blank">
+						<p:outputLabel value="Date"/>
+						<p:datePicker id="basic" value="#{data.bean.startDate}" />
+						<p:commandButton id="deleteBlob" actionListener="#{logic.deleteBlobs}"
+							icon="fa fa-trash" value="Delete blob" update="blobTable growl"/>
+					</p:panelGrid>
+				</p:fieldset>
+				
+				<div>
+					<p:dataTable id="blobTable" style="with:100%"
+						value="#{data.bean.blobs}" var="blob">
+						<p:column id="name" headerText="Name" style="with: 30%">
+							<h:outputText value="#{blob.bi.name}" id="blobName" />
+						</p:column>
+						<p:column id="status" headerText="Status" style="with: 10%">
+							<h:outputText value="#{blob.bi.deleted eq 'true' ? 'Deleted' : 'Current version'}" id="statusName" />
+						</p:column>
+						<p:column id="createDate" headerText="Creation Date" style="with: 20%">
+							<h:outputText value="#{blob.bi.properties.creationTime}" />
+						</p:column>
+						<p:column style="with: 30%">
+							<p:commandButton id="btnGetLink" 
+								actionListener="#{logic.getLink(blob.linkDownLoad)}" oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
+								value="Get link" rendered="#{!blob.bi.deleted}"
+								update="linkDownloadDialog"/>
+							<p:commandButton id= "btnDeleteBlob" value="Delete" actionListener="#{logic.deleteBlob(blob.bi.name)}" update="blobTable form:growl" icon="fa fa-trash" rendered="#{!blob.bi.deleted}"/>
+							<p:commandButton id= "btnUnDeleteBlob" value="Undelete" actionListener="#{logic.unDeleteBlob(blob.bi.name)}" update="blobTable form:growl" icon="fa fa-undo" rendered="#{blob.bi.deleted}"/>
+						</p:column>
+					</p:dataTable>
+				</div>
+			</h:form>
+
+			<p:dialog widgetVar="linkDownloadDialog" id="linkDownloadDialog"
+				appendTo="@(body)" visible="false" header="Link Download" width="500">
+				<p:outputPanel styleClass="ui-g-12 ui-md-12 ui-lg-12">
+					<p:inputText value="#{data.link}" styleClass="width-100-percent"/>
+				</p:outputPanel>
+				<br/>
+				<p:commandButton value="close" styleClass="float-right"
+					process="@this"
+					oncomplete="PF('linkDownloadDialog').hide()" icon="fa fa-check">
+				</p:commandButton>
+			</p:dialog>
+		</ui:define>
+	</ui:composition>
+</h:body>
+
+</html>
+
+

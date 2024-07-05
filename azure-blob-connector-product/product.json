@@ -6,8 +6,8 @@
       "data": {
         "projects": [
           {
-            "groupId": "com.axonivy.utils.process.analyzer.demo",
-            "artifactId": "process-analyzer-demo",
+            "groupId": "com.axonivy.cloud.storage",
+            "artifactId": "azure-blob-connector-demo",
             "version": "${version}",
             "type": "iar"
           }
@@ -28,31 +28,10 @@
       "data": {
         "dependencies": [
           {
-            "groupId": "com.axonivy.utils.process.analyzer",
-            "artifactId": "process-analyzer",
+            "groupId": "com.axonivy.cloud.storage",
+            "artifactId": "azure-blob-connector",
             "version": "${version}",
             "type": "iar"
-          }
-        ],
-        "repositories": [
-          {
-            "id": "maven.axonivy.com",
-            "url": "https://maven.axonivy.com",
-            "snapshots": {
-              "enabled": "true"
-            }
-          }
-        ]
-      }
-    }, 
-    {
-      "id": "maven-dropins",
-      "data": {
-        "dependencies": [
-          {
-            "groupId": "com.axonivy.utils.process.analyzer",
-            "artifactId": "process-analyzer",
-            "version": "${version}"
           }
         ],
         "repositories": [

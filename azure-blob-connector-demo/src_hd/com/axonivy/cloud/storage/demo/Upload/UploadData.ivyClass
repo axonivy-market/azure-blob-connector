@@ -1,0 +1,6 @@
+UploadData #class
+com.axonivy.cloud.storage.demo.Upload #namespace
+bean com.axonivy.cloud.storage.bean.UploadBean #field
+bean PERSISTENT #fieldModifier
+link String #field
+link PERSISTENT #fieldModifier
