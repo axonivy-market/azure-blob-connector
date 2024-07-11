@@ -29,7 +29,14 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 96, "y" : 64 }
+        "at" : { "x" : 96, "y" : 64 },
+        "description" : [
+          "Description: Get all blobs",
+          "Parammeter:",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- blobItems: java.util.List<com.azure.storage.blob.models.BlobItem>"
+        ]
       },
       "connect" : { "id" : "f9", "to" : "f8" }
     }, {
@@ -65,7 +72,15 @@
       },
       "visual" : {
         "at" : { "x" : 96, "y" : 192 },
-        "labelOffset" : { "x" : 9, "y" : 41 }
+        "labelOffset" : { "x" : 9, "y" : 41 },
+        "description" : [
+          "Description: delete blob by date",
+          "Parammeter:",
+          "- date: java.util.Date",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- isSucess: java.lang.Boolean"
+        ]
       },
       "connect" : { "id" : "f6", "to" : "f4" }
     }, {
@@ -129,7 +144,15 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 96, "y" : 296 }
+        "at" : { "x" : 96, "y" : 296 },
+        "description" : [
+          "Description: delete blob by blob name",
+          "Parammeter:",
+          "- blobName: java.lang.String",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- isSucess: java.lang.Boolean"
+        ]
       },
       "connect" : { "id" : "f13", "to" : "f12" }
     }, {
@@ -177,7 +200,15 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 96, "y" : 392 }
+        "at" : { "x" : 96, "y" : 392 },
+        "description" : [
+          "Description: restore blob by blob name",
+          "Parammeter:",
+          "- blobName: java.lang.String",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- isSucess: java.lang.Boolean"
+        ]
       },
       "connect" : { "id" : "f18", "to" : "f16" }
     }, {
@@ -229,7 +260,15 @@
       },
       "visual" : {
         "at" : { "x" : 88, "y" : 496 },
-        "labelOffset" : { "x" : 49, "y" : 57 }
+        "labelOffset" : { "x" : 49, "y" : 57 },
+        "description" : [
+          "Description: get link download by blob name",
+          "Parammeter:",
+          "- blobName: java.lang.String",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- linkDownload: java.lang.String"
+        ]
       },
       "connect" : { "id" : "f24", "to" : "f22" }
     }, {
@@ -284,7 +323,18 @@
       },
       "visual" : {
         "at" : { "x" : 88, "y" : 608 },
-        "labelOffset" : { "x" : 25, "y" : 57 }
+        "labelOffset" : { "x" : 25, "y" : 57 },
+        "description" : [
+          "Description: upload from file",
+          "Parammeter:",
+          "- localPath: java.lang.String",
+          "- blobName: java.lang.String",
+          "- uploadToFolder:  java.lang.String",
+          "- isOverwriteFile: java.lang.Boolean",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- blobName: java.lang.String"
+        ]
       },
       "connect" : { "id" : "f28", "to" : "f27" }
     }, {
@@ -339,7 +389,18 @@
       },
       "visual" : {
         "at" : { "x" : 88, "y" : 736 },
-        "labelOffset" : { "x" : 25, "y" : 57 }
+        "labelOffset" : { "x" : 25, "y" : 57 },
+        "description" : [
+          "Description: upload from file",
+          "Parammeter:",
+          "- url: java.lang.String",
+          "- blobName: java.lang.String",
+          "- uploadToFolder:  java.lang.String",
+          "- isOverwriteFile: java.lang.Boolean",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- blobName: java.lang.String"
+        ]
       },
       "connect" : { "id" : "f33", "to" : "f31" }
     }, {
@@ -394,7 +455,18 @@
       },
       "visual" : {
         "at" : { "x" : 88, "y" : 888 },
-        "labelOffset" : { "x" : 25, "y" : 57 }
+        "labelOffset" : { "x" : 25, "y" : 57 },
+        "description" : [
+          "Description: upload from inputStream",
+          "Parammeter:",
+          "- content: java.io.InputStream",
+          "- blobName: java.lang.String",
+          "- uploadToFolder:  java.lang.String",
+          "- isOverwriteFile: java.lang.Boolean",
+          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
+          "Result:",
+          "- blobName: java.lang.String"
+        ]
       },
       "connect" : { "id" : "f39", "to" : "f36" }
     }, {
