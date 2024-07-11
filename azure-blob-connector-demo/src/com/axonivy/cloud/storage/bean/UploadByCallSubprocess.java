@@ -42,15 +42,17 @@ public class UploadByCallSubprocess {
 	
 	private StorageService storageService = null;
 	private static BlobServiceClient blobServiceClient = null;
-	private static final String CLIENT_ID = Ivy.var().get("CLIENT_ID");
-	private static final String CLIENT_SECRET = Ivy.var().get("CLIENT_SECRET");
-	private static final String TENANT_ID = Ivy.var().get("TENANT_ID");
-	private static final String END_POINT = Ivy.var().get("END_POINT");
-	private static final String TEST_CONTAINTER = Ivy.var().get("TEST_CONTAINTER");
 	
 	public void init() {
-		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(CLIENT_ID,  CLIENT_SECRET, TENANT_ID, END_POINT);
-		storageService = new AzureBlobStorageService(blobServiceClient, TEST_CONTAINTER);
+		String clientId = Ivy.var().get("AzureBlob.ClientId");
+		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
+		String tenantId = Ivy.var().get("AzureBlob.TenantId");
+		String endPoint = Ivy.var().get("AzureBlob.EndPoint");
+		String containerName = Ivy.var().get("AzureBlob.ContainterName");
+		
+		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(clientId,  clientSecret, tenantId, endPoint);
+		storageService = new AzureBlobStorageService(blobServiceClient, containerName);
+		
 		isFileAlreadyExist = false;
 		isFileAlreadyExistURL = false;
 		isFileAlreadyExistPath = false;
