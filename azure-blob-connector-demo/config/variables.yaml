@@ -3,17 +3,14 @@
 # You can define here your project Variables.
 #
 Variables:
-<!--
-  Dear Bug Hunter,
-  This credential is intentionally included for educational purposes only and does not provide access to any production systems.
-  Please do not submit it as part of our bug bounty program.
--->
-  CLIENT_ID: ''
-  
-  CLIENT_SECRET: ''
-  
-  TENANT_ID: ''
-  
-  END_POINT: ''
-  
-  TEST_CONTAINTER: ''
+  AzureBlob:
+    # The application ID that's assigned to your app.
+    ClientId: ''
+    # The client secret that you generated for your app in the app registration portal.
+    ClientSecret: ''
+    # The directory tenant the application plans to operate against, in GUID or domain-name format.
+    TenantId: ''
+    # https://<storage-account>.blob.core.windows.net/
+    EndPoint: ''
+    # Your container name.
+    ContainterName: ''
