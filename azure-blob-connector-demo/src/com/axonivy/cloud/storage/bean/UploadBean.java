@@ -47,15 +47,15 @@ public class UploadBean {
 	
 	private StorageService storageService = null;
 	private static BlobServiceClient blobServiceClient = null;
-	private static final String CLIENT_ID = Ivy.var().get("CLIENT_ID");
-	private static final String CLIENT_SECRET = Ivy.var().get("CLIENT_SECRET");
-	private static final String TENANT_ID = Ivy.var().get("TENANT_ID");
-	private static final String END_POINT = Ivy.var().get("END_POINT");
-	private static final String TEST_CONTAINTER = Ivy.var().get("TEST_CONTAINTER");
+	private static final String CLIENT_ID = Ivy.var().get("AzureBlob.ClientId");
+	private static final String CLIENT_SECRET = Ivy.var().get("AzureBlob.ClientSecret");
+	private static final String TENANT_ID = Ivy.var().get("AzureBlob.TenantId");
+	private static final String END_POINT = Ivy.var().get("AzureBlob.EndPoint");
+	private static final String CONTAINTER_NAME = Ivy.var().get("AzureBlob.ContainterName");
 	
 	public void init() {
 		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(CLIENT_ID,  CLIENT_SECRET, TENANT_ID, END_POINT);
-		storageService = new AzureBlobStorageService(blobServiceClient, TEST_CONTAINTER);
+		storageService = new AzureBlobStorageService(blobServiceClient, CONTAINTER_NAME);
 		getBlobs(storageService.getBlobs());
 		isFileAlreadyExist = false;
 		isFileAlreadyExistURL = false;
