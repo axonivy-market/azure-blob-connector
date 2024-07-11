@@ -21,20 +21,6 @@ Variables:
     # Your container name.
     ContainterName: ''
 ```
-
-If you want to create credential authenticates by account name, account key, .. You need to define variable names in variables.yaml
-Then you need to get it from Ivy.var in {@link UploadBean} and create  BlobServiceClient
-```java
-	private static final String CLIENT_ID = Ivy.var().get("AzureBlob.ClientId");
-	private static final String CLIENT_SECRET = Ivy.var().get("AzureBlob.ClientSecret");
-	private static final String TENANT_ID = Ivy.var().get("AzureBlob.TenantId");
-	private static final String END_POINT = Ivy.var().get("AzureBlob.EndPoint");
-	private static final String CONTAINTER_NAME = Ivy.var().get("AzureBlob.ContainterName");
-	...
-	
-	BlobServiceClient blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(CLIENT_ID, CLIENT_SECRET, END_POINT);
-``` 
-
 ## Run with Azurite at local
 
 Start docker local: Read our [documentation](../azure-blob-connector/README.md). 

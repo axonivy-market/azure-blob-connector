@@ -47,13 +47,15 @@ public class UploadBean {
 	
 	private StorageService storageService = null;
 	private static BlobServiceClient blobServiceClient = null;
-	private static final String CLIENT_ID = Ivy.var().get("AzureBlob.ClientId");
-	private static final String CLIENT_SECRET = Ivy.var().get("AzureBlob.ClientSecret");
-	private static final String TENANT_ID = Ivy.var().get("AzureBlob.TenantId");
-	private static final String END_POINT = Ivy.var().get("AzureBlob.EndPoint");
-	private static final String CONTAINTER_NAME = Ivy.var().get("AzureBlob.ContainterName");
+	
 	
 	public void init() {
+		String CLIENT_ID = Ivy.var().get("AzureBlob.ClientId");
+		String CLIENT_SECRET = Ivy.var().get("AzureBlob.ClientSecret");
+		String TENANT_ID = Ivy.var().get("AzureBlob.TenantId");
+		String END_POINT = Ivy.var().get("AzureBlob.EndPoint");
+		String CONTAINTER_NAME = Ivy.var().get("AzureBlob.ContainterName");
+		
 		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(CLIENT_ID,  CLIENT_SECRET, TENANT_ID, END_POINT);
 		storageService = new AzureBlobStorageService(blobServiceClient, CONTAINTER_NAME);
 		getBlobs(storageService.getBlobs());
