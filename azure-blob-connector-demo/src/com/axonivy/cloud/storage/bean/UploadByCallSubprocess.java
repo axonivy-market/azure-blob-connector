@@ -5,15 +5,10 @@ import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 
+import org.apache.commons.lang3.StringUtils;
 import org.primefaces.model.file.UploadedFile;
 
-import com.axonivy.cloud.storage.azure.blob.connector.BlobServiceClientHelper;
-import com.axonivy.cloud.storage.azure.blob.connector.StorageService;
-import com.axonivy.cloud.storage.azure.blob.connector.internal.AzureBlobStorageService;
-import com.azure.storage.blob.BlobServiceClient;
 import com.azure.storage.blob.models.BlobItem;
-
-import ch.ivyteam.ivy.environment.Ivy;
 
 public class UploadByCallSubprocess {
 	private String url;
@@ -33,49 +28,43 @@ public class UploadByCallSubprocess {
 	private String blobName;
 	private Boolean isFileAlreadyExist;
 	private Boolean isOverwriteFile;
-	
+
 	private Boolean isFileAlreadyExistURL;
 	private Boolean isOverwriteFileURL;
-	
+
 	private Boolean isFileAlreadyExistPath;
 	private Boolean isOverwriteFilePath;
-	
-	private StorageService storageService = null;
-	private static BlobServiceClient blobServiceClient = null;
-	
+
 	public void init() {
-		String clientId = Ivy.var().get("AzureBlob.ClientId");
-		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
-		String tenantId = Ivy.var().get("AzureBlob.TenantId");
-		String endPoint = Ivy.var().get("AzureBlob.EndPoint");
-		String containerName = Ivy.var().get("AzureBlob.ContainterName");
-		
-		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(clientId,  clientSecret, tenantId, endPoint);
-		storageService = new AzureBlobStorageService(blobServiceClient, containerName);
-		
 		isFileAlreadyExist = false;
 		isFileAlreadyExistURL = false;
 		isFileAlreadyExistPath = false;
 	}
-	
+
 	public String getUrl() {
 		return url;
 	}
+
 	public void setUrl(String url) {
 		this.url = url;
 	}
+
 	public String getLocalPath() {
 		return localPath;
 	}
+
 	public void setLocalPath(String localPath) {
 		this.localPath = localPath;
 	}
+
 	public UploadedFile getUploadedFile() {
 		return uploadedFile;
 	}
+
 	public void setUploadedFile(UploadedFile uploadedFile) {
 		this.uploadedFile = uploadedFile;
 	}
+
 	public Date getStartDate() {
 		return startDate;
 	}
@@ -196,14 +185,6 @@ public class UploadByCallSubprocess {
 		this.isOverwriteFilePath = isOverwriteFilePath;
 	}
 
-	public StorageService getStorageService() {
-		return storageService;
-	}
-
-	public void setStorageService(StorageService storageService) {
-		this.storageService = storageService;
-	}
-
 	public String getUploadToFolderByPrimefaces() {
 		return uploadToFolderByPrimefaces;
 	}
@@ -227,19 +208,13 @@ public class UploadByCallSubprocess {
 	public void setUploadToFolderByURL(String uploadToFolderByURL) {
 		this.uploadToFolderByURL = uploadToFolderByURL;
 	}
-	
+
 	public void getBlobs(List<BlobItem> bis) {
 		blobs = new ArrayList<>();
-		for(BlobItem item : bis) {
+		for (BlobItem item : bis) {
 			Blob b = new Blob();
 			b.setBi(item);
-			b.setLinkDownLoad(storageService.getDownloadLink(item.getName()));
 			blobs.add(b);
 		}
 	}
-	
-	public Boolean checkFileAlreadyExist(String name) {
-		return storageService.getBlobs().stream().anyMatch(b -> b.getName().equalsIgnoreCase(name));
-	}
 }
-

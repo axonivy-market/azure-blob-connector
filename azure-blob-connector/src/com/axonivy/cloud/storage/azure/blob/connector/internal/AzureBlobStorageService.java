@@ -19,6 +19,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
+import com.axonivy.cloud.storage.azure.blob.connector.BlobServiceClientHelper;
 import com.axonivy.cloud.storage.azure.blob.connector.StorageService;
 import com.axonivy.cloud.storage.azure.blob.connector.internal.helper.BlobSASHelper;
 import com.azure.core.http.rest.PagedResponse;
@@ -64,7 +65,18 @@ public class AzureBlobStorageService implements StorageService {
 		this.destinationContainer = getBlobContainerClient(this.blobServiceClient, container);
 		this.downloadLinkLiveTime = downloadLinkLiveTime;
 	}
-
+	
+	public AzureBlobStorageService() {
+		String clientId = Ivy.var().get("AzureBlob.ClientId");
+		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
+		String tenantId = Ivy.var().get("AzureBlob.TenantId");
+		String endPoint = Ivy.var().get("AzureBlob.EndPoint");
+		String containerName = Ivy.var().get("AzureBlob.ContainterName");
+		
+		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(clientId,  clientSecret, tenantId, endPoint);
+		destinationContainer = getBlobContainerClient(blobServiceClient, containerName);
+	}
+	
 	@Override
 	public String upload(String content, String fileName) {
 		BlockBlobClient blockBlobClient = getBlobClient(fileName).getBlockBlobClient();
@@ -239,10 +251,16 @@ public class AzureBlobStorageService implements StorageService {
 		List<BlobItem> bi = destinationContainer.listBlobs().stream().filter(b -> isSameDate(b, d)).collect(Collectors.toList());
 		bi.forEach(blob -> delete(blob.getName()));
 	}
+
+	@Override
+	public boolean checkBlobIsExist(String fileName, String uploadToFolder) {
+		return getBlobClient(createBlobPath(uploadToFolder, fileName)).exists();
+	}
 	
 	private boolean isSameDate(BlobItem bi, Date date) {
 		String creationTime2String = bi.getProperties().getCreationTime().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
 		String date2String =  new SimpleDateFormat(DATE_PATTERN).format(date); 
 		return creationTime2String.equals(date2String);
 	}
+
 }
