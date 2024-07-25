@@ -109,12 +109,12 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 352 }
       },
-      "connect" : { "id" : "f119", "to" : "f30" }
+      "connect" : { "id" : "f127", "to" : "f126" }
     }, {
       "id" : "f15",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 1088, "y" : 352 }
+        "at" : { "x" : 1240, "y" : 352 }
       }
     }, {
       "id" : "f18",
@@ -357,7 +357,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 536, "y" : 352 }
+        "at" : { "x" : 688, "y" : 352 }
       },
       "connect" : { "id" : "f67", "to" : "f66" }
     }, {
@@ -365,7 +365,7 @@
       "type" : "Alternative",
       "name" : "is exist file ?",
       "visual" : {
-        "at" : { "x" : 352, "y" : 352 },
+        "at" : { "x" : 504, "y" : 352 },
         "labelOffset" : { "x" : 16, "y" : -24 }
       },
       "connect" : [
@@ -386,9 +386,9 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 352, "y" : 432 }
+        "at" : { "x" : 504, "y" : 432 }
       },
-      "connect" : { "id" : "f65", "to" : "f15", "via" : [ { "x" : 1088, "y" : 432 } ] }
+      "connect" : { "id" : "f65", "to" : "f15", "via" : [ { "x" : 1240, "y" : 432 } ] }
     }, {
       "id" : "f66",
       "type" : "Alternative",
@@ -397,14 +397,14 @@
         "not null ?"
       ],
       "visual" : {
-        "at" : { "x" : 664, "y" : 352 },
+        "at" : { "x" : 816, "y" : 352 },
         "labelOffset" : { "x" : 16, "y" : 40 }
       },
       "connect" : [
         { "id" : "f69", "to" : "f68", "label" : {
             "name" : "yes"
           }, "condition" : "org.apache.commons.lang3.StringUtils.isNotBlank(in.bean.blobName)" },
-        { "id" : "f70", "to" : "f15", "via" : [ { "x" : 664, "y" : 280 }, { "x" : 1088, "y" : 280 } ], "label" : {
+        { "id" : "f70", "to" : "f15", "via" : [ { "x" : 816, "y" : 280 }, { "x" : 1240, "y" : 280 } ], "label" : {
             "name" : "no",
             "segment" : 1.47
           } }
@@ -423,7 +423,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 792, "y" : 352 }
+        "at" : { "x" : 944, "y" : 352 }
       },
       "connect" : { "id" : "f72", "to" : "f71" }
     }, {
@@ -442,7 +442,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 952, "y" : 352 }
+        "at" : { "x" : 1104, "y" : 352 }
       },
       "connect" : { "id" : "f16", "to" : "f15" }
     }, {
@@ -776,7 +776,9 @@
         "output" : {
           "code" : [
             "import org.apache.commons.io.FilenameUtils;",
-            "in.bean.fileNamePath = FilenameUtils.getName(in.bean.localPath);"
+            "",
+            "in.bean.fileNamePath = FilenameUtils.getName(in.bean.localPath);",
+            "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByLocalPath, in.bean.fileNamePath);"
           ]
         }
       },
@@ -793,7 +795,8 @@
           "code" : [
             "import com.axonivy.cloud.storage.utils.UploadUtils;",
             "",
-            "in.bean.fileNameURL = UploadUtils.getFileNameFromUrl(in.bean.url);"
+            "in.bean.fileNameURL = UploadUtils.getFileNameFromUrl(in.bean.url);",
+            "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByURL, in.bean.fileNameURL);"
           ]
         }
       },
@@ -921,7 +924,7 @@
       "type" : "SubProcessCall",
       "name" : "check blob is exist",
       "config" : {
-        "processCall" : "BlobStorage:checkBlobIsExist(String,String)",
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -930,17 +933,15 @@
         },
         "call" : {
           "params" : [
-            { "name" : "fileName", "type" : "String" },
-            { "name" : "uploadToFolder", "type" : "String" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "param.fileName" : "in.bean.fileName",
-            "param.uploadToFolder" : "in.bean.uploadToFolderByPrimefaces"
+            "param.blobName" : "in.combineFileNameAndFolder"
           }
         }
       },
       "visual" : {
-        "at" : { "x" : 224, "y" : 352 }
+        "at" : { "x" : 384, "y" : 352 }
       },
       "connect" : { "id" : "f17", "to" : "f14" }
     }, {
@@ -948,7 +949,7 @@
       "type" : "SubProcessCall",
       "name" : "check blob is exist",
       "config" : {
-        "processCall" : "BlobStorage:checkBlobIsExist(String,String)",
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -957,12 +958,10 @@
         },
         "call" : {
           "params" : [
-            { "name" : "fileName", "type" : "String" },
-            { "name" : "uploadToFolder", "type" : "String" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "param.fileName" : "in.bean.fileNamePath",
-            "param.uploadToFolder" : "in.bean.uploadToFolderByLocalPath"
+            "param.blobName" : "in.combineFileNameAndFolder"
           }
         }
       },
@@ -975,7 +974,7 @@
       "type" : "SubProcessCall",
       "name" : "check blob is exist",
       "config" : {
-        "processCall" : "BlobStorage:checkBlobIsExist(String,String)",
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -984,12 +983,10 @@
         },
         "call" : {
           "params" : [
-            { "name" : "fileName", "type" : "String" },
-            { "name" : "uploadToFolder", "type" : "String" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "param.fileName" : "in.bean.fileNameURL",
-            "param.uploadToFolder" : "in.bean.uploadToFolderByURL"
+            "param.blobName" : "in.combineFileNameAndFolder"
           }
         }
       },
@@ -1022,5 +1019,18 @@
         "at" : { "x" : 224, "y" : 504 }
       },
       "connect" : { "id" : "f20", "to" : "f19" }
+    }, {
+      "id" : "f126",
+      "type" : "Script",
+      "name" : "combine name and folder",
+      "config" : {
+        "output" : {
+          "code" : "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByPrimefaces, in.bean.fileName);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 352 }
+      },
+      "connect" : { "id" : "f119", "to" : "f30" }
     } ]
 }
