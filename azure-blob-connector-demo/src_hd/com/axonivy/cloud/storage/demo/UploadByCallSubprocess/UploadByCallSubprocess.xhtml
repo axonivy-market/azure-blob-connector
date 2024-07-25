@@ -122,7 +122,7 @@
 						</p:column>
 						<p:column style="with: 30%">
 							<p:commandButton id="btnGetLink" 
-								actionListener="#{logic.getLink(blob.linkDownLoad)}" oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
+								actionListener="#{logic.getLink(blob.bi.name)}" oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
 								value="Get link" rendered="#{!blob.bi.deleted}"
 								update="linkDownloadDialog"/>
 							<p:commandButton id= "btnDeleteBlob" value="Delete" actionListener="#{logic.deleteBlob(blob.bi.name)}" update="blobTable form:growl" icon="fa fa-trash" rendered="#{!blob.bi.deleted}"/>

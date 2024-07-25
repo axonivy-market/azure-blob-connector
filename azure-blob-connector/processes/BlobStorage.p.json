@@ -8,15 +8,12 @@
   "elements" : [ {
       "id" : "f0",
       "type" : "CallSubStart",
-      "name" : "getBlobs(StorageService)",
+      "name" : "getBlobs",
       "config" : {
         "callSignature" : "getBlobs",
         "input" : {
-          "params" : [
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
-          ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorage"
+            "out.functionName" : "\"getBlobs\""
           }
         },
         "result" : {
@@ -26,39 +23,32 @@
           "map" : {
             "result.blobItems" : "in.blobItems"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
         "at" : { "x" : 96, "y" : 64 },
         "description" : [
           "Description: Get all blobs",
-          "Parammeter:",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- blobItems: java.util.List<com.azure.storage.blob.models.BlobItem>"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f9", "to" : "f8" }
-    }, {
-      "id" : "f1",
-      "type" : "CallSubEnd",
-      "visual" : {
-        "at" : { "x" : 368, "y" : 64 }
-      }
+      "connect" : { "id" : "f41", "to" : "f40" }
     }, {
       "id" : "f3",
       "type" : "CallSubStart",
-      "name" : "delete(Date,StorageService)",
+      "name" : "delete(Date)",
       "config" : {
         "callSignature" : "delete",
         "input" : {
           "params" : [
-            { "name" : "date", "type" : "java.util.Date" },
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "date", "type" : "java.util.Date" }
           ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorage",
-            "out.date" : "param.date"
+            "out.date" : "param.date",
+            "out.functionName" : "\"deleteByDate\""
           }
         },
         "result" : {
@@ -68,26 +58,27 @@
           "map" : {
             "result.isSucess" : "in.isSuccess"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
-        "at" : { "x" : 96, "y" : 192 },
+        "at" : { "x" : 96, "y" : 136 },
         "labelOffset" : { "x" : 9, "y" : 41 },
         "description" : [
           "Description: delete blob by date",
           "Parammeter:",
           "- date: java.util.Date",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- isSucess: java.lang.Boolean"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f6", "to" : "f4" }
+      "connect" : { "id" : "f42", "to" : "f40", "via" : [ { "x" : 240, "y" : 136 } ] }
     }, {
       "id" : "f5",
       "type" : "CallSubEnd",
       "visual" : {
-        "at" : { "x" : 368, "y" : 192 }
+        "at" : { "x" : 616, "y" : 144 }
       }
     }, {
       "id" : "f4",
@@ -96,42 +87,31 @@
       "config" : {
         "output" : {
           "code" : [
+            "import com.axonivy.cloud.storage.azure.blob.connector.internal.AzureBlobStorageService;",
+            "",
+            "in.azureBlobStorageService = new AzureBlobStorageService();",
             "in.azureBlobStorageService.delete(in.date);",
             "in.isSuccess = true;"
           ]
         }
       },
       "visual" : {
-        "at" : { "x" : 264, "y" : 192 }
+        "at" : { "x" : 488, "y" : 144 }
       },
       "connect" : { "id" : "f7", "to" : "f5" }
     }, {
-      "id" : "f8",
-      "type" : "Script",
-      "name" : "get list blob",
-      "config" : {
-        "output" : {
-          "code" : "in.blobItems = in.azureBlobStorageService.getBlobs();"
-        }
-      },
-      "visual" : {
-        "at" : { "x" : 256, "y" : 64 }
-      },
-      "connect" : { "id" : "f2", "to" : "f1" }
-    }, {
       "id" : "f10",
       "type" : "CallSubStart",
-      "name" : "detete(String,StorageService)",
+      "name" : "detete(String)",
       "config" : {
         "callSignature" : "detete",
         "input" : {
           "params" : [
-            { "name" : "blobName", "type" : "String" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorageService",
-            "out.blobName" : "param.blobName"
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"deleteByName\""
           }
         },
         "result" : {
@@ -141,25 +121,26 @@
           "map" : {
             "result.isSuccess" : "in.isSuccess"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
-        "at" : { "x" : 96, "y" : 296 },
+        "at" : { "x" : 96, "y" : 200 },
         "description" : [
           "Description: delete blob by blob name",
           "Parammeter:",
           "- blobName: java.lang.String",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- isSucess: java.lang.Boolean"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f13", "to" : "f12" }
+      "connect" : { "id" : "f45", "to" : "f40", "via" : [ { "x" : 240, "y" : 200 } ] }
     }, {
       "id" : "f11",
       "type" : "CallSubEnd",
       "visual" : {
-        "at" : { "x" : 368, "y" : 296 }
+        "at" : { "x" : 616, "y" : 224 }
       }
     }, {
       "id" : "f12",
@@ -171,23 +152,22 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 264, "y" : 296 }
+        "at" : { "x" : 488, "y" : 224 }
       },
       "connect" : { "id" : "f14", "to" : "f11" }
     }, {
       "id" : "f15",
       "type" : "CallSubStart",
-      "name" : "restore(String,StorageService)",
+      "name" : "restore(String)",
       "config" : {
         "callSignature" : "restore",
         "input" : {
           "params" : [
-            { "name" : "blobName", "type" : "String" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorageService",
-            "out.blobName" : "param.blobName"
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"restore\""
           }
         },
         "result" : {
@@ -197,20 +177,21 @@
           "map" : {
             "result.isSuccess" : "in.isSuccess"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
-        "at" : { "x" : 96, "y" : 392 },
+        "at" : { "x" : 96, "y" : 264 },
         "description" : [
           "Description: restore blob by blob name",
           "Parammeter:",
           "- blobName: java.lang.String",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- isSucess: java.lang.Boolean"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f18", "to" : "f16" }
+      "connect" : { "id" : "f46", "to" : "f40", "via" : [ { "x" : 240, "y" : 264 } ] }
     }, {
       "id" : "f16",
       "type" : "Script",
@@ -224,29 +205,28 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 264, "y" : 392 }
+        "at" : { "x" : 488, "y" : 304 }
       },
       "connect" : { "id" : "f19", "to" : "f17" }
     }, {
       "id" : "f17",
       "type" : "CallSubEnd",
       "visual" : {
-        "at" : { "x" : 376, "y" : 392 }
+        "at" : { "x" : 616, "y" : 304 }
       }
     }, {
       "id" : "f20",
       "type" : "CallSubStart",
-      "name" : "getLinkDownload(String,StorageService)",
+      "name" : "getLinkDownload(String)",
       "config" : {
         "callSignature" : "getLinkDownload",
         "input" : {
           "params" : [
-            { "name" : "blobName", "type" : "String" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorageService",
-            "out.blobName" : "param.blobName"
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"getLink\""
           }
         },
         "result" : {
@@ -256,26 +236,27 @@
           "map" : {
             "result.linkDownload" : "in.linkDownload"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
-        "at" : { "x" : 88, "y" : 496 },
-        "labelOffset" : { "x" : 49, "y" : 57 },
+        "at" : { "x" : 96, "y" : 328 },
+        "labelOffset" : { "x" : 33, "y" : 33 },
         "description" : [
           "Description: get link download by blob name",
           "Parammeter:",
           "- blobName: java.lang.String",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- linkDownload: java.lang.String"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f24", "to" : "f22" }
+      "connect" : { "id" : "f47", "to" : "f40", "via" : [ { "x" : 240, "y" : 328 } ] }
     }, {
       "id" : "f21",
       "type" : "CallSubEnd",
       "visual" : {
-        "at" : { "x" : 384, "y" : 496 }
+        "at" : { "x" : 616, "y" : 384 }
       }
     }, {
       "id" : "f22",
@@ -287,13 +268,13 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 264, "y" : 496 }
+        "at" : { "x" : 488, "y" : 384 }
       },
       "connect" : { "id" : "f23", "to" : "f21" }
     }, {
       "id" : "f25",
       "type" : "CallSubStart",
-      "name" : "uploadFromFile(String,String,String,Boolean,StorageService)",
+      "name" : "uploadFromFile(String,String,String,Boolean)",
       "config" : {
         "callSignature" : "uploadFromFile",
         "input" : {
@@ -301,12 +282,11 @@
             { "name" : "localPath", "type" : "String" },
             { "name" : "blobName", "type" : "String" },
             { "name" : "uploadToFolder", "type" : "String" },
-            { "name" : "isOverwriteFile", "type" : "Boolean" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
           ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorageService",
             "out.blobName" : "param.blobName",
+            "out.functionName" : "\"uploadByPath\"",
             "out.isOverwriteFile" : "param.isOverwriteFile",
             "out.localPath" : "param.localPath",
             "out.uploadToFolder" : "param.uploadToFolder"
@@ -319,11 +299,12 @@
           "map" : {
             "result.blobName" : "in.blobName"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
-        "at" : { "x" : 88, "y" : 608 },
-        "labelOffset" : { "x" : 25, "y" : 57 },
+        "at" : { "x" : 96, "y" : 392 },
+        "labelOffset" : { "x" : 9, "y" : 33 },
         "description" : [
           "Description: upload from file",
           "Parammeter:",
@@ -331,17 +312,17 @@
           "- blobName: java.lang.String",
           "- uploadToFolder:  java.lang.String",
           "- isOverwriteFile: java.lang.Boolean",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- blobName: java.lang.String"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f28", "to" : "f27" }
+      "connect" : { "id" : "f48", "to" : "f40", "via" : [ { "x" : 240, "y" : 392 } ] }
     }, {
       "id" : "f26",
       "type" : "CallSubEnd",
       "visual" : {
-        "at" : { "x" : 384, "y" : 608 }
+        "at" : { "x" : 616, "y" : 464 }
       }
     }, {
       "id" : "f27",
@@ -353,13 +334,13 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 272, "y" : 608 }
+        "at" : { "x" : 488, "y" : 464 }
       },
       "connect" : { "id" : "f29", "to" : "f26" }
     }, {
       "id" : "f30",
       "type" : "CallSubStart",
-      "name" : "uploadFromUrl(String,String,String,Boolean,StorageService)",
+      "name" : "uploadFromUrl(String,String,String,Boolean)",
       "config" : {
         "callSignature" : "uploadFromUrl",
         "input" : {
@@ -367,12 +348,11 @@
             { "name" : "url", "type" : "String" },
             { "name" : "blobName", "type" : "String" },
             { "name" : "uploadToFolder", "type" : "String" },
-            { "name" : "isOverwriteFile", "type" : "Boolean" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
           ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorageService",
             "out.blobName" : "param.blobName",
+            "out.functionName" : "\"uploadByURL\"",
             "out.isOverwriteFile" : "param.isOverwriteFile",
             "out.uploadToFolder" : "param.uploadToFolder",
             "out.url" : "param.url"
@@ -385,11 +365,12 @@
           "map" : {
             "result.blobName" : "in.blobName"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
-        "at" : { "x" : 88, "y" : 736 },
-        "labelOffset" : { "x" : 25, "y" : 57 },
+        "at" : { "x" : 96, "y" : 456 },
+        "labelOffset" : { "x" : 25, "y" : 33 },
         "description" : [
           "Description: upload from file",
           "Parammeter:",
@@ -397,12 +378,12 @@
           "- blobName: java.lang.String",
           "- uploadToFolder:  java.lang.String",
           "- isOverwriteFile: java.lang.Boolean",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- blobName: java.lang.String"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f33", "to" : "f31" }
+      "connect" : { "id" : "f49", "to" : "f40", "via" : [ { "x" : 240, "y" : 456 } ] }
     }, {
       "id" : "f31",
       "type" : "Script",
@@ -413,19 +394,19 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 272, "y" : 736 }
+        "at" : { "x" : 488, "y" : 544 }
       },
       "connect" : { "id" : "f34", "to" : "f32" }
     }, {
       "id" : "f32",
       "type" : "CallSubEnd",
       "visual" : {
-        "at" : { "x" : 384, "y" : 736 }
+        "at" : { "x" : 616, "y" : 544 }
       }
     }, {
       "id" : "f35",
       "type" : "CallSubStart",
-      "name" : "uploadFromFile(InputStream,String,String,Boolean,StorageService)",
+      "name" : "uploadFromFile(InputStream,String,String,Boolean)",
       "config" : {
         "callSignature" : "uploadFromFile",
         "input" : {
@@ -433,13 +414,12 @@
             { "name" : "content", "type" : "java.io.InputStream" },
             { "name" : "blobName", "type" : "String" },
             { "name" : "uploadToFolder", "type" : "String" },
-            { "name" : "isOverwriteFile", "type" : "Boolean" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
           ],
           "map" : {
-            "out.azureBlobStorageService" : "param.azureBlobStorageService",
             "out.blobName" : "param.blobName",
             "out.content" : "param.content",
+            "out.functionName" : "\"uploadByFile\"",
             "out.isOverwriteFile" : "param.isOverwriteFile",
             "out.uploadToFolder" : "param.uploadToFolder"
           }
@@ -451,11 +431,12 @@
           "map" : {
             "result.blobName" : "in.blobName"
           }
-        }
+        },
+        "tags" : "connector"
       },
       "visual" : {
-        "at" : { "x" : 88, "y" : 888 },
-        "labelOffset" : { "x" : 25, "y" : 57 },
+        "at" : { "x" : 96, "y" : 512 },
+        "labelOffset" : { "x" : 17, "y" : 33 },
         "description" : [
           "Description: upload from inputStream",
           "Parammeter:",
@@ -463,12 +444,12 @@
           "- blobName: java.lang.String",
           "- uploadToFolder:  java.lang.String",
           "- isOverwriteFile: java.lang.Boolean",
-          "- azureBlobStorage: com.axonivy.cloud.storage.azure.blob.connector.StorageService",
           "Result:",
           "- blobName: java.lang.String"
-        ]
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
-      "connect" : { "id" : "f39", "to" : "f36" }
+      "connect" : { "id" : "f50", "to" : "f40", "via" : [ { "x" : 240, "y" : 512 } ] }
     }, {
       "id" : "f36",
       "type" : "Script",
@@ -483,14 +464,132 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 272, "y" : 888 }
+        "at" : { "x" : 488, "y" : 624 }
       },
       "connect" : { "id" : "f38", "to" : "f37" }
     }, {
       "id" : "f37",
       "type" : "CallSubEnd",
       "visual" : {
-        "at" : { "x" : 384, "y" : 888 }
+        "at" : { "x" : 616, "y" : 624 }
+      }
+    }, {
+      "id" : "f8",
+      "type" : "Script",
+      "name" : "get list blob",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import com.axonivy.cloud.storage.azure.blob.connector.internal.AzureBlobStorageService;",
+            "",
+            "in.azureBlobStorageService = new AzureBlobStorageService();",
+            "in.blobItems = in.azureBlobStorageService.getBlobs();"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f1",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 640, "y" : 64 }
+      }
+    }, {
+      "id" : "f40",
+      "type" : "Script",
+      "name" : "init service",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import com.axonivy.cloud.storage.azure.blob.connector.internal.AzureBlobStorageService;",
+            "",
+            "in.azureBlobStorageService = new AzureBlobStorageService();"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 240, "y" : 64 }
+      },
+      "connect" : { "id" : "f13", "to" : "f9" }
+    }, {
+      "id" : "f9",
+      "type" : "Alternative",
+      "name" : "check function name",
+      "visual" : {
+        "at" : { "x" : 376, "y" : 64 },
+        "labelOffset" : { "x" : 0, "y" : -16 }
+      },
+      "connect" : [
+        { "id" : "f6", "to" : "f8", "condition" : "\"getBlobs\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f18", "to" : "f4", "via" : [ { "x" : 376, "y" : 144 } ], "condition" : "\"deleteByDate\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f24", "to" : "f12", "via" : [ { "x" : 376, "y" : 224 } ], "condition" : "\"deleteByName\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f28", "to" : "f16", "via" : [ { "x" : 376, "y" : 304 } ], "condition" : "\"restore\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f33", "to" : "f22", "via" : [ { "x" : 376, "y" : 384 } ], "condition" : "\"getLink\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f39", "to" : "f27", "via" : [ { "x" : 376, "y" : 464 } ], "condition" : "\"uploadByPath\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f43", "to" : "f31", "via" : [ { "x" : 376, "y" : 544 } ], "condition" : "\"uploadByURL\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f44", "to" : "f36", "via" : [ { "x" : 376, "y" : 624 } ], "condition" : "\"uploadByFile\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f54", "to" : "f53", "via" : [ { "x" : 376, "y" : 704 } ], "condition" : "\"checkBlobExist\".equalsIgnoreCase(in.functionName)" }
+      ]
+    }, {
+      "id" : "f51",
+      "type" : "CallSubStart",
+      "name" : "checkBlobIsExist(String,String)",
+      "config" : {
+        "callSignature" : "checkBlobIsExist",
+        "input" : {
+          "params" : [
+            { "name" : "fileName", "type" : "String" },
+            { "name" : "uploadToFolder", "type" : "String" }
+          ],
+          "map" : {
+            "out.blobName" : "param.fileName",
+            "out.functionName" : "\"checkBlobExist\"",
+            "out.uploadToFolder" : "param.uploadToFolder"
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "isExist", "type" : "Boolean" }
+          ],
+          "map" : {
+            "result.isExist" : "in.isExist"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 576 },
+        "description" : [
+          "Description: check blob is exist by blob name",
+          "Parammeter:",
+          "- fileName: java.lang.String",
+          "- uploadToFolder:  java.lang.String",
+          "Result:",
+          "- isExist: java.lang.Boolean"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f52", "to" : "f40", "via" : [ { "x" : 240, "y" : 576 } ] }
+    }, {
+      "id" : "f53",
+      "type" : "Script",
+      "name" : "check blob exist",
+      "config" : {
+        "output" : {
+          "code" : "in.isExist = in.azureBlobStorageService.checkBlobIsExist(in.blobName, in.uploadToFolder);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 704 }
+      },
+      "connect" : { "id" : "f57", "to" : "f56" }
+    }, {
+      "id" : "f56",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 704 }
       }
     } ]
 }

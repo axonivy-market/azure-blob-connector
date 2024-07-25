@@ -6,3 +6,5 @@ link String #field
 link PERSISTENT #fieldModifier
 isSuccess Boolean #field
 isSuccess PERSISTENT #fieldModifier
+isExist Boolean #field
+isExist PERSISTENT #fieldModifier

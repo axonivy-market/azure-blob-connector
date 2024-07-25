@@ -70,7 +70,7 @@ public interface StorageService {
 	/**
 	 * The API to delete blob
 	 * @param blob name
-	 * @return - The blob name
+	 * @return - boolean
 	 * */
 	public boolean delete(String blobName);
 	
@@ -117,4 +117,12 @@ public interface StorageService {
 	 * @return - The url for download
 	 */
 	public String getDownloadLink(String blobName);
+	
+	/**
+	 * The API to check blob is already exist
+	 * @param blobName - The blob name
+	 * @param uploadToFolder - The folder name
+	 * @return boolean
+	 * */
+	public boolean checkBlobIsExist(String blobName, String uploadToFolder);
 }
