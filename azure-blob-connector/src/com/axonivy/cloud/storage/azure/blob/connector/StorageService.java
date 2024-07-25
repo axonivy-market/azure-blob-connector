@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobItem;
 
 public interface StorageService {
@@ -70,7 +71,7 @@ public interface StorageService {
 	/**
 	 * The API to delete blob
 	 * @param blob name
-	 * @return - The blob name
+	 * @return - boolean
 	 * */
 	public boolean delete(String blobName);
 	
@@ -117,4 +118,11 @@ public interface StorageService {
 	 * @return - The url for download
 	 */
 	public String getDownloadLink(String blobName);
+	
+	/**
+	 * The API to get blob client
+	 * @param blobName - The blob name
+	 * @return BlobClient
+	 * */
+	public BlobClient getBlobClient(String blobName);
 }

@@ -1,7 +1,7 @@
 BlobStorageData #class
 com.axonivy.cloud.storage.azure.blob.connector #namespace
 date java.util.Date #field
-azureBlobStorageService com.axonivy.cloud.storage.azure.blob.connector.StorageService #field
+azureBlobStorageBean com.axonivy.cloud.storage.azure.blob.connector.internal.bean.AzureBlobStorageBean #field
 isSuccess Boolean #field
 blobItems java.util.List<com.azure.storage.blob.models.BlobItem> #field
 blobName String #field
@@ -11,3 +11,5 @@ uploadToFolder String #field
 isOverwriteFile Boolean #field
 url String #field
 content java.io.InputStream #field
+functionName String #field
+isExist Boolean #field

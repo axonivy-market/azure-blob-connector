@@ -31,7 +31,7 @@
 						<p:inputText value="#{data.bean.uploadToFolderByPrimefaces}" placeholder="h1 or h1/h2" />
 					</p:panelGrid>
 					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanel">
-						<h:outputText value="The following file already exist: #{data.bean.fileName}" rendered="#{data.bean.isFileAlreadyExist}" styleClass="color-red"/>
+						<h:outputText value="The following file already exist: #{data.combineFileNameAndFolder}" rendered="#{data.bean.isFileAlreadyExist}" styleClass="color-red"/>
 					</p:panelGrid>
 					<p:panelGrid layout="grid" columns="1"
 						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
@@ -58,7 +58,7 @@
 					</p:panelGrid>
 					
 					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanelPath">
-						<h:outputText value="The following file already exist: #{data.bean.fileNamePath}" rendered="#{data.bean.isFileAlreadyExistPath}" styleClass="color-red"/>
+						<h:outputText value="The following file already exist: #{data.combineFileNameAndFolder}" rendered="#{data.bean.isFileAlreadyExistPath}" styleClass="color-red"/>
 					</p:panelGrid>
 					<p:panelGrid layout="grid" columns="1"
 						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
@@ -122,7 +122,7 @@
 						</p:column>
 						<p:column style="with: 30%">
 							<p:commandButton id="btnGetLink" 
-								actionListener="#{logic.getLink(blob.linkDownLoad)}" oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
+								actionListener="#{logic.getLink(blob.bi.name)}" oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
 								value="Get link" rendered="#{!blob.bi.deleted}"
 								update="linkDownloadDialog"/>
 							<p:commandButton id= "btnDeleteBlob" value="Delete" actionListener="#{logic.deleteBlob(blob.bi.name)}" update="blobTable form:growl" icon="fa fa-trash" rendered="#{!blob.bi.deleted}"/>
