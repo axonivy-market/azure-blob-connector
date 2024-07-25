@@ -19,6 +19,7 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
+import com.axonivy.cloud.storage.azure.blob.connector.BlobServiceClientHelper;
 import com.axonivy.cloud.storage.azure.blob.connector.StorageService;
 import com.axonivy.cloud.storage.azure.blob.connector.internal.helper.BlobSASHelper;
 import com.azure.core.http.rest.PagedResponse;
@@ -64,7 +65,7 @@ public class AzureBlobStorageService implements StorageService {
 		this.destinationContainer = getBlobContainerClient(this.blobServiceClient, container);
 		this.downloadLinkLiveTime = downloadLinkLiveTime;
 	}
-
+	
 	@Override
 	public String upload(String content, String fileName) {
 		BlockBlobClient blockBlobClient = getBlobClient(fileName).getBlockBlobClient();
@@ -155,6 +156,11 @@ public class AzureBlobStorageService implements StorageService {
 		}
 	}
 	
+	@Override
+	public BlobClient getBlobClient(String blobName) {
+		return this.destinationContainer.getBlobClient(blobName);
+	}
+	
 	private void downloadFileWithLargeSize(String blobName, String filePath) {
 		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
 		ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
@@ -174,10 +180,6 @@ public class AzureBlobStorageService implements StorageService {
 
 		BlobContainerClient blobContainerClient = blobServiceClient.createBlobContainerIfNotExists(container);
 		return blobContainerClient;
-	}
-
-	private BlobClient getBlobClient(String blobName) {
-		return this.destinationContainer.getBlobClient(blobName);
 	}
 
 	private static String getFileNameFromUrl(String url) {

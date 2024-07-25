@@ -109,12 +109,12 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 352 }
       },
-      "connect" : { "id" : "f17", "to" : "f14" }
+      "connect" : { "id" : "f127", "to" : "f126" }
     }, {
       "id" : "f15",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 936, "y" : 352 }
+        "at" : { "x" : 1240, "y" : 352 }
       }
     }, {
       "id" : "f18",
@@ -124,10 +124,10 @@
         "callSignature" : "getLink",
         "input" : {
           "params" : [
-            { "name" : "link", "type" : "String" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "out.link" : "param.link"
+            "out.bean.blobName" : "param.blobName"
           }
         },
         "guid" : "19010CAC30297BE7"
@@ -135,7 +135,7 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 504 }
       },
-      "connect" : { "id" : "f20", "to" : "f19" }
+      "connect" : { "id" : "f125", "to" : "f124" }
     }, {
       "id" : "f19",
       "type" : "HtmlDialogEnd",
@@ -157,7 +157,7 @@
       "id" : "f23",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 1040, "y" : 624 }
+        "at" : { "x" : 1200, "y" : 624 }
       }
     }, {
       "id" : "f26",
@@ -174,7 +174,7 @@
       "id" : "f28",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 1048, "y" : 840 }
+        "at" : { "x" : 1208, "y" : 840 }
       }
     }, {
       "id" : "f31",
@@ -334,7 +334,7 @@
       "type" : "SubProcessCall",
       "name" : "save blob",
       "config" : {
-        "processCall" : "BlobStorage:uploadFromFile(java.io.InputStream,String,String,Boolean,com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:uploadFromFile(java.io.InputStream,String,String,Boolean)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -346,20 +346,18 @@
             { "name" : "content", "type" : "java.io.InputStream" },
             { "name" : "blobName", "type" : "String" },
             { "name" : "uploadToFolder", "type" : "String" },
-            { "name" : "isOverwriteFile", "type" : "Boolean" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
           ],
           "map" : {
             "param.content" : "in.bean.inputStreamContent",
             "param.blobName" : "in.bean.fileName",
             "param.uploadToFolder" : "in.bean.uploadToFolderByPrimefaces",
-            "param.isOverwriteFile" : "in.bean.isOverwriteFile",
-            "param.azureBlobStorageService" : "in.bean.storageService"
+            "param.isOverwriteFile" : "in.bean.isOverwriteFile"
           }
         }
       },
       "visual" : {
-        "at" : { "x" : 384, "y" : 352 }
+        "at" : { "x" : 688, "y" : 352 }
       },
       "connect" : { "id" : "f67", "to" : "f66" }
     }, {
@@ -367,12 +365,16 @@
       "type" : "Alternative",
       "name" : "is exist file ?",
       "visual" : {
-        "at" : { "x" : 200, "y" : 352 },
+        "at" : { "x" : 504, "y" : 352 },
         "labelOffset" : { "x" : 16, "y" : -24 }
       },
       "connect" : [
-        { "id" : "f62", "to" : "f61", "condition" : "in.bean.isOverwriteFile || !in.bean.checkFileAlreadyExist(in.bean.fileName)" },
-        { "id" : "f64", "to" : "f63" }
+        { "id" : "f62", "to" : "f61", "label" : {
+            "name" : "no"
+          }, "condition" : "in.bean.isOverwriteFile || !in.isExist" },
+        { "id" : "f64", "to" : "f63", "label" : {
+            "name" : "yes"
+          } }
       ]
     }, {
       "id" : "f63",
@@ -384,9 +386,9 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 200, "y" : 424 }
+        "at" : { "x" : 504, "y" : 432 }
       },
-      "connect" : { "id" : "f65", "to" : "f15", "via" : [ { "x" : 936, "y" : 424 } ] }
+      "connect" : { "id" : "f65", "to" : "f15", "via" : [ { "x" : 1240, "y" : 432 } ] }
     }, {
       "id" : "f66",
       "type" : "Alternative",
@@ -395,14 +397,14 @@
         "not null ?"
       ],
       "visual" : {
-        "at" : { "x" : 512, "y" : 352 },
+        "at" : { "x" : 816, "y" : 352 },
         "labelOffset" : { "x" : 16, "y" : 40 }
       },
       "connect" : [
         { "id" : "f69", "to" : "f68", "label" : {
             "name" : "yes"
           }, "condition" : "org.apache.commons.lang3.StringUtils.isNotBlank(in.bean.blobName)" },
-        { "id" : "f70", "to" : "f15", "via" : [ { "x" : 512, "y" : 280 }, { "x" : 936, "y" : 280 } ], "label" : {
+        { "id" : "f70", "to" : "f15", "via" : [ { "x" : 816, "y" : 280 }, { "x" : 1240, "y" : 280 } ], "label" : {
             "name" : "no",
             "segment" : 1.47
           } }
@@ -412,24 +414,16 @@
       "type" : "SubProcessCall",
       "name" : "get list blob",
       "config" : {
-        "processCall" : "BlobStorage:getBlobs(com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:getBlobs()",
         "output" : {
           "map" : {
             "out" : "in",
             "out.bean.blobItems" : "result.blobItems"
           }
-        },
-        "call" : {
-          "params" : [
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
-          ],
-          "map" : {
-            "param.azureBlobStorage" : "in.bean.storageService"
-          }
         }
       },
       "visual" : {
-        "at" : { "x" : 640, "y" : 352 }
+        "at" : { "x" : 944, "y" : 352 }
       },
       "connect" : { "id" : "f72", "to" : "f71" }
     }, {
@@ -448,7 +442,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 800, "y" : 352 }
+        "at" : { "x" : 1104, "y" : 352 }
       },
       "connect" : { "id" : "f16", "to" : "f15" }
     }, {
@@ -456,19 +450,11 @@
       "type" : "SubProcessCall",
       "name" : "get list blob",
       "config" : {
-        "processCall" : "BlobStorage:getBlobs(com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:getBlobs()",
         "output" : {
           "map" : {
             "out" : "in",
             "out.bean.blobItems" : "result.blobItems"
-          }
-        },
-        "call" : {
-          "params" : [
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
-          ],
-          "map" : {
-            "param.azureBlobStorage" : "in.bean.storageService"
           }
         }
       },
@@ -494,7 +480,7 @@
       "type" : "SubProcessCall",
       "name" : "delete by date",
       "config" : {
-        "processCall" : "BlobStorage:delete(java.util.Date,com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:delete(java.util.Date)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -503,12 +489,10 @@
         },
         "call" : {
           "params" : [
-            { "name" : "date", "type" : "java.util.Date" },
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "date", "type" : "java.util.Date" }
           ],
           "map" : {
-            "param.date" : "in.bean.startDate",
-            "param.azureBlobStorage" : "in.bean.storageService"
+            "param.date" : "in.bean.startDate"
           }
         }
       },
@@ -521,19 +505,11 @@
       "type" : "SubProcessCall",
       "name" : "get list blob",
       "config" : {
-        "processCall" : "BlobStorage:getBlobs(com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:getBlobs()",
         "output" : {
           "map" : {
             "out" : "in",
             "out.bean.blobItems" : "result.blobItems"
-          }
-        },
-        "call" : {
-          "params" : [
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
-          ],
-          "map" : {
-            "param.azureBlobStorage" : "in.bean.storageService"
           }
         }
       },
@@ -565,7 +541,7 @@
       "type" : "SubProcessCall",
       "name" : "delete by name",
       "config" : {
-        "processCall" : "BlobStorage:detete(String,com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:detete(String)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -574,12 +550,10 @@
         },
         "call" : {
           "params" : [
-            { "name" : "blobName", "type" : "String" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "param.blobName" : "in.bean.blobName",
-            "param.azureBlobStorageService" : "in.bean.storageService"
+            "param.blobName" : "in.bean.blobName"
           }
         }
       },
@@ -592,7 +566,7 @@
       "type" : "SubProcessCall",
       "name" : "undelete",
       "config" : {
-        "processCall" : "BlobStorage:restore(String,com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:restore(String)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -601,12 +575,10 @@
         },
         "call" : {
           "params" : [
-            { "name" : "blobName", "type" : "String" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "param.blobName" : "in.bean.blobName",
-            "param.azureBlobStorageService" : "in.bean.storageService"
+            "param.blobName" : "in.bean.blobName"
           }
         }
       },
@@ -619,19 +591,11 @@
       "type" : "SubProcessCall",
       "name" : "get list blob",
       "config" : {
-        "processCall" : "BlobStorage:getBlobs(com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:getBlobs()",
         "output" : {
           "map" : {
             "out" : "in",
             "out.bean.blobItems" : "result.blobItems"
-          }
-        },
-        "call" : {
-          "params" : [
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
-          ],
-          "map" : {
-            "param.azureBlobStorage" : "in.bean.storageService"
           }
         }
       },
@@ -697,11 +661,11 @@
       "type" : "Alternative",
       "name" : "is exist file ?",
       "visual" : {
-        "at" : { "x" : 360, "y" : 624 },
+        "at" : { "x" : 520, "y" : 624 },
         "labelOffset" : { "x" : 16, "y" : -24 }
       },
       "connect" : [
-        { "id" : "f99", "to" : "f92", "condition" : "in.bean.isOverwriteFilePath || !in.bean.checkFileAlreadyExist(in.bean.fileNamePath)" },
+        { "id" : "f99", "to" : "f92", "condition" : "in.bean.isOverwriteFilePath || !in.isExist" },
         { "id" : "f96", "to" : "f91" }
       ]
     }, {
@@ -714,15 +678,15 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 360, "y" : 712 }
+        "at" : { "x" : 520, "y" : 712 }
       },
-      "connect" : { "id" : "f22", "to" : "f23", "via" : [ { "x" : 1040, "y" : 712 } ] }
+      "connect" : { "id" : "f22", "to" : "f23", "via" : [ { "x" : 1200, "y" : 712 } ] }
     }, {
       "id" : "f92",
       "type" : "SubProcessCall",
       "name" : "save blob",
       "config" : {
-        "processCall" : "BlobStorage:uploadFromFile(String,String,String,Boolean,com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:uploadFromFile(String,String,String,Boolean)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -734,20 +698,18 @@
             { "name" : "localPath", "type" : "String" },
             { "name" : "blobName", "type" : "String" },
             { "name" : "uploadToFolder", "type" : "String" },
-            { "name" : "isOverwriteFile", "type" : "Boolean" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
           ],
           "map" : {
             "param.localPath" : "in.bean.localPath",
             "param.blobName" : "in.bean.fileNamePath",
             "param.uploadToFolder" : "in.bean.uploadToFolderByLocalPath",
-            "param.isOverwriteFile" : "in.bean.isOverwriteFilePath",
-            "param.azureBlobStorageService" : "in.bean.storageService"
+            "param.isOverwriteFile" : "in.bean.isOverwriteFilePath"
           }
         }
       },
       "visual" : {
-        "at" : { "x" : 480, "y" : 624 }
+        "at" : { "x" : 640, "y" : 624 }
       },
       "connect" : { "id" : "f100", "to" : "f93" }
     }, {
@@ -758,14 +720,14 @@
         "not null ?"
       ],
       "visual" : {
-        "at" : { "x" : 616, "y" : 624 },
+        "at" : { "x" : 776, "y" : 624 },
         "labelOffset" : { "x" : 16, "y" : 40 }
       },
       "connect" : [
         { "id" : "f97", "to" : "f94", "label" : {
             "name" : "yes"
           }, "condition" : "org.apache.commons.lang3.StringUtils.isNotBlank(in.bean.blobName)" },
-        { "id" : "f102", "to" : "f23", "via" : [ { "x" : 616, "y" : 552 }, { "x" : 1040, "y" : 552 } ], "label" : {
+        { "id" : "f102", "to" : "f23", "via" : [ { "x" : 776, "y" : 552 }, { "x" : 1200, "y" : 552 } ], "label" : {
             "name" : "no",
             "segment" : 1.48
           } }
@@ -775,24 +737,16 @@
       "type" : "SubProcessCall",
       "name" : "get list blob",
       "config" : {
-        "processCall" : "BlobStorage:getBlobs(com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:getBlobs()",
         "output" : {
           "map" : {
             "out" : "in",
             "out.bean.blobItems" : "result.blobItems"
           }
-        },
-        "call" : {
-          "params" : [
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
-          ],
-          "map" : {
-            "param.azureBlobStorage" : "in.bean.storageService"
-          }
         }
       },
       "visual" : {
-        "at" : { "x" : 752, "y" : 624 }
+        "at" : { "x" : 912, "y" : 624 }
       },
       "connect" : { "id" : "f98", "to" : "f95" }
     }, {
@@ -811,7 +765,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 912, "y" : 624 }
+        "at" : { "x" : 1072, "y" : 624 }
       },
       "connect" : { "id" : "f24", "to" : "f23" }
     }, {
@@ -822,14 +776,16 @@
         "output" : {
           "code" : [
             "import org.apache.commons.io.FilenameUtils;",
-            "in.bean.fileNamePath = FilenameUtils.getName(in.bean.localPath);"
+            "",
+            "in.bean.fileNamePath = FilenameUtils.getName(in.bean.localPath);",
+            "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByLocalPath, in.bean.fileNamePath);"
           ]
         }
       },
       "visual" : {
         "at" : { "x" : 232, "y" : 624 }
       },
-      "connect" : { "id" : "f101", "to" : "f90" }
+      "connect" : { "id" : "f121", "to" : "f120" }
     }, {
       "id" : "f29",
       "type" : "Script",
@@ -839,24 +795,25 @@
           "code" : [
             "import com.axonivy.cloud.storage.utils.UploadUtils;",
             "",
-            "in.bean.fileNameURL = UploadUtils.getFileNameFromUrl(in.bean.url);"
+            "in.bean.fileNameURL = UploadUtils.getFileNameFromUrl(in.bean.url);",
+            "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByURL, in.bean.fileNameURL);"
           ]
         }
       },
       "visual" : {
         "at" : { "x" : 232, "y" : 840 }
       },
-      "connect" : { "id" : "f110", "to" : "f104" }
+      "connect" : { "id" : "f123", "to" : "f122" }
     }, {
       "id" : "f104",
       "type" : "Alternative",
       "name" : "is exist file ?",
       "visual" : {
-        "at" : { "x" : 360, "y" : 840 },
+        "at" : { "x" : 520, "y" : 840 },
         "labelOffset" : { "x" : 16, "y" : -24 }
       },
       "connect" : [
-        { "id" : "f111", "to" : "f106", "condition" : "in.bean.isOverwriteFileURL || !in.bean.checkFileAlreadyExist(in.bean.fileNameURL)" },
+        { "id" : "f111", "to" : "f106", "condition" : "in.bean.isOverwriteFileURL || !in.isExist" },
         { "id" : "f112", "to" : "f105" }
       ]
     }, {
@@ -872,15 +829,15 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 360, "y" : 928 }
+        "at" : { "x" : 520, "y" : 928 }
       },
-      "connect" : { "id" : "f118", "to" : "f28", "via" : [ { "x" : 1048, "y" : 928 } ] }
+      "connect" : { "id" : "f118", "to" : "f28", "via" : [ { "x" : 1208, "y" : 928 } ] }
     }, {
       "id" : "f106",
       "type" : "SubProcessCall",
       "name" : "save blob",
       "config" : {
-        "processCall" : "BlobStorage:uploadFromUrl(String,String,String,Boolean,com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:uploadFromUrl(String,String,String,Boolean)",
         "output" : {
           "map" : {
             "out" : "in",
@@ -892,20 +849,18 @@
             { "name" : "url", "type" : "String" },
             { "name" : "blobName", "type" : "String" },
             { "name" : "uploadToFolder", "type" : "String" },
-            { "name" : "isOverwriteFile", "type" : "Boolean" },
-            { "name" : "azureBlobStorageService", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
           ],
           "map" : {
             "param.url" : "in.bean.url",
             "param.blobName" : "in.bean.fileNameURL",
             "param.uploadToFolder" : "in.bean.uploadToFolderByURL",
-            "param.isOverwriteFile" : "in.bean.isOverwriteFileURL",
-            "param.azureBlobStorageService" : "in.bean.storageService"
+            "param.isOverwriteFile" : "in.bean.isOverwriteFileURL"
           }
         }
       },
       "visual" : {
-        "at" : { "x" : 480, "y" : 840 }
+        "at" : { "x" : 640, "y" : 840 }
       },
       "connect" : { "id" : "f115", "to" : "f107" }
     }, {
@@ -916,14 +871,14 @@
         "not null ?"
       ],
       "visual" : {
-        "at" : { "x" : 616, "y" : 840 },
+        "at" : { "x" : 776, "y" : 840 },
         "labelOffset" : { "x" : 16, "y" : 40 }
       },
       "connect" : [
         { "id" : "f114", "to" : "f108", "label" : {
             "name" : "yes"
           }, "condition" : "org.apache.commons.lang3.StringUtils.isNotBlank(in.bean.blobName)" },
-        { "id" : "f27", "to" : "f28", "via" : [ { "x" : 616, "y" : 776 }, { "x" : 1048, "y" : 776 } ], "label" : {
+        { "id" : "f27", "to" : "f28", "via" : [ { "x" : 776, "y" : 776 }, { "x" : 1208, "y" : 776 } ], "label" : {
             "name" : "no",
             "segment" : 1.49
           } }
@@ -933,24 +888,16 @@
       "type" : "SubProcessCall",
       "name" : "get list blob",
       "config" : {
-        "processCall" : "BlobStorage:getBlobs(com.axonivy.cloud.storage.azure.blob.connector.StorageService)",
+        "processCall" : "BlobStorage:getBlobs()",
         "output" : {
           "map" : {
             "out" : "in",
             "out.bean.blobItems" : "result.blobItems"
           }
-        },
-        "call" : {
-          "params" : [
-            { "name" : "azureBlobStorage", "type" : "com.axonivy.cloud.storage.azure.blob.connector.StorageService" }
-          ],
-          "map" : {
-            "param.azureBlobStorage" : "in.bean.storageService"
-          }
         }
       },
       "visual" : {
-        "at" : { "x" : 752, "y" : 840 }
+        "at" : { "x" : 912, "y" : 840 }
       },
       "connect" : { "id" : "f113", "to" : "f109" }
     }, {
@@ -969,8 +916,121 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 912, "y" : 840 }
+        "at" : { "x" : 1072, "y" : 840 }
       },
       "connect" : { "id" : "f117", "to" : "f28" }
+    }, {
+      "id" : "f30",
+      "type" : "SubProcessCall",
+      "name" : "check blob is exist",
+      "config" : {
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isExist" : "result.isExist"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.combineFileNameAndFolder"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 384, "y" : 352 }
+      },
+      "connect" : { "id" : "f17", "to" : "f14" }
+    }, {
+      "id" : "f120",
+      "type" : "SubProcessCall",
+      "name" : "check blob is exist",
+      "config" : {
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isExist" : "result.isExist"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.combineFileNameAndFolder"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 392, "y" : 624 }
+      },
+      "connect" : { "id" : "f101", "to" : "f90" }
+    }, {
+      "id" : "f122",
+      "type" : "SubProcessCall",
+      "name" : "check blob is exist",
+      "config" : {
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isExist" : "result.isExist"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.combineFileNameAndFolder"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 392, "y" : 840 }
+      },
+      "connect" : { "id" : "f110", "to" : "f104" }
+    }, {
+      "id" : "f124",
+      "type" : "SubProcessCall",
+      "name" : "get link download",
+      "config" : {
+        "processCall" : "BlobStorage:getLinkDownload(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.link" : "result.linkDownload"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.bean.blobName"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 504 }
+      },
+      "connect" : { "id" : "f20", "to" : "f19" }
+    }, {
+      "id" : "f126",
+      "type" : "Script",
+      "name" : "combine name and folder",
+      "config" : {
+        "output" : {
+          "code" : "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByPrimefaces, in.bean.fileName);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 352 }
+      },
+      "connect" : { "id" : "f119", "to" : "f30" }
     } ]
 }

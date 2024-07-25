@@ -17,6 +17,21 @@ In the project, you only add the dependency in your pom.xml and call public APIs
 		<version>${process.analyzer.version}</version>
 	</dependency>
 ```
+** Below is an example for connect by client secret **
+```yaml
+Variables:
+  AzureBlob:
+    # The application ID that's assigned to your app.
+    ClientId: ''
+    # The client secret that you generated for your app in the app registration portal.
+    ClientSecret: ''
+    # The directory tenant the application plans to operate against, in GUID or domain-name format.
+    TenantId: ''
+    # https://<storage-account>.blob.core.windows.net/
+    EndPoint: ''
+    # Your container name.
+    ContainterName: ''
+```
 
 **2. Call the constructor to set some basic information.  Each instance of the advanced process analyzer should care about one specific process model. This way we can store some private information (e.g. simplified model) in the instance and reuse it for different calculations on this object.**
 ```java
