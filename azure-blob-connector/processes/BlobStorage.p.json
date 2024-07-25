@@ -87,10 +87,8 @@
       "config" : {
         "output" : {
           "code" : [
-            "import com.axonivy.cloud.storage.azure.blob.connector.internal.AzureBlobStorageService;",
             "",
-            "in.azureBlobStorageService = new AzureBlobStorageService();",
-            "in.azureBlobStorageService.delete(in.date);",
+            "in.azureBlobStorageBean.getAzureBlobStorageService().delete(in.date);",
             "in.isSuccess = true;"
           ]
         }
@@ -148,7 +146,7 @@
       "name" : "delete blob by name",
       "config" : {
         "output" : {
-          "code" : "in.isSuccess = in.azureBlobStorageService.delete(in.blobName);"
+          "code" : "in.isSuccess = in.azureBlobStorageBean.getAzureBlobStorageService().delete(in.blobName);"
         }
       },
       "visual" : {
@@ -199,7 +197,7 @@
       "config" : {
         "output" : {
           "code" : [
-            "in.azureBlobStorageService.restore(in.blobName);",
+            "in.azureBlobStorageBean.getAzureBlobStorageService().restore(in.blobName);",
             "in.isSuccess = true;"
           ]
         }
@@ -264,7 +262,7 @@
       "name" : "get link",
       "config" : {
         "output" : {
-          "code" : "in.linkDownload = in.azureBlobStorageService.getDownloadLink(in.blobName);"
+          "code" : "in.linkDownload = in.azureBlobStorageBean.getAzureBlobStorageService().getDownloadLink(in.blobName);"
         }
       },
       "visual" : {
@@ -330,7 +328,7 @@
       "name" : "upload",
       "config" : {
         "output" : {
-          "code" : "in.blobName = in.azureBlobStorageService.uploadFromFile(in.localPath, in.uploadToFolder, in.isOverwriteFile);"
+          "code" : "in.blobName = in.azureBlobStorageBean.getAzureBlobStorageService().uploadFromFile(in.localPath, in.uploadToFolder, in.isOverwriteFile);"
         }
       },
       "visual" : {
@@ -390,7 +388,7 @@
       "name" : "upload",
       "config" : {
         "output" : {
-          "code" : "in.blobName = in.azureBlobStorageService.uploadFromUrl(in.url, in.uploadToFolder, in.isOverwriteFile);"
+          "code" : "in.blobName = in.azureBlobStorageBean.getAzureBlobStorageService().uploadFromUrl(in.url, in.uploadToFolder, in.isOverwriteFile);"
         }
       },
       "visual" : {
@@ -459,7 +457,7 @@
           "code" : [
             "import org.apache.commons.io.IOUtils;",
             "",
-            "in.blobName = in.azureBlobStorageService.upload(IOUtils.toByteArray(in.content), in.blobName, in.uploadToFolder, in.isOverwriteFile);"
+            "in.blobName = in.azureBlobStorageBean.getAzureBlobStorageService().upload(IOUtils.toByteArray(in.content), in.blobName, in.uploadToFolder, in.isOverwriteFile);"
           ]
         }
       },
@@ -480,10 +478,8 @@
       "config" : {
         "output" : {
           "code" : [
-            "import com.axonivy.cloud.storage.azure.blob.connector.internal.AzureBlobStorageService;",
             "",
-            "in.azureBlobStorageService = new AzureBlobStorageService();",
-            "in.blobItems = in.azureBlobStorageService.getBlobs();"
+            "in.blobItems = in.azureBlobStorageBean.getAzureBlobStorageService().getBlobs();"
           ]
         }
       },
@@ -504,9 +500,9 @@
       "config" : {
         "output" : {
           "code" : [
-            "import com.axonivy.cloud.storage.azure.blob.connector.internal.AzureBlobStorageService;",
+            "import com.axonivy.cloud.storage.azure.blob.connector.internal.bean.AzureBlobStorageBean;",
             "",
-            "in.azureBlobStorageService = new AzureBlobStorageService();"
+            "in.azureBlobStorageBean = new AzureBlobStorageBean();"
           ]
         }
       },
@@ -536,18 +532,16 @@
     }, {
       "id" : "f51",
       "type" : "CallSubStart",
-      "name" : "checkBlobIsExist(String,String)",
+      "name" : "checkBlobIsExist(String)",
       "config" : {
         "callSignature" : "checkBlobIsExist",
         "input" : {
           "params" : [
-            { "name" : "fileName", "type" : "String" },
-            { "name" : "uploadToFolder", "type" : "String" }
+            { "name" : "blobName", "type" : "String" }
           ],
           "map" : {
-            "out.blobName" : "param.fileName",
-            "out.functionName" : "\"checkBlobExist\"",
-            "out.uploadToFolder" : "param.uploadToFolder"
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"checkBlobExist\""
           }
         },
         "result" : {
@@ -564,8 +558,7 @@
         "description" : [
           "Description: check blob is exist by blob name",
           "Parammeter:",
-          "- fileName: java.lang.String",
-          "- uploadToFolder:  java.lang.String",
+          "- blobName: java.lang.String",
           "Result:",
           "- isExist: java.lang.Boolean"
         ],
@@ -578,7 +571,7 @@
       "name" : "check blob exist",
       "config" : {
         "output" : {
-          "code" : "in.isExist = in.azureBlobStorageService.checkBlobIsExist(in.blobName, in.uploadToFolder);"
+          "code" : "in.isExist = in.azureBlobStorageBean.isBlobExist(in.blobName);"
         }
       },
       "visual" : {

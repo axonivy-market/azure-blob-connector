@@ -5,6 +5,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
+import com.azure.storage.blob.BlobClient;
 import com.azure.storage.blob.models.BlobItem;
 
 public interface StorageService {
@@ -119,10 +120,9 @@ public interface StorageService {
 	public String getDownloadLink(String blobName);
 	
 	/**
-	 * The API to check blob is already exist
+	 * The API to get blob client
 	 * @param blobName - The blob name
-	 * @param uploadToFolder - The folder name
-	 * @return boolean
+	 * @return BlobClient
 	 * */
-	public boolean checkBlobIsExist(String blobName, String uploadToFolder);
+	public BlobClient getBlobClient(String blobName);
 }

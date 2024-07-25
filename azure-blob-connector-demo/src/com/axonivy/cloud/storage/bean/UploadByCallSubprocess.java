@@ -217,4 +217,9 @@ public class UploadByCallSubprocess {
 			blobs.add(b);
 		}
 	}
+	
+	public String createBlobPath(String folderName, String fileName) {
+		String path = StringUtils.isNotBlank(folderName) ? folderName + "/" : StringUtils.EMPTY;
+		return path + fileName;
+	}
 }

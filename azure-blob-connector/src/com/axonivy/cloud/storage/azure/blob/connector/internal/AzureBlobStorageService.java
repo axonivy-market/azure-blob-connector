@@ -66,17 +66,6 @@ public class AzureBlobStorageService implements StorageService {
 		this.downloadLinkLiveTime = downloadLinkLiveTime;
 	}
 	
-	public AzureBlobStorageService() {
-		String clientId = Ivy.var().get("AzureBlob.ClientId");
-		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
-		String tenantId = Ivy.var().get("AzureBlob.TenantId");
-		String endPoint = Ivy.var().get("AzureBlob.EndPoint");
-		String containerName = Ivy.var().get("AzureBlob.ContainterName");
-		
-		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(clientId,  clientSecret, tenantId, endPoint);
-		destinationContainer = getBlobContainerClient(blobServiceClient, containerName);
-	}
-	
 	@Override
 	public String upload(String content, String fileName) {
 		BlockBlobClient blockBlobClient = getBlobClient(fileName).getBlockBlobClient();
@@ -167,6 +156,11 @@ public class AzureBlobStorageService implements StorageService {
 		}
 	}
 	
+	@Override
+	public BlobClient getBlobClient(String blobName) {
+		return this.destinationContainer.getBlobClient(blobName);
+	}
+	
 	private void downloadFileWithLargeSize(String blobName, String filePath) {
 		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
 		ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
@@ -186,10 +180,6 @@ public class AzureBlobStorageService implements StorageService {
 
 		BlobContainerClient blobContainerClient = blobServiceClient.createBlobContainerIfNotExists(container);
 		return blobContainerClient;
-	}
-
-	private BlobClient getBlobClient(String blobName) {
-		return this.destinationContainer.getBlobClient(blobName);
 	}
 
 	private static String getFileNameFromUrl(String url) {
@@ -251,16 +241,10 @@ public class AzureBlobStorageService implements StorageService {
 		List<BlobItem> bi = destinationContainer.listBlobs().stream().filter(b -> isSameDate(b, d)).collect(Collectors.toList());
 		bi.forEach(blob -> delete(blob.getName()));
 	}
-
-	@Override
-	public boolean checkBlobIsExist(String fileName, String uploadToFolder) {
-		return getBlobClient(createBlobPath(uploadToFolder, fileName)).exists();
-	}
 	
 	private boolean isSameDate(BlobItem bi, Date date) {
 		String creationTime2String = bi.getProperties().getCreationTime().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
 		String date2String =  new SimpleDateFormat(DATE_PATTERN).format(date); 
 		return creationTime2String.equals(date2String);
 	}
-
 }
