@@ -19,7 +19,6 @@ import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
 import org.apache.http.HttpStatus;
 
-import com.axonivy.cloud.storage.azure.blob.connector.BlobServiceClientHelper;
 import com.axonivy.cloud.storage.azure.blob.connector.StorageService;
 import com.axonivy.cloud.storage.azure.blob.connector.internal.helper.BlobSASHelper;
 import com.azure.core.http.rest.PagedResponse;
