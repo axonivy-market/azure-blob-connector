@@ -17,7 +17,9 @@ In the project, you only add the dependency in your pom.xml and call public APIs
 		<version>${process.analyzer.version}</version>
 	</dependency>
 ```
-** Below is an example for connect by client secret **
+**2. Azure Blob connection in variables**
+
+You need to provide Azure Blob connection in variables.yaml. Below is an example for connect by client secret
 ```yaml
 Variables:
   AzureBlob:
@@ -33,7 +35,20 @@ Variables:
     ContainterName: ''
 ```
 
-**2. Call the constructor to set some basic information.  Each instance of the advanced process analyzer should care about one specific process model. This way we can store some private information (e.g. simplified model) in the instance and reuse it for different calculations on this object.**
+## For Process GUI
+**1. What is support in BlobStorage Callable Sub Process?**
+ ![azure-blob-connector](images/BlobStorageFunctions.png)
+
+**2. How to call an event from BlobStorage Callable Sub Process?**
+- From Extensions on Tool Bar, we can see a BlobStorage element
+![azure-blob-connector](images/ElementInExtensions.png)
+
+- We can draw a process with uploadFromUrl selection and field some information like: external url, blob name, the directory on Azure Blob Container, .. 
+
+![azure-blob-connector](images/AddBlobStorageAndCallFunction.png)
+
+## For Java Developer
+**1. Call the constructor to set some basic information.  Each instance of the advanced process analyzer should care about one specific process model. This way we can store some private information (e.g. simplified model) in the instance and reuse it for different calculations on this object.**
 ```java
 	/** 
 	 * @param process - The process that should be analyzed.	 
@@ -41,7 +56,7 @@ Variables:
 	public AzureBlobStorageService(BlobServiceClient blobServiceClient, String container)
 ```
 
-**3. Application requests to Azure Blob Storage must be authorized. You must to create a BlobServiceClient.**
+**2. Application requests to Azure Blob Storage must be authorized. You must to create a BlobServiceClient.**
 
   -  This credential authenticates the created service principal through its client secret
 ```java
@@ -60,7 +75,7 @@ Variables:
 ```java
 	/**
 	 * Create client to a storage account. 
-	 * @param connectionString - onnection string of the storage account
+	 * @param connectionString - connection string of the storage account
 	 * @param endpoint - URL of the service
 	 * @return  a {@link BlobServiceClient} created from the configurations in this builder
 	 */
@@ -79,7 +94,7 @@ Variables:
 	public static BlobServiceClient getBlobServiceClient(String accountName, String accountKey, String endpoint) {}
 ```
 
-**4. You can call `uploadFromUrl` to upload a file from url, `getDownloadLink`  to get download link of a blob.**
+**3. You can call `uploadFromUrl` to upload a file from url, `getDownloadLink`  to get download link of a blob.**
 ```java
 	/**
 	 * The API to copy operation from a source object URL
