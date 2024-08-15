@@ -3,7 +3,7 @@
   "id" : "1905E51E1156B82C",
   "kind" : "CALLABLE_SUB",
   "config" : {
-    "data" : "com.axonivy.cloud.storage.azure.blob.connector.BlobStorageData"
+    "data" : "com.axonivy.connector.azure.blob.BlobStorageData"
   },
   "elements" : [ {
       "id" : "f0",
@@ -500,7 +500,7 @@
       "config" : {
         "output" : {
           "code" : [
-            "import com.axonivy.cloud.storage.azure.blob.connector.internal.bean.AzureBlobStorageBean;",
+            "import com.axonivy.connector.azure.blob.internal.bean.AzureBlobStorageBean;",
             "",
             "in.azureBlobStorageBean = new AzureBlobStorageBean();"
           ]
