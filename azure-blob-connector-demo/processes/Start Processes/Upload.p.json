@@ -2,7 +2,7 @@
   "format" : "10.0.0",
   "id" : "19010D5E49BD2F7F",
   "config" : {
-    "data" : "com.axonivy.cloud.storage.demo.UploadData"
+    "data" : "com.axonivy.connector.azure.blob.demo.UploadData"
   },
   "elements" : [ {
       "id" : "f0",
@@ -28,7 +28,7 @@
       "type" : "DialogCall",
       "name" : "Upload",
       "config" : {
-        "dialogId" : "com.axonivy.cloud.storage.demo.Upload",
+        "dialogId" : "com.axonivy.connector.azure.blob.demo.Upload",
         "startMethod" : "start()"
       },
       "visual" : {
@@ -54,7 +54,7 @@
       "type" : "DialogCall",
       "name" : "Upload",
       "config" : {
-        "dialogId" : "com.axonivy.cloud.storage.demo.UploadByCallSubprocess",
+        "dialogId" : "com.axonivy.connector.azure.blob.demo.UploadByCallSubprocess",
         "startMethod" : "start()"
       },
       "visual" : {

@@ -1,0 +1,36 @@
+.column-name {
+	width : 40%;	
+}
+
+.column-status {
+	width : 20%;
+}
+
+.column-created-date {
+	width : 20%;
+}
+
+.column-action {
+	width : 20%;
+}
+
+.link-input {
+	width : 75%;	
+}
+
+.copy-action {
+	width : 20%;
+	float : right;
+}
+.float-right {
+	float : right;
+}
+
+.upload-fieldset {
+	margin-top: 10px;
+}
+
+body .ui-fileupload .ui-fileupload-buttonbar , body .ui-fileupload .ui-fileupload-content{
+	border : none !important;
+	padding-top: 0px;
+}
