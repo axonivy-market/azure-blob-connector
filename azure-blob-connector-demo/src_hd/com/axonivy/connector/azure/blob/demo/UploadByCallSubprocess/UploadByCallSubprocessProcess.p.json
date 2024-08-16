@@ -1,0 +1,1065 @@
+{
+  "format" : "10.0.0",
+  "id" : "190719BB1F7DBAD8",
+  "kind" : "HTML_DIALOG",
+  "config" : {
+    "data" : "com.axonivy.connector.azure.blob.demo.UploadByCallSubprocess.UploadByCallSubprocessData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "HtmlDialogStart",
+      "name" : "start()",
+      "config" : {
+        "callSignature" : "start",
+        "guid" : "19010B658D1EDEBA"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 64 }
+      },
+      "connect" : { "id" : "f7", "to" : "f6" }
+    }, {
+      "id" : "f1",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 696, "y" : 64 }
+      }
+    }, {
+      "id" : "f3",
+      "type" : "HtmlDialogEventStart",
+      "name" : "close",
+      "config" : {
+        "guid" : "19010B658F2419A3"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 160 }
+      },
+      "connect" : { "id" : "f5", "to" : "f4" }
+    }, {
+      "id" : "f4",
+      "type" : "HtmlDialogExit",
+      "visual" : {
+        "at" : { "x" : 224, "y" : 160 }
+      }
+    }, {
+      "id" : "f6",
+      "type" : "Script",
+      "name" : "init",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.init();"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 256, "y" : 64 }
+      },
+      "connect" : { "id" : "f76", "to" : "f73" }
+    }, {
+      "id" : "f8",
+      "type" : "HtmlDialogMethodStart",
+      "name" : "uploadFileHandle(FileUploadEvent)",
+      "config" : {
+        "callSignature" : "uploadFileHandle",
+        "input" : {
+          "params" : [
+            { "name" : "event", "type" : "org.primefaces.event.FileUploadEvent" }
+          ],
+          "map" : {
+            "out.bean.uploadedFile" : "param.event.getFile()"
+          }
+        },
+        "guid" : "19010C11B0E3872B"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 240 }
+      },
+      "connect" : { "id" : "f11", "to" : "f10" }
+    }, {
+      "id" : "f9",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 384, "y" : 240 }
+      }
+    }, {
+      "id" : "f10",
+      "type" : "Script",
+      "name" : "update content",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import org.apache.commons.io.IOUtils;",
+            "",
+            "if (!in.bean.uploadedFile.getFileName().isEmpty()) {",
+            "  in.bean.fileName = in.bean.uploadedFile.getFileName();",
+            "  in.bean.inputStreamContent = in.bean.uploadedFile.getInputStream();",
+            "} "
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 264, "y" : 240 }
+      },
+      "connect" : { "id" : "f12", "to" : "f9" }
+    }, {
+      "id" : "f13",
+      "type" : "HtmlDialogEventStart",
+      "name" : "addBlob",
+      "config" : {
+        "guid" : "19010C824702EA03"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 352 }
+      },
+      "connect" : { "id" : "f127", "to" : "f126" }
+    }, {
+      "id" : "f15",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 1240, "y" : 352 }
+      }
+    }, {
+      "id" : "f18",
+      "type" : "HtmlDialogMethodStart",
+      "name" : "getLink(String)",
+      "config" : {
+        "callSignature" : "getLink",
+        "input" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "out.bean.blobName" : "param.blobName"
+          }
+        },
+        "guid" : "19010CAC30297BE7"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 504 }
+      },
+      "connect" : { "id" : "f125", "to" : "f124" }
+    }, {
+      "id" : "f19",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 352, "y" : 504 }
+      }
+    }, {
+      "id" : "f21",
+      "type" : "HtmlDialogEventStart",
+      "name" : "addBlobByLocalPath",
+      "config" : {
+        "guid" : "19010CCFF013F9CE"
+      },
+      "visual" : {
+        "at" : { "x" : 104, "y" : 624 }
+      },
+      "connect" : { "id" : "f103", "to" : "f25" }
+    }, {
+      "id" : "f23",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 1200, "y" : 624 }
+      }
+    }, {
+      "id" : "f26",
+      "type" : "HtmlDialogEventStart",
+      "name" : "addBlobByURL",
+      "config" : {
+        "guid" : "19010D1A61BCD315"
+      },
+      "visual" : {
+        "at" : { "x" : 104, "y" : 840 }
+      },
+      "connect" : { "id" : "f116", "to" : "f29" }
+    }, {
+      "id" : "f28",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 1208, "y" : 840 }
+      }
+    }, {
+      "id" : "f31",
+      "type" : "HtmlDialogEventStart",
+      "name" : "deleteBlobs",
+      "config" : {
+        "guid" : "1903507E6AA2A1EC"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 1072 }
+      },
+      "connect" : { "id" : "f78", "to" : "f77" }
+    }, {
+      "id" : "f33",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 808, "y" : 1072 }
+      }
+    }, {
+      "id" : "f36",
+      "type" : "HtmlDialogMethodStart",
+      "name" : "deleteBlob(String)",
+      "config" : {
+        "callSignature" : "deleteBlob",
+        "input" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "out.bean.blobName" : "param.blobName"
+          }
+        },
+        "guid" : "19039F5750C9EF46"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 1184 }
+      },
+      "connect" : { "id" : "f35", "to" : "f32" }
+    }, {
+      "id" : "f41",
+      "type" : "HtmlDialogMethodStart",
+      "name" : "unDeleteBlob(String)",
+      "config" : {
+        "callSignature" : "unDeleteBlob",
+        "input" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "out.bean.blobName" : "param.blobName"
+          }
+        },
+        "guid" : "1903A08B533830F4"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 1280 }
+      },
+      "connect" : { "id" : "f84", "to" : "f39" }
+    }, {
+      "id" : "f43",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 808, "y" : 1280 }
+      }
+    }, {
+      "id" : "f46",
+      "type" : "HtmlDialogEventStart",
+      "name" : "overwriteFile",
+      "config" : {
+        "guid" : "19058AF03B67EC96"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 1384 }
+      },
+      "connect" : { "id" : "f49", "to" : "f47" }
+    }, {
+      "id" : "f47",
+      "type" : "Script",
+      "name" : "update status",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.isFileAlreadyExist = false;"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 1384 }
+      },
+      "connect" : { "id" : "f50", "to" : "f48" }
+    }, {
+      "id" : "f48",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 336, "y" : 1384 }
+      }
+    }, {
+      "id" : "f51",
+      "type" : "HtmlDialogEventStart",
+      "name" : "overwriteFilePath",
+      "config" : {
+        "guid" : "1905D2E31F62E71C"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 1464 }
+      },
+      "connect" : { "id" : "f54", "to" : "f52" }
+    }, {
+      "id" : "f52",
+      "type" : "Script",
+      "name" : "update status",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.isFileAlreadyExistPath = false;"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 1464 }
+      },
+      "connect" : { "id" : "f55", "to" : "f53" }
+    }, {
+      "id" : "f53",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 344, "y" : 1464 }
+      }
+    }, {
+      "id" : "f56",
+      "type" : "HtmlDialogEventStart",
+      "name" : "overwriteFileURL",
+      "config" : {
+        "guid" : "1905D2F260AC5762"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 1552 }
+      },
+      "connect" : { "id" : "f59", "to" : "f57" }
+    }, {
+      "id" : "f57",
+      "type" : "Script",
+      "name" : "update status",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.isFileAlreadyExistURL = false;"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 1552 }
+      },
+      "connect" : { "id" : "f60", "to" : "f58" }
+    }, {
+      "id" : "f58",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 336, "y" : 1552 }
+      }
+    }, {
+      "id" : "f61",
+      "type" : "SubProcessCall",
+      "name" : "save blob",
+      "config" : {
+        "processCall" : "BlobStorage:uploadFromFile(java.io.InputStream,String,String,Boolean)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobName" : "result.blobName"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "content", "type" : "java.io.InputStream" },
+            { "name" : "blobName", "type" : "String" },
+            { "name" : "uploadToFolder", "type" : "String" },
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
+          ],
+          "map" : {
+            "param.content" : "in.bean.inputStreamContent",
+            "param.blobName" : "in.bean.fileName",
+            "param.uploadToFolder" : "in.bean.uploadToFolderByPrimefaces",
+            "param.isOverwriteFile" : "in.bean.isOverwriteFile"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 688, "y" : 352 }
+      },
+      "connect" : { "id" : "f67", "to" : "f66" }
+    }, {
+      "id" : "f14",
+      "type" : "Alternative",
+      "name" : "is exist file ?",
+      "visual" : {
+        "at" : { "x" : 504, "y" : 352 },
+        "labelOffset" : { "x" : 16, "y" : -24 }
+      },
+      "connect" : [
+        { "id" : "f62", "to" : "f61", "label" : {
+            "name" : "no"
+          }, "condition" : "in.bean.isOverwriteFile || !in.isExist" },
+        { "id" : "f64", "to" : "f63", "label" : {
+            "name" : "yes"
+          } }
+      ]
+    }, {
+      "id" : "f63",
+      "type" : "Script",
+      "name" : "update value isFileAlreadyExist",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.isFileAlreadyExist = true;"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 504, "y" : 432 }
+      },
+      "connect" : { "id" : "f65", "to" : "f15", "via" : [ { "x" : 1240, "y" : 432 } ] }
+    }, {
+      "id" : "f66",
+      "type" : "Alternative",
+      "name" : [
+        "is blob name ",
+        "not null ?"
+      ],
+      "visual" : {
+        "at" : { "x" : 816, "y" : 352 },
+        "labelOffset" : { "x" : 16, "y" : 40 }
+      },
+      "connect" : [
+        { "id" : "f69", "to" : "f68", "label" : {
+            "name" : "yes"
+          }, "condition" : "org.apache.commons.lang3.StringUtils.isNotBlank(in.bean.blobName)" },
+        { "id" : "f70", "to" : "f15", "via" : [ { "x" : 816, "y" : 280 }, { "x" : 1240, "y" : 280 } ], "label" : {
+            "name" : "no",
+            "segment" : 1.47
+          } }
+      ]
+    }, {
+      "id" : "f68",
+      "type" : "SubProcessCall",
+      "name" : "get list blob",
+      "config" : {
+        "processCall" : "BlobStorage:getBlobs()",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobItems" : "result.blobItems"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 944, "y" : 352 }
+      },
+      "connect" : { "id" : "f72", "to" : "f71" }
+    }, {
+      "id" : "f71",
+      "type" : "Script",
+      "name" : "convert list an show message",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import javax.faces.application.FacesMessage;",
+            "import javax.faces.context.FacesContext;",
+            "",
+            "in.bean.getBlobs(in.bean.blobItems);",
+            "FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, \"Uploaded blobs successfully\", null));"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 1104, "y" : 352 }
+      },
+      "connect" : { "id" : "f16", "to" : "f15" }
+    }, {
+      "id" : "f73",
+      "type" : "SubProcessCall",
+      "name" : "get list blob",
+      "config" : {
+        "processCall" : "BlobStorage:getBlobs()",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobItems" : "result.blobItems"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 408, "y" : 64 }
+      },
+      "connect" : { "id" : "f75", "to" : "f74" }
+    }, {
+      "id" : "f74",
+      "type" : "Script",
+      "name" : "convert list an show message",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.getBlobs(in.bean.blobItems);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 568, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f77",
+      "type" : "SubProcessCall",
+      "name" : "delete by date",
+      "config" : {
+        "processCall" : "BlobStorage:delete(java.util.Date)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isSuccess" : "result.isSucess"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "date", "type" : "java.util.Date" }
+          ],
+          "map" : {
+            "param.date" : "in.bean.startDate"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 1072 }
+      },
+      "connect" : { "id" : "f88", "to" : "f87" }
+    }, {
+      "id" : "f79",
+      "type" : "SubProcessCall",
+      "name" : "get list blob",
+      "config" : {
+        "processCall" : "BlobStorage:getBlobs()",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobItems" : "result.blobItems"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 480, "y" : 1072 }
+      },
+      "connect" : { "id" : "f81", "to" : "f80" }
+    }, {
+      "id" : "f80",
+      "type" : "Script",
+      "name" : "convert list an show message",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import javax.faces.application.FacesMessage;",
+            "import javax.faces.context.FacesContext;",
+            "",
+            "in.bean.getBlobs(in.bean.blobItems);",
+            "FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, \"Delete blobs successfully\", null));"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 656, "y" : 1072 }
+      },
+      "connect" : { "id" : "f34", "to" : "f33" }
+    }, {
+      "id" : "f32",
+      "type" : "SubProcessCall",
+      "name" : "delete by name",
+      "config" : {
+        "processCall" : "BlobStorage:detete(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isSuccess" : "result.isSuccess"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.bean.blobName"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 1184 }
+      },
+      "connect" : { "id" : "f89", "to" : "f87", "via" : [ { "x" : 352, "y" : 1184 } ] }
+    }, {
+      "id" : "f39",
+      "type" : "SubProcessCall",
+      "name" : "undelete",
+      "config" : {
+        "processCall" : "BlobStorage:restore(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isSuccess" : "result.isSuccess"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.bean.blobName"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 1280 }
+      },
+      "connect" : { "id" : "f45", "to" : "f42" }
+    }, {
+      "id" : "f44",
+      "type" : "SubProcessCall",
+      "name" : "get list blob",
+      "config" : {
+        "processCall" : "BlobStorage:getBlobs()",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobItems" : "result.blobItems"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 480, "y" : 1280 }
+      },
+      "connect" : { "id" : "f38", "to" : "f37" }
+    }, {
+      "id" : "f37",
+      "type" : "Script",
+      "name" : "convert list an show message",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import javax.faces.application.FacesMessage;",
+            "import javax.faces.context.FacesContext;",
+            "",
+            "in.bean.getBlobs(in.bean.blobItems);",
+            "FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, \"Undelete blob successfully\", null));"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 656, "y" : 1280 }
+      },
+      "connect" : { "id" : "f40", "to" : "f43" }
+    }, {
+      "id" : "f42",
+      "type" : "Alternative",
+      "name" : "is success",
+      "visual" : {
+        "at" : { "x" : 352, "y" : 1280 },
+        "labelOffset" : { "x" : 8, "y" : -16 }
+      },
+      "connect" : [
+        { "id" : "f85", "to" : "f44", "label" : {
+            "name" : "yes"
+          }, "condition" : "in.isSuccess" },
+        { "id" : "f86", "to" : "f43", "via" : [ { "x" : 352, "y" : 1328 }, { "x" : 808, "y" : 1328 } ], "label" : {
+            "name" : "no",
+            "segment" : 1.49
+          } }
+      ]
+    }, {
+      "id" : "f87",
+      "type" : "Alternative",
+      "name" : "is success",
+      "visual" : {
+        "at" : { "x" : 352, "y" : 1072 },
+        "labelOffset" : { "x" : -16, "y" : -8 }
+      },
+      "connect" : [
+        { "id" : "f82", "to" : "f79", "label" : {
+            "name" : "yes"
+          }, "condition" : "in.isSuccess" },
+        { "id" : "f83", "to" : "f33", "via" : [ { "x" : 352, "y" : 1016 }, { "x" : 808, "y" : 1016 } ], "label" : {
+            "name" : "no",
+            "segment" : 1.49
+          } }
+      ]
+    }, {
+      "id" : "f90",
+      "type" : "Alternative",
+      "name" : "is exist file ?",
+      "visual" : {
+        "at" : { "x" : 520, "y" : 624 },
+        "labelOffset" : { "x" : 16, "y" : -24 }
+      },
+      "connect" : [
+        { "id" : "f99", "to" : "f92", "condition" : "in.bean.isOverwriteFilePath || !in.isExist" },
+        { "id" : "f96", "to" : "f91" }
+      ]
+    }, {
+      "id" : "f91",
+      "type" : "Script",
+      "name" : "update value isFileAlreadyExistPath",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.isFileAlreadyExistPath = true;"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 520, "y" : 712 }
+      },
+      "connect" : { "id" : "f22", "to" : "f23", "via" : [ { "x" : 1200, "y" : 712 } ] }
+    }, {
+      "id" : "f92",
+      "type" : "SubProcessCall",
+      "name" : "save blob",
+      "config" : {
+        "processCall" : "BlobStorage:uploadFromFile(String,String,String,Boolean)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobName" : "result.blobName"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "localPath", "type" : "String" },
+            { "name" : "blobName", "type" : "String" },
+            { "name" : "uploadToFolder", "type" : "String" },
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
+          ],
+          "map" : {
+            "param.localPath" : "in.bean.localPath",
+            "param.blobName" : "in.bean.fileNamePath",
+            "param.uploadToFolder" : "in.bean.uploadToFolderByLocalPath",
+            "param.isOverwriteFile" : "in.bean.isOverwriteFilePath"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 640, "y" : 624 }
+      },
+      "connect" : { "id" : "f100", "to" : "f93" }
+    }, {
+      "id" : "f93",
+      "type" : "Alternative",
+      "name" : [
+        "is blob name ",
+        "not null ?"
+      ],
+      "visual" : {
+        "at" : { "x" : 776, "y" : 624 },
+        "labelOffset" : { "x" : 16, "y" : 40 }
+      },
+      "connect" : [
+        { "id" : "f97", "to" : "f94", "label" : {
+            "name" : "yes"
+          }, "condition" : "org.apache.commons.lang3.StringUtils.isNotBlank(in.bean.blobName)" },
+        { "id" : "f102", "to" : "f23", "via" : [ { "x" : 776, "y" : 552 }, { "x" : 1200, "y" : 552 } ], "label" : {
+            "name" : "no",
+            "segment" : 1.48
+          } }
+      ]
+    }, {
+      "id" : "f94",
+      "type" : "SubProcessCall",
+      "name" : "get list blob",
+      "config" : {
+        "processCall" : "BlobStorage:getBlobs()",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobItems" : "result.blobItems"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 912, "y" : 624 }
+      },
+      "connect" : { "id" : "f98", "to" : "f95" }
+    }, {
+      "id" : "f95",
+      "type" : "Script",
+      "name" : "convert list an show message",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import javax.faces.application.FacesMessage;",
+            "import javax.faces.context.FacesContext;",
+            "",
+            "in.bean.getBlobs(in.bean.blobItems);",
+            "FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, \"Uploaded blobs successfully\", null));"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 1072, "y" : 624 }
+      },
+      "connect" : { "id" : "f24", "to" : "f23" }
+    }, {
+      "id" : "f25",
+      "type" : "Script",
+      "name" : "get file name",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import org.apache.commons.io.FilenameUtils;",
+            "",
+            "in.bean.fileNamePath = FilenameUtils.getName(in.bean.localPath);",
+            "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByLocalPath, in.bean.fileNamePath);"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 232, "y" : 624 }
+      },
+      "connect" : { "id" : "f121", "to" : "f120" }
+    }, {
+      "id" : "f29",
+      "type" : "Script",
+      "name" : "get file name",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import com.axonivy.connector.azure.blob.demo.utils.UploadUtils;",
+            "in.bean.fileNameURL = UploadUtils.getFileNameFromUrl(in.bean.url);",
+            "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByURL, in.bean.fileNameURL);"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 232, "y" : 840 }
+      },
+      "connect" : { "id" : "f123", "to" : "f122" }
+    }, {
+      "id" : "f104",
+      "type" : "Alternative",
+      "name" : "is exist file ?",
+      "visual" : {
+        "at" : { "x" : 520, "y" : 840 },
+        "labelOffset" : { "x" : 16, "y" : -24 }
+      },
+      "connect" : [
+        { "id" : "f111", "to" : "f106", "condition" : "in.bean.isOverwriteFileURL || !in.isExist" },
+        { "id" : "f112", "to" : "f105" }
+      ]
+    }, {
+      "id" : "f105",
+      "type" : "Script",
+      "name" : [
+        "update value ",
+        "isFileAlreadyExistURL"
+      ],
+      "config" : {
+        "output" : {
+          "code" : "in.bean.isFileAlreadyExistURL = true;"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 520, "y" : 928 }
+      },
+      "connect" : { "id" : "f118", "to" : "f28", "via" : [ { "x" : 1208, "y" : 928 } ] }
+    }, {
+      "id" : "f106",
+      "type" : "SubProcessCall",
+      "name" : "save blob",
+      "config" : {
+        "processCall" : "BlobStorage:uploadFromUrl(String,String,String,Boolean)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobName" : "result.blobName"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "url", "type" : "String" },
+            { "name" : "blobName", "type" : "String" },
+            { "name" : "uploadToFolder", "type" : "String" },
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
+          ],
+          "map" : {
+            "param.url" : "in.bean.url",
+            "param.blobName" : "in.bean.fileNameURL",
+            "param.uploadToFolder" : "in.bean.uploadToFolderByURL",
+            "param.isOverwriteFile" : "in.bean.isOverwriteFileURL"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 640, "y" : 840 }
+      },
+      "connect" : { "id" : "f115", "to" : "f107" }
+    }, {
+      "id" : "f107",
+      "type" : "Alternative",
+      "name" : [
+        "is blob name ",
+        "not null ?"
+      ],
+      "visual" : {
+        "at" : { "x" : 776, "y" : 840 },
+        "labelOffset" : { "x" : 16, "y" : 40 }
+      },
+      "connect" : [
+        { "id" : "f114", "to" : "f108", "label" : {
+            "name" : "yes"
+          }, "condition" : "org.apache.commons.lang3.StringUtils.isNotBlank(in.bean.blobName)" },
+        { "id" : "f27", "to" : "f28", "via" : [ { "x" : 776, "y" : 776 }, { "x" : 1208, "y" : 776 } ], "label" : {
+            "name" : "no",
+            "segment" : 1.49
+          } }
+      ]
+    }, {
+      "id" : "f108",
+      "type" : "SubProcessCall",
+      "name" : "get list blob",
+      "config" : {
+        "processCall" : "BlobStorage:getBlobs()",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.bean.blobItems" : "result.blobItems"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 912, "y" : 840 }
+      },
+      "connect" : { "id" : "f113", "to" : "f109" }
+    }, {
+      "id" : "f109",
+      "type" : "Script",
+      "name" : "convert list an show message",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import javax.faces.application.FacesMessage;",
+            "import javax.faces.context.FacesContext;",
+            "",
+            "in.bean.getBlobs(in.bean.blobItems);",
+            "FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, \"Uploaded blobs successfully\", null));"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 1072, "y" : 840 }
+      },
+      "connect" : { "id" : "f117", "to" : "f28" }
+    }, {
+      "id" : "f30",
+      "type" : "SubProcessCall",
+      "name" : "check blob is exist",
+      "config" : {
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isExist" : "result.isExist"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.combineFileNameAndFolder"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 384, "y" : 352 }
+      },
+      "connect" : { "id" : "f17", "to" : "f14" }
+    }, {
+      "id" : "f120",
+      "type" : "SubProcessCall",
+      "name" : "check blob is exist",
+      "config" : {
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isExist" : "result.isExist"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.combineFileNameAndFolder"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 392, "y" : 624 }
+      },
+      "connect" : { "id" : "f101", "to" : "f90" }
+    }, {
+      "id" : "f122",
+      "type" : "SubProcessCall",
+      "name" : "check blob is exist",
+      "config" : {
+        "processCall" : "BlobStorage:checkBlobIsExist(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.isExist" : "result.isExist"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.combineFileNameAndFolder"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 392, "y" : 840 }
+      },
+      "connect" : { "id" : "f110", "to" : "f104" }
+    }, {
+      "id" : "f124",
+      "type" : "SubProcessCall",
+      "name" : "get link download",
+      "config" : {
+        "processCall" : "BlobStorage:getLinkDownload(String)",
+        "output" : {
+          "map" : {
+            "out" : "in",
+            "out.link" : "result.linkDownload"
+          }
+        },
+        "call" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "param.blobName" : "in.bean.blobName"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 504 }
+      },
+      "connect" : { "id" : "f20", "to" : "f19" }
+    }, {
+      "id" : "f126",
+      "type" : "Script",
+      "name" : "combine name and folder",
+      "config" : {
+        "output" : {
+          "code" : "in.combineFileNameAndFolder = in.bean.createBlobPath(in.bean.uploadToFolderByPrimefaces, in.bean.fileName);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 224, "y" : 352 }
+      },
+      "connect" : { "id" : "f119", "to" : "f30" }
+    }, {
+      "id" : "f128",
+      "type" : "HtmlDialogEventStart",
+      "name" : "showCopiedMessage",
+      "config" : {
+        "guid" : "1914ECBCBC61A296"
+      },
+      "visual" : {
+        "at" : { "x" : 80, "y" : 1672 }
+      },
+      "connect" : { "id" : "f130", "to" : "f129" }
+    }, {
+      "id" : "f129",
+      "type" : "Script",
+      "name" : "show messsage copied",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.showCopiedMessage();"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 272, "y" : 1672 }
+      },
+      "connect" : { "id" : "f132", "to" : "f131" }
+    }, {
+      "id" : "f131",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 464, "y" : 1672 }
+      }
+    } ]
+}
