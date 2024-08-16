@@ -2,8 +2,8 @@
   <modelVersion>4.0.0</modelVersion>
   <groupId>com.axonivy.connector.azure.blob</groupId>
   <name>azure-blob-connector</name>  
-  <artifactId>azure-blob-connector-modules</artifactId>  
-  <version>13.1.2-SNAPSHOT</version>    
+  <artifactId>azure-blob-connector-modules</artifactId>
+  <version>13.1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
 
   <modules>
