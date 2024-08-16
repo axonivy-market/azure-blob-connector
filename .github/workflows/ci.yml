@@ -9,4 +9,6 @@ on:
 
 jobs:
   build:
-    uses: axonivy-market/github-workflows/.github/workflows/ci.yml@v2
+    uses: axonivy-market/github-workflows/.github/workflows/ci.yml@v4
+    secrets:
+      mvnArgs: -Dazureblob.account=${{ secrets.AZURE_BLOB_ACCOUNT }} -Dazureblob.key=${{ secrets.AZURE_BLOB_ACCOUNT_KEY }}

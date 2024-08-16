@@ -1,7 +1,8 @@
-# MY-PRODUCT-NAME
+# Azure Blob Connector
 
-[![CI Build](https://github.com/axonivy-market/REPO-NAME/actions/workflows/ci.yml/badge.svg)](https://github.com/axonivy-market/REPO-NAME/actions/workflows/ci.yml)
+[![CI Build](https://github.com/axonivy-market/azure-blob-connector/actions/workflows/ci.yml/badge.svg)](https://github.com/axonivy-market/azure-blob-connector/actions/workflows/ci.yml)
 
-"YOUR SHORT DESCRIPTION GOES HERE"
+- Upload file to Azure blob
+- Get temporary download link
 
-Read our [documentation](MY-PRODUCT-NAME-product/README.md).
+Read our [documentation](azure-blob-connector-product/README.md).

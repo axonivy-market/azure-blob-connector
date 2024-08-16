@@ -1,0 +1,588 @@
+{
+  "format" : "10.0.0",
+  "id" : "1905E51E1156B82C",
+  "kind" : "CALLABLE_SUB",
+  "config" : {
+    "data" : "com.axonivy.connector.azure.blob.BlobStorageData"
+  },
+  "elements" : [ {
+      "id" : "f0",
+      "type" : "CallSubStart",
+      "name" : "getBlobs",
+      "config" : {
+        "callSignature" : "getBlobs",
+        "input" : {
+          "map" : {
+            "out.functionName" : "\"getBlobs\""
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "blobItems", "type" : "java.util.List<com.azure.storage.blob.models.BlobItem>" }
+          ],
+          "map" : {
+            "result.blobItems" : "in.blobItems"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 64 },
+        "description" : [
+          "Description: Get all blobs",
+          "Result:",
+          "- blobItems: java.util.List<com.azure.storage.blob.models.BlobItem>"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f41", "to" : "f40" }
+    }, {
+      "id" : "f3",
+      "type" : "CallSubStart",
+      "name" : "delete(Date)",
+      "config" : {
+        "callSignature" : "delete",
+        "input" : {
+          "params" : [
+            { "name" : "date", "type" : "java.util.Date" }
+          ],
+          "map" : {
+            "out.date" : "param.date",
+            "out.functionName" : "\"deleteByDate\""
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "isSucess", "type" : "Boolean" }
+          ],
+          "map" : {
+            "result.isSucess" : "in.isSuccess"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 136 },
+        "labelOffset" : { "x" : 9, "y" : 41 },
+        "description" : [
+          "Description: delete blob by date",
+          "Parammeter:",
+          "- date: java.util.Date",
+          "Result:",
+          "- isSucess: java.lang.Boolean"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f42", "to" : "f40", "via" : [ { "x" : 240, "y" : 136 } ] }
+    }, {
+      "id" : "f5",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 144 }
+      }
+    }, {
+      "id" : "f4",
+      "type" : "Script",
+      "name" : "delete blob by date",
+      "config" : {
+        "output" : {
+          "code" : [
+            "",
+            "in.azureBlobStorageBean.getAzureBlobStorageService().delete(in.date);",
+            "in.isSuccess = true;"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 144 }
+      },
+      "connect" : { "id" : "f7", "to" : "f5" }
+    }, {
+      "id" : "f10",
+      "type" : "CallSubStart",
+      "name" : "detete(String)",
+      "config" : {
+        "callSignature" : "detete",
+        "input" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"deleteByName\""
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "isSuccess", "type" : "Boolean" }
+          ],
+          "map" : {
+            "result.isSuccess" : "in.isSuccess"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 200 },
+        "description" : [
+          "Description: delete blob by blob name",
+          "Parammeter:",
+          "- blobName: java.lang.String",
+          "Result:",
+          "- isSucess: java.lang.Boolean"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f45", "to" : "f40", "via" : [ { "x" : 240, "y" : 200 } ] }
+    }, {
+      "id" : "f11",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 224 }
+      }
+    }, {
+      "id" : "f12",
+      "type" : "Script",
+      "name" : "delete blob by name",
+      "config" : {
+        "output" : {
+          "code" : "in.isSuccess = in.azureBlobStorageBean.getAzureBlobStorageService().delete(in.blobName);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 224 }
+      },
+      "connect" : { "id" : "f14", "to" : "f11" }
+    }, {
+      "id" : "f15",
+      "type" : "CallSubStart",
+      "name" : "restore(String)",
+      "config" : {
+        "callSignature" : "restore",
+        "input" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"restore\""
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "isSuccess", "type" : "Boolean" }
+          ],
+          "map" : {
+            "result.isSuccess" : "in.isSuccess"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 264 },
+        "description" : [
+          "Description: restore blob by blob name",
+          "Parammeter:",
+          "- blobName: java.lang.String",
+          "Result:",
+          "- isSucess: java.lang.Boolean"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f46", "to" : "f40", "via" : [ { "x" : 240, "y" : 264 } ] }
+    }, {
+      "id" : "f16",
+      "type" : "Script",
+      "name" : "restore",
+      "config" : {
+        "output" : {
+          "code" : [
+            "in.azureBlobStorageBean.getAzureBlobStorageService().restore(in.blobName);",
+            "in.isSuccess = true;"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 304 }
+      },
+      "connect" : { "id" : "f19", "to" : "f17" }
+    }, {
+      "id" : "f17",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 304 }
+      }
+    }, {
+      "id" : "f20",
+      "type" : "CallSubStart",
+      "name" : "getLinkDownload(String)",
+      "config" : {
+        "callSignature" : "getLinkDownload",
+        "input" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"getLink\""
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "linkDownload", "type" : "String" }
+          ],
+          "map" : {
+            "result.linkDownload" : "in.linkDownload"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 328 },
+        "labelOffset" : { "x" : 33, "y" : 33 },
+        "description" : [
+          "Description: get link download by blob name",
+          "Parammeter:",
+          "- blobName: java.lang.String",
+          "Result:",
+          "- linkDownload: java.lang.String"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f47", "to" : "f40", "via" : [ { "x" : 240, "y" : 328 } ] }
+    }, {
+      "id" : "f21",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 384 }
+      }
+    }, {
+      "id" : "f22",
+      "type" : "Script",
+      "name" : "get link",
+      "config" : {
+        "output" : {
+          "code" : "in.linkDownload = in.azureBlobStorageBean.getAzureBlobStorageService().getDownloadLink(in.blobName);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 384 }
+      },
+      "connect" : { "id" : "f23", "to" : "f21" }
+    }, {
+      "id" : "f25",
+      "type" : "CallSubStart",
+      "name" : "uploadFromFile(String,String,String,Boolean)",
+      "config" : {
+        "callSignature" : "uploadFromFile",
+        "input" : {
+          "params" : [
+            { "name" : "localPath", "type" : "String" },
+            { "name" : "blobName", "type" : "String" },
+            { "name" : "uploadToFolder", "type" : "String" },
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
+          ],
+          "map" : {
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"uploadByPath\"",
+            "out.isOverwriteFile" : "param.isOverwriteFile",
+            "out.localPath" : "param.localPath",
+            "out.uploadToFolder" : "param.uploadToFolder"
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "result.blobName" : "in.blobName"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 392 },
+        "labelOffset" : { "x" : 9, "y" : 33 },
+        "description" : [
+          "Description: upload from file",
+          "Parammeter:",
+          "- localPath: java.lang.String",
+          "- blobName: java.lang.String",
+          "- uploadToFolder:  java.lang.String",
+          "- isOverwriteFile: java.lang.Boolean",
+          "Result:",
+          "- blobName: java.lang.String"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f48", "to" : "f40", "via" : [ { "x" : 240, "y" : 392 } ] }
+    }, {
+      "id" : "f26",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 464 }
+      }
+    }, {
+      "id" : "f27",
+      "type" : "Script",
+      "name" : "upload",
+      "config" : {
+        "output" : {
+          "code" : "in.blobName = in.azureBlobStorageBean.getAzureBlobStorageService().uploadFromFile(in.localPath, in.uploadToFolder, in.isOverwriteFile);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 464 }
+      },
+      "connect" : { "id" : "f29", "to" : "f26" }
+    }, {
+      "id" : "f30",
+      "type" : "CallSubStart",
+      "name" : "uploadFromUrl(String,String,String,Boolean)",
+      "config" : {
+        "callSignature" : "uploadFromUrl",
+        "input" : {
+          "params" : [
+            { "name" : "url", "type" : "String" },
+            { "name" : "blobName", "type" : "String" },
+            { "name" : "uploadToFolder", "type" : "String" },
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
+          ],
+          "map" : {
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"uploadByURL\"",
+            "out.isOverwriteFile" : "param.isOverwriteFile",
+            "out.uploadToFolder" : "param.uploadToFolder",
+            "out.url" : "param.url"
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "result.blobName" : "in.blobName"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 456 },
+        "labelOffset" : { "x" : 25, "y" : 33 },
+        "description" : [
+          "Description: upload from file",
+          "Parammeter:",
+          "- url: java.lang.String",
+          "- blobName: java.lang.String",
+          "- uploadToFolder:  java.lang.String",
+          "- isOverwriteFile: java.lang.Boolean",
+          "Result:",
+          "- blobName: java.lang.String"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f49", "to" : "f40", "via" : [ { "x" : 240, "y" : 456 } ] }
+    }, {
+      "id" : "f31",
+      "type" : "Script",
+      "name" : "upload",
+      "config" : {
+        "output" : {
+          "code" : "in.blobName = in.azureBlobStorageBean.getAzureBlobStorageService().uploadFromUrl(in.url, in.uploadToFolder, in.isOverwriteFile);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 544 }
+      },
+      "connect" : { "id" : "f34", "to" : "f32" }
+    }, {
+      "id" : "f32",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 544 }
+      }
+    }, {
+      "id" : "f35",
+      "type" : "CallSubStart",
+      "name" : "uploadFromFile(InputStream,String,String,Boolean)",
+      "config" : {
+        "callSignature" : "uploadFromFile",
+        "input" : {
+          "params" : [
+            { "name" : "content", "type" : "java.io.InputStream" },
+            { "name" : "blobName", "type" : "String" },
+            { "name" : "uploadToFolder", "type" : "String" },
+            { "name" : "isOverwriteFile", "type" : "Boolean" }
+          ],
+          "map" : {
+            "out.blobName" : "param.blobName",
+            "out.content" : "param.content",
+            "out.functionName" : "\"uploadByFile\"",
+            "out.isOverwriteFile" : "param.isOverwriteFile",
+            "out.uploadToFolder" : "param.uploadToFolder"
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "result.blobName" : "in.blobName"
+          }
+        },
+        "tags" : "connector"
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 512 },
+        "labelOffset" : { "x" : 17, "y" : 33 },
+        "description" : [
+          "Description: upload from inputStream",
+          "Parammeter:",
+          "- content: java.io.InputStream",
+          "- blobName: java.lang.String",
+          "- uploadToFolder:  java.lang.String",
+          "- isOverwriteFile: java.lang.Boolean",
+          "Result:",
+          "- blobName: java.lang.String"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f50", "to" : "f40", "via" : [ { "x" : 240, "y" : 512 } ] }
+    }, {
+      "id" : "f36",
+      "type" : "Script",
+      "name" : "upload",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import org.apache.commons.io.IOUtils;",
+            "",
+            "in.blobName = in.azureBlobStorageBean.getAzureBlobStorageService().upload(IOUtils.toByteArray(in.content), in.blobName, in.uploadToFolder, in.isOverwriteFile);"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 624 }
+      },
+      "connect" : { "id" : "f38", "to" : "f37" }
+    }, {
+      "id" : "f37",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 624 }
+      }
+    }, {
+      "id" : "f8",
+      "type" : "Script",
+      "name" : "get list blob",
+      "config" : {
+        "output" : {
+          "code" : [
+            "",
+            "in.blobItems = in.azureBlobStorageBean.getAzureBlobStorageService().getBlobs();"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 64 }
+      },
+      "connect" : { "id" : "f2", "to" : "f1" }
+    }, {
+      "id" : "f1",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 640, "y" : 64 }
+      }
+    }, {
+      "id" : "f40",
+      "type" : "Script",
+      "name" : "init service",
+      "config" : {
+        "output" : {
+          "code" : [
+            "import com.axonivy.connector.azure.blob.internal.bean.AzureBlobStorageBean;",
+            "",
+            "in.azureBlobStorageBean = new AzureBlobStorageBean();"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 240, "y" : 64 }
+      },
+      "connect" : { "id" : "f13", "to" : "f9" }
+    }, {
+      "id" : "f9",
+      "type" : "Alternative",
+      "name" : "check function name",
+      "visual" : {
+        "at" : { "x" : 376, "y" : 64 },
+        "labelOffset" : { "x" : 0, "y" : -16 }
+      },
+      "connect" : [
+        { "id" : "f6", "to" : "f8", "condition" : "\"getBlobs\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f18", "to" : "f4", "via" : [ { "x" : 376, "y" : 144 } ], "condition" : "\"deleteByDate\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f24", "to" : "f12", "via" : [ { "x" : 376, "y" : 224 } ], "condition" : "\"deleteByName\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f28", "to" : "f16", "via" : [ { "x" : 376, "y" : 304 } ], "condition" : "\"restore\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f33", "to" : "f22", "via" : [ { "x" : 376, "y" : 384 } ], "condition" : "\"getLink\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f39", "to" : "f27", "via" : [ { "x" : 376, "y" : 464 } ], "condition" : "\"uploadByPath\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f43", "to" : "f31", "via" : [ { "x" : 376, "y" : 544 } ], "condition" : "\"uploadByURL\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f44", "to" : "f36", "via" : [ { "x" : 376, "y" : 624 } ], "condition" : "\"uploadByFile\".equalsIgnoreCase(in.functionName)" },
+        { "id" : "f54", "to" : "f53", "via" : [ { "x" : 376, "y" : 704 } ], "condition" : "\"checkBlobExist\".equalsIgnoreCase(in.functionName)" }
+      ]
+    }, {
+      "id" : "f51",
+      "type" : "CallSubStart",
+      "name" : "checkBlobIsExist(String)",
+      "config" : {
+        "callSignature" : "checkBlobIsExist",
+        "input" : {
+          "params" : [
+            { "name" : "blobName", "type" : "String" }
+          ],
+          "map" : {
+            "out.blobName" : "param.blobName",
+            "out.functionName" : "\"checkBlobExist\""
+          }
+        },
+        "result" : {
+          "params" : [
+            { "name" : "isExist", "type" : "Boolean" }
+          ],
+          "map" : {
+            "result.isExist" : "in.isExist"
+          }
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 96, "y" : 576 },
+        "description" : [
+          "Description: check blob is exist by blob name",
+          "Parammeter:",
+          "- blobName: java.lang.String",
+          "Result:",
+          "- isExist: java.lang.Boolean"
+        ],
+        "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
+      },
+      "connect" : { "id" : "f52", "to" : "f40", "via" : [ { "x" : 240, "y" : 576 } ] }
+    }, {
+      "id" : "f53",
+      "type" : "Script",
+      "name" : "check blob exist",
+      "config" : {
+        "output" : {
+          "code" : "in.isExist = in.azureBlobStorageBean.isBlobExist(in.blobName);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 488, "y" : 704 }
+      },
+      "connect" : { "id" : "f57", "to" : "f56" }
+    }, {
+      "id" : "f56",
+      "type" : "CallSubEnd",
+      "visual" : {
+        "at" : { "x" : 616, "y" : 704 }
+      }
+    } ]
+}
