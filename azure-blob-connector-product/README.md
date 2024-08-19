@@ -7,6 +7,47 @@ This connector:
 - Supports you in uploading content to your Azure Blob Storage - directly from an Axon Ivy business process.
 - Creates a download link with an expiry date.
 
+## Demo
+
+### Run with Azurite at local
+
+Start docker local:  
+You can run  with docker or docker-compose
+ 
+#### Run Azurite V3 docker image
+
+> Note. Find more docker images tags in <https://mcr.microsoft.com/v2/azure-storage/azurite/tags/list>
+
+```bash
+docker pull mcr.microsoft.com/azure-storage/azurite
+```
+
+```bash
+docker run -p 10000:10000 -p 10001:10001 -p 10002:10002 mcr.microsoft.com/azure-storage/azurite
+```
+
+`-p 10000:10000` will expose blob service's default listening port.
+`-p 10001:10001` will expose queue service's default listening port.
+`-p 10002:10002` will expose table service's default listening port.
+
+#### Run docker compose at root folder of project
+
+```
+make app_local_compose_up
+```
+
+For other ways, read out [DockerHub](https://github.com/Azure/Azurite/blob/main/README.md#dockerhub)
+
+### How to explorer data?
+
+- Install https://azure.microsoft.com/en-us/products/storage/storage-explorer
+- Setup to access the local 
+Read our [Storage Explorer](https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer)
+
+Provide the account name and account key in varibles.yaml with [Well Known Storage Account And Key](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage#well-known-storage-account-and-key)
+
+[StorageAccountAndKey](images/DevAccountKey.png)
+
 ## Setup
 
 In the project, you only add the dependency in your pom.xml and call public APIs
@@ -126,43 +167,3 @@ Below is a simple example for upload a file from url and get temporary download 
 	String downloadLink = storageService.getDownloadLink(blobName);
 ```
 
-## Demo
-
-### Run with Azurite at local
-
-Start docker local:  
-You can run  with docker or docker-compose
- 
-#### Run Azurite V3 docker image
-
-> Note. Find more docker images tags in <https://mcr.microsoft.com/v2/azure-storage/azurite/tags/list>
-
-```bash
-docker pull mcr.microsoft.com/azure-storage/azurite
-```
-
-```bash
-docker run -p 10000:10000 -p 10001:10001 -p 10002:10002 mcr.microsoft.com/azure-storage/azurite
-```
-
-`-p 10000:10000` will expose blob service's default listening port.
-`-p 10001:10001` will expose queue service's default listening port.
-`-p 10002:10002` will expose table service's default listening port.
-
-#### Run docker compose at root folder of project
-
-```
-make app_local_compose_up
-```
-
-For other ways, read out [DockerHub](https://github.com/Azure/Azurite/blob/main/README.md#dockerhub)
-
-### How to explorer data?
-
-- Install https://azure.microsoft.com/en-us/products/storage/storage-explorer
-- Setup to access the local 
-Read our [Storage Explorer](https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer)
-
-Provide the account name and account key in varibles.yaml with [Well Known Storage Account And Key](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage#well-known-storage-account-and-key)
-
-[StorageAccountAndKey](images/DevAccountKey.png)
