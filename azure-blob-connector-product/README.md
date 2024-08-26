@@ -9,12 +9,11 @@ This connector:
 
 ## Demo
 
-### Run with Azurite at local
+### Run local with Azurite Docker image
 
-Start docker local:  
-You can run  with docker or docker-compose
- 
-#### Run Azurite V3 docker image
+Start docker to test Azure Blob Storage locally.
+
+##### Pull Azurite V3 docker image and run it
 
 > Note. Find more docker images tags in <https://mcr.microsoft.com/v2/azure-storage/azurite/tags/list>
 
@@ -26,25 +25,27 @@ docker pull mcr.microsoft.com/azure-storage/azurite
 docker run -p 10000:10000 -p 10001:10001 -p 10002:10002 mcr.microsoft.com/azure-storage/azurite
 ```
 
-`-p 10000:10000` will expose blob service's default listening port.
-`-p 10001:10001` will expose queue service's default listening port.
-`-p 10002:10002` will expose table service's default listening port.
+`-p 10000:10000` will expose blob service's default listening port.  
+`-p 10001:10001` will expose queue service's default listening port.  
+`-p 10002:10002` will expose table service's default listening port.  
 
-#### Run docker compose at root folder of project
+#### Installation with  docker compose 
 
+Run at root folder of the project:
 ```
 make app_local_compose_up
 ```
 
-For other ways, read out [DockerHub](https://github.com/Azure/Azurite/blob/main/README.md#dockerhub)
+For other ways, check [DockerHub](https://github.com/Azure/Azurite/blob/main/README.md#dockerhub)
 
-### How to explorer data?
+### How to explorer the data?
 
 - Install https://azure.microsoft.com/en-us/products/storage/storage-explorer
-- Setup to access the local 
-Read our [Storage Explorer](https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer)
+- Setup to access it
 
-Provide the account name and account key in varibles.yaml with [Well Known Storage Account And Key](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage#well-known-storage-account-and-key)
+Further information can also be found at the [Storage Explorer](https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer)
+
+Provide an account name and account key in variables.yaml with [Well Known Storage Account And Key](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage#well-known-storage-account-and-key)
 
 [StorageAccountAndKey](images/DevAccountKey.png)
 
@@ -79,11 +80,11 @@ Variables:
 ```
 
 ### For Process GUI
-**1. What is support in BlobStorage Callable Sub Process?**
+**1. What is supported in BlobStorage Callable Sub Process?**
  ![azure-blob-connector](images/BlobStorageFunctions.png)
 
 **2. How to call an event from BlobStorage Callable Sub Process?**
-- From Extensions on Tool Bar, we can see a BlobStorage element
+- From the  "Extensions"-Menue in the Tool Bar, we can now see a BlobStorage element
 ![azure-blob-connector](images/ElementInExtensions.png)
 
 - We can draw a process with uploadFromUrl selection and field some information like: external url, blob name, the directory on Azure Blob Container, .. 
