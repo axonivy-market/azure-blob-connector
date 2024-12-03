@@ -1,8 +1,8 @@
 package com.axonivy.connector.azure.blob.test.integration;
 
-import java.util.UUID;
 import java.io.IOException;
 import java.util.Properties;
+import java.util.UUID;
 
 import org.apache.commons.lang3.StringUtils;
 import org.testcontainers.containers.GenericContainer;
@@ -22,11 +22,13 @@ abstract class AbstractIntegrationTest {
 	protected static final String CONTENT_TEST = "testContent.txt";
 	private static final int BLOB_PORT = 10000;
 
+	@SuppressWarnings("resource")
 	public static final GenericContainer<?> azure = new GenericContainer<>(
 			DockerImageName.parse("mcr.microsoft.com/azure-storage/azurite")).withExposedPorts(BLOB_PORT);
 
 	static {
 		azure.start();
+		Runtime.getRuntime().addShutdownHook(new Thread(azure::stop));
 	}
 
 	protected static BlobServiceClient getBlobServiceClient() throws IOException {
@@ -44,7 +46,7 @@ abstract class AbstractIntegrationTest {
 			}
 		}
 
-		final String endpoint = String.format(END_POINT_FORMAT, azure.getMappedPort(BLOB_PORT),account);
+		final String endpoint = String.format(END_POINT_FORMAT, azure.getMappedPort(BLOB_PORT), account);
 		return BlobServiceClientHelper.getBlobServiceClient(account, key, endpoint);
 	}
 

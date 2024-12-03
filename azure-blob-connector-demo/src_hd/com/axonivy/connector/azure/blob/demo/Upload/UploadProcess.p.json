@@ -1,5 +1,5 @@
 {
-  "format" : "10.0.0",
+  "$schema" : "https://json-schema.axonivy.com/process/12.0.0/process.json",
   "id" : "19010B658CC93485",
   "kind" : "HTML_DIALOG",
   "config" : {
@@ -10,13 +10,15 @@
       "type" : "HtmlDialogStart",
       "name" : "start()",
       "config" : {
-        "callSignature" : "start",
+        "signature" : "start",
         "guid" : "19010B658D1EDEBA"
       },
       "visual" : {
         "at" : { "x" : 96, "y" : 64 }
       },
-      "connect" : { "id" : "f7", "to" : "f6" }
+      "connect" : [
+        { "id" : "f7", "to" : "f6" }
+      ]
     }, {
       "id" : "f1",
       "type" : "HtmlDialogEnd",
@@ -33,7 +35,9 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 160 }
       },
-      "connect" : { "id" : "f5", "to" : "f4" }
+      "connect" : [
+        { "id" : "f5", "to" : "f4" }
+      ]
     }, {
       "id" : "f4",
       "type" : "HtmlDialogExit",
@@ -52,16 +56,18 @@
       "visual" : {
         "at" : { "x" : 256, "y" : 64 }
       },
-      "connect" : { "id" : "f2", "to" : "f1" }
+      "connect" : [
+        { "id" : "f2", "to" : "f1" }
+      ]
     }, {
       "id" : "f8",
       "type" : "HtmlDialogMethodStart",
       "name" : "uploadFileHandle(FileUploadEvent)",
       "config" : {
-        "callSignature" : "uploadFileHandle",
+        "signature" : "uploadFileHandle",
         "input" : {
           "params" : [
-            { "name" : "event", "type" : "org.primefaces.event.FileUploadEvent" }
+            { "name" : "event", "type" : "org.primefaces.event.FileUploadEvent", "desc" : "" }
           ],
           "map" : {
             "out.bean.uploadedFile" : "param.event.getFile()"
@@ -72,7 +78,9 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 264 }
       },
-      "connect" : { "id" : "f11", "to" : "f10" }
+      "connect" : [
+        { "id" : "f11", "to" : "f10" }
+      ]
     }, {
       "id" : "f9",
       "type" : "HtmlDialogEnd",
@@ -98,7 +106,9 @@
       "visual" : {
         "at" : { "x" : 264, "y" : 264 }
       },
-      "connect" : { "id" : "f12", "to" : "f9" }
+      "connect" : [
+        { "id" : "f12", "to" : "f9" }
+      ]
     }, {
       "id" : "f13",
       "type" : "HtmlDialogEventStart",
@@ -109,7 +119,9 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 384 }
       },
-      "connect" : { "id" : "f63", "to" : "f14" }
+      "connect" : [
+        { "id" : "f63", "to" : "f14" }
+      ]
     }, {
       "id" : "f14",
       "type" : "Script",
@@ -122,7 +134,9 @@
       "visual" : {
         "at" : { "x" : 272, "y" : 384 }
       },
-      "connect" : { "id" : "f17", "to" : "f15" }
+      "connect" : [
+        { "id" : "f17", "to" : "f15" }
+      ]
     }, {
       "id" : "f15",
       "type" : "HtmlDialogEnd",
@@ -134,10 +148,10 @@
       "type" : "HtmlDialogMethodStart",
       "name" : "getLink(String)",
       "config" : {
-        "callSignature" : "getLink",
+        "signature" : "getLink",
         "input" : {
           "params" : [
-            { "name" : "link", "type" : "String" }
+            { "name" : "link", "type" : "String", "desc" : "" }
           ],
           "map" : {
             "out.link" : "param.link"
@@ -148,7 +162,9 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 480 }
       },
-      "connect" : { "id" : "f20", "to" : "f19" }
+      "connect" : [
+        { "id" : "f20", "to" : "f19" }
+      ]
     }, {
       "id" : "f19",
       "type" : "HtmlDialogEnd",
@@ -165,7 +181,9 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 568 }
       },
-      "connect" : { "id" : "f24", "to" : "f22" }
+      "connect" : [
+        { "id" : "f24", "to" : "f22" }
+      ]
     }, {
       "id" : "f22",
       "type" : "Script",
@@ -178,7 +196,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 568 }
       },
-      "connect" : { "id" : "f25", "to" : "f23" }
+      "connect" : [
+        { "id" : "f25", "to" : "f23" }
+      ]
     }, {
       "id" : "f23",
       "type" : "HtmlDialogEnd",
@@ -195,7 +215,9 @@
       "visual" : {
         "at" : { "x" : 96, "y" : 672 }
       },
-      "connect" : { "id" : "f29", "to" : "f27" }
+      "connect" : [
+        { "id" : "f29", "to" : "f27" }
+      ]
     }, {
       "id" : "f27",
       "type" : "Script",
@@ -208,7 +230,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 672 }
       },
-      "connect" : { "id" : "f30", "to" : "f28" }
+      "connect" : [
+        { "id" : "f30", "to" : "f28" }
+      ]
     }, {
       "id" : "f28",
       "type" : "HtmlDialogEnd",
@@ -225,7 +249,9 @@
       "visual" : {
         "at" : { "x" : 88, "y" : 776 }
       },
-      "connect" : { "id" : "f34", "to" : "f32" }
+      "connect" : [
+        { "id" : "f34", "to" : "f32" }
+      ]
     }, {
       "id" : "f32",
       "type" : "Script",
@@ -238,7 +264,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 776 }
       },
-      "connect" : { "id" : "f35", "to" : "f33" }
+      "connect" : [
+        { "id" : "f35", "to" : "f33" }
+      ]
     }, {
       "id" : "f33",
       "type" : "HtmlDialogEnd",
@@ -250,10 +278,10 @@
       "type" : "HtmlDialogMethodStart",
       "name" : "deleteBlob(String)",
       "config" : {
-        "callSignature" : "deleteBlob",
+        "signature" : "deleteBlob",
         "input" : {
           "params" : [
-            { "name" : "blobName", "type" : "String" }
+            { "name" : "blobName", "type" : "String", "desc" : "" }
           ],
           "map" : {
             "out.bean.blobName" : "param.blobName"
@@ -264,7 +292,9 @@
       "visual" : {
         "at" : { "x" : 88, "y" : 872 }
       },
-      "connect" : { "id" : "f39", "to" : "f37" }
+      "connect" : [
+        { "id" : "f39", "to" : "f37" }
+      ]
     }, {
       "id" : "f37",
       "type" : "Script",
@@ -277,7 +307,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 872 }
       },
-      "connect" : { "id" : "f40", "to" : "f38" }
+      "connect" : [
+        { "id" : "f40", "to" : "f38" }
+      ]
     }, {
       "id" : "f38",
       "type" : "HtmlDialogEnd",
@@ -289,10 +321,10 @@
       "type" : "HtmlDialogMethodStart",
       "name" : "unDeleteBlob(String)",
       "config" : {
-        "callSignature" : "unDeleteBlob",
+        "signature" : "unDeleteBlob",
         "input" : {
           "params" : [
-            { "name" : "blobName", "type" : "String" }
+            { "name" : "blobName", "type" : "String", "desc" : "" }
           ],
           "map" : {
             "out.bean.blobName" : "param.blobName"
@@ -303,7 +335,9 @@
       "visual" : {
         "at" : { "x" : 88, "y" : 976 }
       },
-      "connect" : { "id" : "f44", "to" : "f42" }
+      "connect" : [
+        { "id" : "f44", "to" : "f42" }
+      ]
     }, {
       "id" : "f42",
       "type" : "Script",
@@ -316,7 +350,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 976 }
       },
-      "connect" : { "id" : "f45", "to" : "f43" }
+      "connect" : [
+        { "id" : "f45", "to" : "f43" }
+      ]
     }, {
       "id" : "f43",
       "type" : "HtmlDialogEnd",
@@ -333,7 +369,9 @@
       "visual" : {
         "at" : { "x" : 88, "y" : 1072 }
       },
-      "connect" : { "id" : "f49", "to" : "f47" }
+      "connect" : [
+        { "id" : "f49", "to" : "f47" }
+      ]
     }, {
       "id" : "f47",
       "type" : "Script",
@@ -346,7 +384,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 1072 }
       },
-      "connect" : { "id" : "f50", "to" : "f48" }
+      "connect" : [
+        { "id" : "f50", "to" : "f48" }
+      ]
     }, {
       "id" : "f48",
       "type" : "HtmlDialogEnd",
@@ -363,7 +403,9 @@
       "visual" : {
         "at" : { "x" : 88, "y" : 1168 }
       },
-      "connect" : { "id" : "f54", "to" : "f52" }
+      "connect" : [
+        { "id" : "f54", "to" : "f52" }
+      ]
     }, {
       "id" : "f52",
       "type" : "Script",
@@ -376,7 +418,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 1168 }
       },
-      "connect" : { "id" : "f55", "to" : "f53" }
+      "connect" : [
+        { "id" : "f55", "to" : "f53" }
+      ]
     }, {
       "id" : "f53",
       "type" : "HtmlDialogEnd",
@@ -393,7 +437,9 @@
       "visual" : {
         "at" : { "x" : 88, "y" : 1288 }
       },
-      "connect" : { "id" : "f59", "to" : "f57" }
+      "connect" : [
+        { "id" : "f59", "to" : "f57" }
+      ]
     }, {
       "id" : "f57",
       "type" : "Script",
@@ -406,7 +452,9 @@
       "visual" : {
         "at" : { "x" : 216, "y" : 1288 }
       },
-      "connect" : { "id" : "f60", "to" : "f58" }
+      "connect" : [
+        { "id" : "f60", "to" : "f58" }
+      ]
     }, {
       "id" : "f58",
       "type" : "HtmlDialogEnd",
@@ -423,7 +471,9 @@
       "visual" : {
         "at" : { "x" : 80, "y" : 1400 }
       },
-      "connect" : { "id" : "f62", "to" : "f61" }
+      "connect" : [
+        { "id" : "f62", "to" : "f61" }
+      ]
     }, {
       "id" : "f61",
       "type" : "Script",
@@ -436,7 +486,9 @@
       "visual" : {
         "at" : { "x" : 272, "y" : 1400 }
       },
-      "connect" : { "id" : "f65", "to" : "f64" }
+      "connect" : [
+        { "id" : "f65", "to" : "f64" }
+      ]
     }, {
       "id" : "f64",
       "type" : "HtmlDialogEnd",
