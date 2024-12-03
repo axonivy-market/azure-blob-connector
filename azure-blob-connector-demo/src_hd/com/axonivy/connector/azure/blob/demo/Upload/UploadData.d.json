@@ -1,0 +1,15 @@
+{
+  "$schema" : "https://json-schema.axonivy.com/data-class/12.0.0/data-class.json",
+  "simpleName" : "UploadData",
+  "namespace" : "com.axonivy.connector.azure.blob.demo.Upload",
+  "isBusinessCaseData" : false,
+  "fields" : [ {
+    "name" : "bean",
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadBean",
+    "modifiers" : [ "PERSISTENT" ]
+  }, {
+    "name" : "link",
+    "type" : "String",
+    "modifiers" : [ "PERSISTENT" ]
+  } ]
+}
