@@ -1,6 +1,0 @@
-UploadData #class
-com.axonivy.connector.azure.blob.demo.Upload #namespace
-bean com.axonivy.connector.azure.blob.demo.bean.UploadBean #field
-bean PERSISTENT #fieldModifier
-link String #field
-link PERSISTENT #fieldModifier
