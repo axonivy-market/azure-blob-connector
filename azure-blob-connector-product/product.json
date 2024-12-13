@@ -10,12 +10,6 @@
             "artifactId": "azure-blob-connector-demo",
             "version": "${version}",
             "type": "iar"
-          },
-          {
-            "groupId": "com.axonivy.connector.azure.blob",
-            "artifactId": "azure-blob-connector",
-            "version": "${version}",
-            "type": "iar"
           }
         ],
         "repositories": [
