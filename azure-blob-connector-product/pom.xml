@@ -10,7 +10,7 @@
   </parent>
   <groupId>com.axonivy.connector.azure.blob</groupId>
   <artifactId>azure-blob-connector-product</artifactId>
-  <version>12.0.2-SNAPSHOT</version>
+  <version>13.1.1-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
     <variables.yaml.file>../azure-blob-connector/config/variables.yaml</variables.yaml.file>
