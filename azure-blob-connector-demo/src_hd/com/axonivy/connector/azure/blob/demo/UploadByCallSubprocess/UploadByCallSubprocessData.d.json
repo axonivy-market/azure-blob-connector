@@ -5,23 +5,18 @@
   "isBusinessCaseData" : false,
   "fields" : [ {
     "name" : "bean",
-    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadByCallSubprocess",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadByCallSubprocess"
   }, {
     "name" : "link",
-    "type" : "String",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "String"
   }, {
     "name" : "isSuccess",
-    "type" : "Boolean",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "Boolean"
   }, {
     "name" : "isExist",
-    "type" : "Boolean",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "Boolean"
   }, {
     "name" : "combineFileNameAndFolder",
-    "type" : "String",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "String"
   } ]
 }

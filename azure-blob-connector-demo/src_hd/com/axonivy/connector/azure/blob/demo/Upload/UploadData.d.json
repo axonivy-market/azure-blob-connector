@@ -5,11 +5,9 @@
   "isBusinessCaseData" : false,
   "fields" : [ {
     "name" : "bean",
-    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadBean",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadBean"
   }, {
     "name" : "link",
-    "type" : "String",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "String"
   } ]
 }
