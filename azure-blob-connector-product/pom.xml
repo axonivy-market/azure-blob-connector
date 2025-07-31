@@ -1,13 +1,41 @@
 <?xml version="1.0"?>
 <project xmlns="http://maven.apache.org/POM/4.0.0" xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance" xsi:schemaLocation="http://maven.apache.org/POM/4.0.0 https://maven.apache.org/xsd/maven-4.0.0.xsd">
   <modelVersion>4.0.0</modelVersion>
+  <parent>
+    <groupId>com.axonivy.ivy.api</groupId>
+    <artifactId>ivy-project-parent</artifactId>
+    <version>13.1.1</version>
+    <relativePath />
+  </parent>
   <groupId>com.axonivy.connector.azure.blob</groupId>
   <artifactId>azure-blob-connector-product</artifactId>
-  <version>12.0.1-SNAPSHOT</version>
+  <version>13.1.2-SNAPSHOT</version>
   <packaging>pom</packaging>
   <properties>
     <variables.yaml.file>../azure-blob-connector/config/variables.yaml</variables.yaml.file>
   </properties>
+  <dependencies>
+    <dependency>
+      <groupId>com.axonivy.ivy.api</groupId>
+      <artifactId>ivy-api</artifactId>
+    </dependency>
+  </dependencies>
+  <repositories>
+    <repository>
+      <snapshots>
+        <enabled>false</enabled>
+      </snapshots>
+      <id>central</id>
+      <url>https://repo.maven.apache.org/maven2</url>
+    </repository>
+    <repository>
+      <snapshots>
+        <updatePolicy>always</updatePolicy>
+      </snapshots>
+      <id>maven.axonivy.com</id>
+      <url>https://maven.axonivy.com</url>
+    </repository>
+  </repositories>
   <build>
     <pluginManagement>
       <plugins>
@@ -20,7 +48,6 @@
     <plugins>
       <plugin>
         <artifactId>maven-assembly-plugin</artifactId>
-        <version>3.3.0</version>
         <executions>
           <execution>
             <phase>package</phase>
@@ -38,7 +65,6 @@
       </plugin>
       <plugin>
         <artifactId>maven-antrun-plugin</artifactId>
-        <version>1.7</version>
         <executions>
           <execution>
             <phase>generate-sources</phase>
@@ -51,9 +77,12 @@
                 <copy todir="${project.build.directory}">
                   <fileset includes="doc/**" dir="../../" />
                 </copy>
-                <copy file="README.md" tofile="${project.build.directory}/README.md" />
+                <copy todir="${project.build.directory}">
+                  <fileset includes="README*.md" dir="." />
+                </copy>
                 <loadfile property="variables.yaml" srcFile="${variables.yaml.file}" failonerror="false" encoding="UTF-8" />
                 <replace file="${project.build.directory}/README.md" value="${variables.yaml}" token="@variables.yaml@" />
+                <replace file="${project.build.directory}/README_DE.md" value="${variables.yaml}" token="@variables.yaml@" />
               </target>
             </configuration>
           </execution>

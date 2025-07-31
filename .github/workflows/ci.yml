@@ -14,6 +14,6 @@ permissions:
 
 jobs:
   build:
-    uses: axonivy-market/github-workflows/.github/workflows/ci.yml@v5
+    uses: axonivy-market/github-workflows/.github/workflows/ci.yml@v6
     secrets:
       mvnArgs: -Dazureblob.account=${{ secrets.AZURE_BLOB_ACCOUNT }} -Dazureblob.key=${{ secrets.AZURE_BLOB_ACCOUNT_KEY }}
