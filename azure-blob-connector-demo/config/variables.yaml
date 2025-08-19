@@ -1,17 +1,17 @@
-# yaml-language-server: $schema=https://json-schema.axonivy.com/app/12.0.0/variables.json
+# yaml-language-server: $schema=https://json-schema.axonivy.com/app/13.1.0/variables.json
 # == Variables ==
-# 
+#
 # You can define here your project Variables.
 #
 Variables:
   AzureBlob:
     # The application ID that's assigned to your app.
-    ClientId: ''
+    ClientId: ""
     # The client secret that you generated for your app in the app registration portal.
-    ClientSecret: ''
+    ClientSecret: ""
     # The directory tenant the application plans to operate against, in GUID or domain-name format.
-    TenantId: ''
-    # https://<storage-account>.blob.core.windows.net/
-    EndPoint: ''
+    TenantId: ""
     # Your container name.
-    ContainterName: ''
+    ContainterName: ""
+    # The uuid of rest client to storage endpoint
+    RestClientUUID: ""

@@ -1,318 +1,162 @@
 package com.axonivy.connector.azure.blob.demo.bean;
 
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
 import static org.apache.commons.lang3.StringUtils.isNotEmpty;
 
+import java.io.ByteArrayInputStream;
+import java.io.IOException;
 import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
+import java.util.UUID;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.StringUtils;
-import org.primefaces.model.file.UploadedFile;
+import org.primefaces.model.DefaultStreamedContent;
+import org.primefaces.model.StreamedContent;
 
-import com.axonivy.connector.azure.blob.BlobServiceClientHelper;
 import com.axonivy.connector.azure.blob.StorageService;
 import com.axonivy.connector.azure.blob.demo.utils.UploadUtils;
 import com.axonivy.connector.azure.blob.internal.AzureBlobStorageService;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.BlobItem;
+import com.axonivy.connector.azure.blob.internal.auth.ClientSecretCredential;
+import com.axonivy.connector.azure.blob.internal.auth.Credential;
+import com.axonivy.connector.azure.blob.model.BlobItem;
 
 import ch.ivyteam.ivy.environment.Ivy;
 
-public class UploadBean {
-	private String url;
-	private String localPath;
-	private UploadedFile uploadedFile;
-	private String fileName;
-	private String fileNamePath;
-	private String fileNameURL;
-	private byte[] content;
-	private InputStream inputStreamContent;
-	private List<Blob> blobs;
-	private String uploadToFolderByPrimefaces;
-	private String uploadToFolderByLocalPath;
-	private String uploadToFolderByURL;
-	private Date startDate;
-	private String blobName;
-	private Boolean isFileAlreadyExist;
-	private Boolean isOverwriteFile;
-	
-	private Boolean isFileAlreadyExistURL;
-	private Boolean isOverwriteFileURL;
-	
-	private Boolean isFileAlreadyExistPath;
-	private Boolean isOverwriteFilePath;
+public class UploadBean extends AbstractDemoBean {
 	
 	private StorageService storageService = null;
-	private static BlobServiceClient blobServiceClient = null;
-	
-	
+
 	public void init() {
+		super.init();
+
 		String clientId = Ivy.var().get("AzureBlob.ClientId");
 		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
 		String tenantId = Ivy.var().get("AzureBlob.TenantId");
-		String endPoint = Ivy.var().get("AzureBlob.EndPoint");
 		String containerName = Ivy.var().get("AzureBlob.ContainterName");
+		String restClientUUID = Ivy.var().get("AzureBlob.RestClientUUID");
 		
-		blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(clientId,  clientSecret, tenantId, endPoint);
-		storageService = new AzureBlobStorageService(blobServiceClient, containerName);
+		Credential credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
+		storageService = new AzureBlobStorageService(credential, UUID.fromString(restClientUUID), containerName);
+
 		this.blobs = getAllBlobs();
-		isFileAlreadyExist = false;
-		isFileAlreadyExistURL = false;
-		isFileAlreadyExistPath = false;
-	}
-	
-	public String getUrl() {
-		return url;
-	}
-	public void setUrl(String url) {
-		this.url = url;
-	}
-	public String getLocalPath() {
-		return localPath;
-	}
-	public void setLocalPath(String localPath) {
-		this.localPath = localPath;
-	}
-	public UploadedFile getUploadedFile() {
-		return uploadedFile;
-	}
-	public void setUploadedFile(UploadedFile uploadedFile) {
-		this.uploadedFile = uploadedFile;
-	}
-	public Date getStartDate() {
-		return startDate;
-	}
-
-	public void setStartDate(Date startDate) {
-		this.startDate = startDate;
-	}
-
-	public List<Blob> getBlobs() {
-		return blobs;
-	}
-
-	public void setBlobs(List<Blob> blobs) {
-		this.blobs = blobs;
-	}
-
-	public byte[] getContent() {
-		return content;
-	}
-
-	public void setContent(byte[] content) {
-		this.content = content;
-	}
-
-	public InputStream getInputStreamContent() {
-		return inputStreamContent;
-	}
-
-	public void setInputStreamContent(InputStream inputStreamContent) {
-		this.inputStreamContent = inputStreamContent;
-	}
-
-	public String getFileName() {
-		return fileName;
-	}
-
-	public void setFileName(String fileName) {
-		this.fileName = fileName;
-	}
-
-	public String getFileNamePath() {
-		return fileNamePath;
-	}
-
-	public void setFileNamePath(String fileNamePath) {
-		this.fileNamePath = fileNamePath;
-	}
-
-	public String getFileNameURL() {
-		return fileNameURL;
-	}
-
-	public void setFileNameURL(String fileNameURL) {
-		this.fileNameURL = fileNameURL;
-	}
-
-	public String getBlobName() {
-		return blobName;
-	}
-
-	public void setBlobName(String blobName) {
-		this.blobName = blobName;
-	}
-
-	public Boolean getIsFileAlreadyExist() {
-		return isFileAlreadyExist;
-	}
-
-	public void setIsFileAlreadyExist(Boolean isFileAlreadyExist) {
-		this.isFileAlreadyExist = isFileAlreadyExist;
-	}
-
-	public Boolean getIsOverwriteFile() {
-		return isOverwriteFile;
-	}
-
-	public void setIsOverwriteFile(Boolean isOverwriteFile) {
-		this.isOverwriteFile = isOverwriteFile;
-	}
-
-	public Boolean getIsFileAlreadyExistURL() {
-		return isFileAlreadyExistURL;
-	}
-
-	public void setIsFileAlreadyExistURL(Boolean isFileAlreadyExistURL) {
-		this.isFileAlreadyExistURL = isFileAlreadyExistURL;
-	}
-
-	public Boolean getIsOverwriteFileURL() {
-		return isOverwriteFileURL;
-	}
-
-	public void setIsOverwriteFileURL(Boolean isOverwriteFileURL) {
-		this.isOverwriteFileURL = isOverwriteFileURL;
-	}
-
-	public Boolean getIsFileAlreadyExistPath() {
-		return isFileAlreadyExistPath;
-	}
-
-	public void setIsFileAlreadyExistPath(Boolean isFileAlreadyExistPath) {
-		this.isFileAlreadyExistPath = isFileAlreadyExistPath;
-	}
-
-	public Boolean getIsOverwriteFilePath() {
-		return isOverwriteFilePath;
-	}
-
-	public void setIsOverwriteFilePath(Boolean isOverwriteFilePath) {
-		this.isOverwriteFilePath = isOverwriteFilePath;
-	}
-
-	public StorageService getStorageService() {
-		return storageService;
-	}
-
-	public void setStorageService(StorageService storageService) {
-		this.storageService = storageService;
-	}
-
-	public String getUploadToFolderByPrimefaces() {
-		return uploadToFolderByPrimefaces;
-	}
-
-	public void setUploadToFolderByPrimefaces(String uploadToFolderByPrimefaces) {
-		this.uploadToFolderByPrimefaces = uploadToFolderByPrimefaces;
-	}
-
-	public String getUploadToFolderByLocalPath() {
-		return uploadToFolderByLocalPath;
-	}
-
-	public void setUploadToFolderByLocalPath(String uploadToFolderByLocalPath) {
-		this.uploadToFolderByLocalPath = uploadToFolderByLocalPath;
-	}
-
-	public String getUploadToFolderByURL() {
-		return uploadToFolderByURL;
-	}
-
-	public void setUploadToFolderByURL(String uploadToFolderByURL) {
-		this.uploadToFolderByURL = uploadToFolderByURL;
 	}
 
 	public void upload() throws Exception {
-		boolean isExistFile = checkFileAlreadyExist(fileName);
-		if (!isExistFile || isOverwriteFile) {
-			try {
-				String name = storageService.upload(content, fileName, uploadToFolderByPrimefaces, isOverwriteFile);
-				if (StringUtils.isNotEmpty(name)) {
-					fetchAllBlobsAndAddMessage("Uploaded blobs successfully");					
-				}
-			} catch (Exception e) {
-				throw new Exception("upload file error " + e.getMessage(), e);
-			}
-		} else {
-			isFileAlreadyExist = true;
+
+		isFileAlreadyExist = isFileAlreadyExist(uploadToFolderByPrimefaces, fileName, isOverwriteFile);
+		if (isFileAlreadyExist) {
+			return;
+		}
+
+		String name = storageService.upload(content, fileName, uploadToFolderByPrimefaces, isOverwriteFile);
+		if (isNotEmpty(name)) {
+			fetchAllBlobsAndAddMessage("Uploaded blobs successfully");
 		}
 	}
-	
+
 	public void uploadFromURL() {
 		fileNameURL = UploadUtils.getFileNameFromUrl(url);
-		boolean isExistFile = checkFileAlreadyExist(fileNameURL);
-		if (!isExistFile || isOverwriteFileURL) {
-			String name = storageService.uploadFromUrl(url, uploadToFolderByURL, isOverwriteFileURL);
-			if (StringUtils.isNotEmpty(name)) {
-				fetchAllBlobsAndAddMessage("Uploaded blobs successfully");				
-			}
-		} else {
-			isFileAlreadyExistURL = true;
+
+		isFileAlreadyExistURL = isFileAlreadyExist(uploadToFolderByURL, fileNameURL, isOverwriteFileURL);
+
+		if (isFileAlreadyExistURL) {
+			return;
+		}
+
+		String name = storageService.uploadFromUrl(url, uploadToFolderByURL, isOverwriteFileURL);
+		if (isNotEmpty(name)) {
+			fetchAllBlobsAndAddMessage("Uploaded blobs successfully");
 		}
 	}
-	
+
 	public void uploadFromPath() {
 		fileNamePath = FilenameUtils.getName(localPath);
-		boolean isExistFile = checkFileAlreadyExist(fileNamePath);
-		if (!isExistFile || isOverwriteFilePath) {
-			String name = storageService.uploadFromFile(localPath, uploadToFolderByLocalPath, isOverwriteFilePath);
-			if (isNotEmpty(name)) {
-				fetchAllBlobsAndAddMessage("Uploaded blobs successfully");
-			}
-		} else {
-			isFileAlreadyExistPath = true;
+
+		isFileAlreadyExistPath = isFileAlreadyExist(uploadToFolderByLocalPath, fileNamePath, isOverwriteFilePath);
+		if (isFileAlreadyExistPath) {
+			return;
+		}
+
+		String name = storageService.uploadFromFile(localPath, uploadToFolderByLocalPath, isOverwriteFilePath);
+		if (isNotEmpty(name)) {
+			fetchAllBlobsAndAddMessage("Uploaded blobs successfully");
 		}
 	}
-	
+
 	public void deleteBlobs(Date date) {
 		storageService.delete(date);
 		fetchAllBlobsAndAddMessage("Delete blobs successfully");
 	}
-	
+
 	public void deleteBlob(String blobName) {
 		if (storageService.delete(blobName)) {
-			fetchAllBlobsAndAddMessage("Delete blobs successfully");			
+			fetchAllBlobsAndAddMessage("Delete blobs successfully");
 		}
 	}
-	
+
 	public void undeleteBlob(String blobName) {
 		storageService.restore(blobName);
 		fetchAllBlobsAndAddMessage("Undelete blobs successfully");
 	}
-	
+
+	public void getDownloadLink(Blob blob) {
+		String downloadLink = storageService.getDownloadLink(blob.getBlobItem().getName());
+		blob.setLinkDownLoad(downloadLink);
+	}
+
 	public void showCopiedMessage() {
 		doAddInfoMessageForInstance("Download link is copied");
 	}
 	
-	private void fetchAllBlobsAndAddMessage(String message) {
-		this.blobs = getAllBlobs();
-		doAddInfoMessageForInstance(message);	
+	public StreamedContent downloadFile(Blob blob) throws IOException {
+		var data = storageService.downloadStream(blob.getBlobItem().getName());
+
+		InputStream is = new ByteArrayInputStream(data.toByteArray());
+
+		return DefaultStreamedContent.builder()
+				.name(blob.getBlobItem().getName())
+				.contentType(blob.getBlobItem().getProperties().getContentType())
+				.stream(() -> is).build();
+	}
+
+	
+	public void downloadToFile(Blob blob, String filePath) {
+		storageService.downloadToFile(blob.getBlobItem().getName(), filePath);
 	}
 	
+	private void fetchAllBlobsAndAddMessage(String message) {
+		this.blobs = getAllBlobs();
+		doAddInfoMessageForInstance(message);
+	}
+
 	private List<Blob> getAllBlobs() {
 		List<BlobItem> blobItems = storageService.getBlobs();
 		List<Blob> blobs = new ArrayList<>();
 		for (BlobItem item : blobItems) {
 			Blob b = new Blob();
 			b.setBlobItem(item);
-			b.setLinkDownLoad(storageService.getDownloadLink(item.getName()));
+			b.setLinkDownLoad(null);
 			blobs.add(b);
 		}
 		return blobs;
 	}
-	
-	private Boolean checkFileAlreadyExist(String name) {
-		return storageService.getBlobs().stream().anyMatch(b -> b.getName().equals(name));
+
+	private boolean isFileAlreadyExist(String folderName, String name, boolean isOverwriteFile) {
+		if(isOverwriteFile) {
+			return false;
+		}
+		
+		String blobName = isNotBlank(folderName) ? String.format("%s/%s", folderName, name) : name;
+		boolean isExistFile = storageService.exists(blobName);
+		return isExistFile;
 	}
-	
+
 	private void doAddInfoMessageForInstance(String message) {
 		FacesContext.getCurrentInstance().addMessage(null, new FacesMessage(FacesMessage.SEVERITY_INFO, message, null));
 	}
 }
-

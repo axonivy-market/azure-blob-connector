@@ -104,7 +104,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 264, "y" : 264 }
+        "at" : { "x" : 256, "y" : 264 }
       },
       "connect" : [
         { "id" : "f12", "to" : "f9" }
@@ -132,7 +132,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 272, "y" : 384 }
+        "at" : { "x" : 256, "y" : 384 }
       },
       "connect" : [
         { "id" : "f17", "to" : "f15" }
@@ -141,20 +141,20 @@
       "id" : "f15",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 392, "y" : 384 }
+        "at" : { "x" : 384, "y" : 384 }
       }
     }, {
       "id" : "f18",
       "type" : "HtmlDialogMethodStart",
-      "name" : "getLink(String)",
+      "name" : "getLink(Blob)",
       "config" : {
         "signature" : "getLink",
         "input" : {
           "params" : [
-            { "name" : "link", "type" : "String", "desc" : "" }
+            { "name" : "blob", "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob", "desc" : "" }
           ],
           "map" : {
-            "out.link" : "param.link"
+            "out.blob" : "param.blob"
           }
         },
         "guid" : "19010CAC30297BE7"
@@ -163,13 +163,13 @@
         "at" : { "x" : 96, "y" : 480 }
       },
       "connect" : [
-        { "id" : "f20", "to" : "f19" }
+        { "id" : "f20", "to" : "f66" }
       ]
     }, {
       "id" : "f19",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 344, "y" : 480 }
+        "at" : { "x" : 384, "y" : 480 }
       }
     }, {
       "id" : "f21",
@@ -194,7 +194,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 568 }
+        "at" : { "x" : 256, "y" : 568 }
       },
       "connect" : [
         { "id" : "f25", "to" : "f23" }
@@ -203,7 +203,7 @@
       "id" : "f23",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 344, "y" : 568 }
+        "at" : { "x" : 384, "y" : 568 }
       }
     }, {
       "id" : "f26",
@@ -228,7 +228,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 672 }
+        "at" : { "x" : 256, "y" : 672 }
       },
       "connect" : [
         { "id" : "f30", "to" : "f28" }
@@ -237,7 +237,7 @@
       "id" : "f28",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 336, "y" : 672 }
+        "at" : { "x" : 376, "y" : 672 }
       }
     }, {
       "id" : "f31",
@@ -262,7 +262,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 776 }
+        "at" : { "x" : 256, "y" : 776 }
       },
       "connect" : [
         { "id" : "f35", "to" : "f33" }
@@ -271,7 +271,7 @@
       "id" : "f33",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 336, "y" : 776 }
+        "at" : { "x" : 376, "y" : 776 }
       }
     }, {
       "id" : "f36",
@@ -305,7 +305,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 872 }
+        "at" : { "x" : 256, "y" : 872 }
       },
       "connect" : [
         { "id" : "f40", "to" : "f38" }
@@ -314,7 +314,7 @@
       "id" : "f38",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 336, "y" : 872 }
+        "at" : { "x" : 376, "y" : 872 }
       }
     }, {
       "id" : "f41",
@@ -348,7 +348,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 976 }
+        "at" : { "x" : 256, "y" : 976 }
       },
       "connect" : [
         { "id" : "f45", "to" : "f43" }
@@ -357,7 +357,7 @@
       "id" : "f43",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 336, "y" : 976 }
+        "at" : { "x" : 376, "y" : 976 }
       }
     }, {
       "id" : "f46",
@@ -382,7 +382,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 1072 }
+        "at" : { "x" : 256, "y" : 1072 }
       },
       "connect" : [
         { "id" : "f50", "to" : "f48" }
@@ -391,7 +391,7 @@
       "id" : "f48",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 328, "y" : 1072 }
+        "at" : { "x" : 376, "y" : 1072 }
       }
     }, {
       "id" : "f51",
@@ -416,7 +416,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 1168 }
+        "at" : { "x" : 256, "y" : 1168 }
       },
       "connect" : [
         { "id" : "f55", "to" : "f53" }
@@ -425,7 +425,7 @@
       "id" : "f53",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 336, "y" : 1168 }
+        "at" : { "x" : 376, "y" : 1168 }
       }
     }, {
       "id" : "f56",
@@ -450,7 +450,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 216, "y" : 1288 }
+        "at" : { "x" : 256, "y" : 1288 }
       },
       "connect" : [
         { "id" : "f60", "to" : "f58" }
@@ -459,7 +459,7 @@
       "id" : "f58",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 336, "y" : 1288 }
+        "at" : { "x" : 376, "y" : 1288 }
       }
     }, {
       "id" : "f16",
@@ -484,7 +484,7 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 272, "y" : 1400 }
+        "at" : { "x" : 256, "y" : 1400 }
       },
       "connect" : [
         { "id" : "f65", "to" : "f64" }
@@ -493,7 +493,130 @@
       "id" : "f64",
       "type" : "HtmlDialogEnd",
       "visual" : {
-        "at" : { "x" : 464, "y" : 1400 }
+        "at" : { "x" : 376, "y" : 1400 }
+      }
+    }, {
+      "id" : "f66",
+      "type" : "Script",
+      "name" : "Get download link",
+      "config" : {
+        "output" : {
+          "code" : "in.bean.getDownloadLink(in.blob);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 256, "y" : 480 }
+      },
+      "connect" : [
+        { "id" : "f67", "to" : "f19", "color" : "default" }
+      ]
+    }, {
+      "id" : "f68",
+      "type" : "HtmlDialogMethodStart",
+      "name" : "downloadFile(Blob)",
+      "config" : {
+        "signature" : "downloadFile",
+        "input" : {
+          "params" : [
+            { "name" : "blob", "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob", "desc" : "" }
+          ],
+          "map" : {
+            "out.blob" : "param.blob"
+          }
+        },
+        "guid" : "198DECE8BE165DCB"
+      },
+      "visual" : {
+        "at" : { "x" : 80, "y" : 1528 }
+      },
+      "connect" : [
+        { "id" : "f70", "to" : "f69" }
+      ]
+    }, {
+      "id" : "f69",
+      "type" : "Script",
+      "name" : "download file",
+      "config" : {
+        "output" : {
+          "code" : "in.fileContent = in.bean.downloadFile(in.blob);"
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 272, "y" : 1528 }
+      },
+      "connect" : [
+        { "id" : "f72", "to" : "f71" }
+      ]
+    }, {
+      "id" : "f71",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 464, "y" : 1528 }
+      }
+    }, {
+      "id" : "f73",
+      "type" : "HtmlDialogEventStart",
+      "name" : "downloadToFile",
+      "config" : {
+        "guid" : "0198DF519B1BD93C"
+      },
+      "visual" : {
+        "at" : { "x" : 80, "y" : 1696 }
+      },
+      "connect" : [
+        { "id" : "f75", "to" : "f74" }
+      ]
+    }, {
+      "id" : "f74",
+      "type" : "Script",
+      "name" : "download to file",
+      "config" : {
+        "output" : {
+          "code" : [
+            "in.bean.downloadToFile(in.blob, in.filePath);",
+            "in.filePath = null;"
+          ]
+        }
+      },
+      "visual" : {
+        "at" : { "x" : 272, "y" : 1696 }
+      },
+      "connect" : [
+        { "id" : "f77", "to" : "f76" }
+      ]
+    }, {
+      "id" : "f76",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 464, "y" : 1696 }
+      }
+    }, {
+      "id" : "f78",
+      "type" : "HtmlDialogMethodStart",
+      "name" : "selectBlob(Blob)",
+      "config" : {
+        "signature" : "selectBlob",
+        "input" : {
+          "params" : [
+            { "name" : "blob", "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob", "desc" : "" }
+          ],
+          "map" : {
+            "out.blob" : "param.blob"
+          }
+        },
+        "guid" : "198DF5365C93A465"
+      },
+      "visual" : {
+        "at" : { "x" : 80, "y" : 1840 }
+      },
+      "connect" : [
+        { "id" : "f80", "to" : "f79" }
+      ]
+    }, {
+      "id" : "f79",
+      "type" : "HtmlDialogEnd",
+      "visual" : {
+        "at" : { "x" : 272, "y" : 1840 }
       }
     } ]
 }
