@@ -1,6 +1,6 @@
 package com.axonivy.connector.azure.blob.demo.bean;
 
-import com.azure.storage.blob.models.BlobItem;
+import com.axonivy.connector.azure.blob.model.BlobItem;
 
 public class Blob {
 	private BlobItem blobItem;

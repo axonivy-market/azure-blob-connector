@@ -31,8 +31,8 @@ Variables:
     ClientSecret: ''
     # The directory tenant the application plans to operate against, in GUID or domain-name format.
     TenantId: ''
-    # https://<storage-account>.blob.core.windows.net/
-    EndPoint: ''
+    # The uuid of rest client to storage endpoint
+    RestClientUUID: ''
     # Your container name.
     ContainterName: ''
 ```
@@ -50,12 +50,17 @@ Variables:
 ![azure-blob-connector](images/AddBlobStorageAndCallFunction.png)
 
 ### For Java Developer
-**1. Call the constructor to set some basic information.  Each instance of the advanced process analyzer should care about one specific process model. This way we can store some private information (e.g. simplified model) in the instance and reuse it for different calculations on this object.**
+**1. Call the constructor to set some basic information.**
 ```java
-	/** 
-	 * @param process - The process that should be analyzed.	 
-	 */
-	public AzureBlobStorageService(BlobServiceClient blobServiceClient, String container)
+	/**
+	 * Create a AzureBlobStorageService with the give identity credential, restClientUUID
+	 * and container
+	 * 
+	 * @param tokenCredential - The credential type
+	 * @param restClientUUID - The Ivy rest client UUID
+	 * @param container       - The container name
+	 */	
+	public AzureBlobStorageService(Credential tokenCredential, UUID restClientUUID, String container) {}
 ```
 
 **2. Application requests to Azure Blob Storage must be authorized. You must to create a BlobServiceClient.**
@@ -63,37 +68,25 @@ Variables:
   -  This credential authenticates the created service principal through its client secret
 ```java
 	/**
-	 *  Create client to a storage account. 
-	 * @param clientId - the client ID of the application
+	 * Creates a ClientSecretCredential with the given identity client options.
+	 * 
+	 * @param clientId     - the client ID of the application
 	 * @param clientSecret - the secret value of the Microsoft Entra application.
-	 * @param tenantId - the tenant ID of the application.
-	 * @param endpoint - URL of the service
-	 * @return a {@link BlobServiceClient} created from the configurations in this builder
+	 * @param tenantId     - the tenant ID of the application.
 	 */
-	public static BlobServiceClient getBlobServiceClient(String clientId, String clientSecret, String tenantId, String endpoint) {}
-```
-
-  -  This credential authenticates the created service principal through its connection string
-```java
-	/**
-	 * Create client to a storage account. 
-	 * @param connectionString - connection string of the storage account
-	 * @param endpoint - URL of the service
-	 * @return  a {@link BlobServiceClient} created from the configurations in this builder
-	 */
-	public static BlobServiceClient getBlobServiceClient(String connectionString, String endpoint) {
+	public ClientSecretCredential(String tenantId, String clientId, String clientSecret) {}
 ```
 
  -  This credential authenticates the created service principal through its account and key. 
 ```java
 	/**
-	 * * Create client to a storage account. 
-	 * @param accountName The account name associated with the request.
-     * @param accountKey The account access key used to authenticate the request.
-	 * @param endpoint - URL of the service
-	 * @return  a {@link BlobServiceClient} created from the configurations in this builder
+	 * Creates a credential with specified {@code name} that authorizes request with
+	 * the given {@code key}.
+	 * 
+	 * @param name - The name of the key credential.
+	 * @param key  - The key used to authorize requests.
 	 */
-	public static BlobServiceClient getBlobServiceClient(String accountName, String accountKey, String endpoint) {}
+	public AzureNamedKeyCredential(String accountName, String accountKey) {}
 ```
 
 **3. You can call `uploadFromUrl` to upload a file from url, `getDownloadLink`  to get download link of a blob.**
@@ -116,10 +109,10 @@ Variables:
 ### Example
 
 Below is a simple example for upload a file from url and get temporary download link.
-```
-	BlobServiceClient blobServiceClient = BlobServiceClientHelper.getBlobServiceClient(CLIENT_ID, SECRET_VALUE,TENANT_ID, END_POINT);
-	StorageService storageService = new AzureBlobStorageService(blobServiceClient, TEST_CONTAINTER);
-
+``` java
+	Credential tokenCredential = new ClientSecretCredential(TENANT_ID, CLIENT_ID, SECRET_VALUE);
+	storageService = new AzureBlobStorageService(tokenCredential, REST_CLIENT_UUID, TEST_CONTAINTER);
+	
 	// Upload file from url
 	String blobName = storageService.uploadFromUrl("https://sample.com/video.mp4");
 	// Get temporary download link
