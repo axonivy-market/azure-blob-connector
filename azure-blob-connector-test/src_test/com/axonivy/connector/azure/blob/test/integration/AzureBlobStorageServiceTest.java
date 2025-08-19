@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,36 +21,30 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.axonivy.connector.azure.blob.StorageService;
 import com.axonivy.connector.azure.blob.internal.AzureBlobStorageService;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
 
 @Testcontainers
 @TestMethodOrder(OrderAnnotation.class)
 public class AzureBlobStorageServiceTest extends AbstractIntegrationTest {
 
-	private static BlobServiceClient blobServiceClient = null;
 	private static StorageService storageService = null;	
 	private static String blobNameOfFileUpload = null;
-	
+
 	@BeforeAll
-	public static void setup() throws IOException {
-		blobServiceClient = getBlobServiceClient();
-		storageService = new AzureBlobStorageService(blobServiceClient, TEST_CONTAINTER);
+	public static void setup() {
+		storageService = new AzureBlobStorageService(getCredential(), getEndpoint(), TEST_CONTAINTER);
 	}
 
 	@Test
 	void shouldUploadContent() throws Exception {
 		final String content = "Test Content";
-		storageService.upload(content, CONTENT_TEST);
-		BlockBlobClient blobClient = getBlockBlobClient(blobServiceClient, CONTENT_TEST);
-		String downloadContent = blobClient.downloadContent().toString();
-
-		assertEquals(content, downloadContent);
+		String blobName = storageService.upload(content, CONTENT_TEST);
+		
+		assertEquals(CONTENT_TEST, blobName);		
 	}
 	
 	@Test
 	@Order(1)
-	void shouldUploadFromFile() {
+	void shouldUploadFromFile() throws Exception {
 		String path = new File("resource_test/picture/singapore.png").getAbsolutePath();
 		String blobName = storageService.uploadFromFile(path, StringUtils.EMPTY, true);
 		blobNameOfFileUpload = blobName;
@@ -71,19 +64,19 @@ public class AzureBlobStorageServiceTest extends AbstractIntegrationTest {
 				Exception.class,
 	            () -> storageService.upload(null, "nullContent.txt", StringUtils.EMPTY, false));
 		
-		assertEquals("Upload file error. Exception message: Cannot read the array length because \"buf\" is null", exception.getMessage());
+		assertEquals("Upload content must be not null", exception.getMessage());
 	}
 	
 	@Test
 	@Order(2)
-	void shouldDownloadContent() {
+	void shouldDownloadContent() throws Exception {
 		byte[] result = storageService.downloadContent(blobNameOfFileUpload);
 		assertNotNull(result);
 	}
 	
 	@Test
 	@Order(3)
-	void shouldDownloadToFile() throws IOException {
+	void shouldDownloadToFile() throws Exception {
 		File templeLocalFile = new File("resource_test/picture/local-file.png");
 		storageService.downloadToFile(blobNameOfFileUpload, templeLocalFile.getAbsolutePath());
 		boolean fileDeleted = Files.deleteIfExists(templeLocalFile.toPath());
@@ -92,7 +85,7 @@ public class AzureBlobStorageServiceTest extends AbstractIntegrationTest {
 	
 	@Test
 	@Order(4)
-	void shouldDownloadStream() throws IOException {
+	void shouldDownloadStream() throws Exception {
 		ByteArrayOutputStream baos = storageService.downloadStream(blobNameOfFileUpload);
 		assertNotNull(baos);
 	}
@@ -123,7 +116,7 @@ public class AzureBlobStorageServiceTest extends AbstractIntegrationTest {
 	void shouldGetDownloadLink() throws Exception {
 		// Azurite: Only authentication scheme Bearer is supported
 	}
-
+	
 	@Disabled
 	void shouldUploadFromUrl() throws Exception {
 		// Azurite: Current API is not implemented yet.

@@ -1,188 +1,206 @@
 package com.axonivy.connector.azure.blob.internal;
 
-import java.io.ByteArrayInputStream;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
+import static org.apache.commons.lang3.StringUtils.isNotBlank;
+
 import java.io.ByteArrayOutputStream;
-import java.io.IOException;
 import java.net.URI;
 import java.net.URISyntaxException;
 import java.nio.file.Paths;
 import java.text.SimpleDateFormat;
 import java.time.Duration;
 import java.time.format.DateTimeFormatter;
-import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
-import org.apache.commons.lang3.ObjectUtils;
 import org.apache.commons.lang3.StringUtils;
-import org.apache.http.HttpStatus;
 
 import com.axonivy.connector.azure.blob.StorageService;
-import com.axonivy.connector.azure.blob.internal.helper.BlobSASHelper;
-import com.azure.core.http.rest.PagedResponse;
-import com.azure.core.http.rest.Response;
-import com.azure.core.util.BinaryData;
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.models.BlobItem;
-import com.azure.storage.blob.models.BlobListDetails;
-import com.azure.storage.blob.models.DeleteSnapshotsOptionType;
-import com.azure.storage.blob.models.ListBlobsOptions;
-import com.azure.storage.blob.options.BlobDownloadToFileOptions;
-import com.azure.storage.blob.specialized.BlockBlobClient;
-import com.azure.storage.common.ParallelTransferOptions;
+import com.axonivy.connector.azure.blob.internal.auth.Credential;
+import com.axonivy.connector.azure.blob.internal.constant.Constants;
+import com.axonivy.connector.azure.blob.internal.service.AzureStorageBlobService;
+import com.axonivy.connector.azure.blob.internal.service.AzureStorageContainerService;
+import com.axonivy.connector.azure.blob.internal.service.AzureStorageSASService;
+import com.axonivy.connector.azure.blob.model.BlobItem;
 
 import ch.ivyteam.ivy.environment.Ivy;
 
-/**
- * For first version, only upload file to demo-container. In next, maybe create
- * virtual directory inside container.
- */
 public class AzureBlobStorageService implements StorageService {
 	private static final String DATE_PATTERN = "yyyy-MM-dd";
-	private BlobContainerClient destinationContainer = null;
-	private BlobServiceClient blobServiceClient = null;
-	private Duration downloadLinkLiveTime = Duration.ofHours(8);
-	private static final long FIVE_MB = (5 * 1024 * 1024);
-	private static final long FOUR_MB = (4 * 1024 * 1024);
-	private static final int MAX_CONCURRENCY = 4;
+	private Duration downloadLinkLiveTime = Duration.ofHours(8);	
 	
-	/** 
-	 * @param blobServiceClient - A client to interact with the Blob Service at the account level
-	 * @param container - The container name
-	 */
-	public AzureBlobStorageService(BlobServiceClient blobServiceClient, String container) {
-		this.blobServiceClient = blobServiceClient;
-		this.destinationContainer = getBlobContainerClient(this.blobServiceClient, container);
+	private AzureStorageContainerService azureStorageContainerService;
+	private AzureStorageSASService azureStorageSASService;
+	private AzureStorageBlobService azureStorageBlobService;
+
+	/**
+	 * Create a AzureBlobStorageService with the give identity credential, endpoint
+	 * and container
+	 * 
+	 * @param tokenCredential - The credential type
+	 * @param endpoint        - URL of the service
+	 * @param container       - The container name
+	 */	 
+	public AzureBlobStorageService(Credential tokenCredential, String endpoint, String container) {	
+		String fixedEnpoint = getEndPoint(endpoint);
+		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, fixedEnpoint, container);
+		this.azureStorageSASService = new AzureStorageSASService(tokenCredential, fixedEnpoint, container);		
+		this.azureStorageBlobService = new AzureStorageBlobService(tokenCredential, fixedEnpoint, container);
 	}
 
-	public AzureBlobStorageService(BlobServiceClient blobServiceClient, String container,
-			Duration downloadLinkLiveTime) {
-		this.blobServiceClient = blobServiceClient;
-		this.destinationContainer = getBlobContainerClient(this.blobServiceClient, container);
+	/**
+	 * Create a AzureBlobStorageService with the give identity credential, endpoint
+	 * and container
+	 * 
+	 * @param tokenCredential      - The credential type
+	 * @param endpoint             - URL of the service
+	 * @param container            - The container name
+	 * @param downloadLinkLiveTime - The time live of download link
+	 */
+	public AzureBlobStorageService(Credential tokenCredential, String endpoint, String container, Duration downloadLinkLiveTime) {
+		String fixedEnpoint = getEndPoint(endpoint);
+		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, fixedEnpoint, container);
+		this.azureStorageSASService = new AzureStorageSASService(tokenCredential, fixedEnpoint, container);		
+		this.azureStorageBlobService = new AzureStorageBlobService(tokenCredential, fixedEnpoint, container);
+		
 		this.downloadLinkLiveTime = downloadLinkLiveTime;
 	}
 	
 	@Override
 	public String upload(String content, String fileName) {
-		BlockBlobClient blockBlobClient = getBlobClient(fileName).getBlockBlobClient();
-		blockBlobClient.upload(BinaryData.fromString(content));
-		return blockBlobClient.getBlobName();
+		return azureStorageBlobService.upload(fileName, content);
 	}
 
 	@Override
-	public String uploadFromUrl(String sourceURL, String uploadToFolder, boolean isOverwite) {
-		String fileName = getFileNameFromUrl(sourceURL);
-		String blobName = createBlobPath(uploadToFolder, fileName);
-		BlobClient destination = getBlobClient(blobName);
-
-		destination.getBlockBlobClient().uploadFromUrl(sourceURL, isOverwite);
-		return destination.getBlockBlobClient().getBlobName();
-	}
-
-	@Override
-	public String uploadFromFile(String path, String uploadToFolder, boolean isOverwite) {
+	public String uploadFromFile(String path) {
 		String fileName = FilenameUtils.getName(path);
-		String blobName = createBlobPath(uploadToFolder, fileName);
-		BlobClient blobClient = getBlobClient(blobName);
-		blobClient.uploadFromFile(path, isOverwite);
-		return blobClient.getBlockBlobClient().getBlobName();
-	}
-
-	@Override
-	public String getDownloadLink(String blobName) {
-		BlobClient blobClient = getBlobClient(blobName);
-		String sasToken = BlobSASHelper.createServiceSASBlob(blobClient, this.downloadLinkLiveTime);
-		String downloadLink = blobClient.getBlobUrl() + "?" + sasToken;
-		return downloadLink;
-	}
-	
-	@Override
-	public String upload(byte[] content, String fileName, String uploadToFolder, boolean isOverwite) throws Exception {
-		String blobName = createBlobPath(uploadToFolder, fileName);
-		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
-
-		try (ByteArrayInputStream dataStream = new ByteArrayInputStream(content)) {
-			blockBlobClient.upload(dataStream, content.length, isOverwite);
-			return blockBlobClient.getBlobName();
-		} catch (Exception ex) {
-			throw new Exception("Upload file error. Exception message: " + ex.getMessage(), ex);
+		try {
+			return azureStorageBlobService.uploadFromPath(fileName, path, true);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
 		}
 	}
-	
+
+	@Override
+	public String uploadFromFile(String path, String uploadToFolder, boolean isOverwrite) {
+		String fileName = FilenameUtils.getName(path);
+		String blobName = createBlobPath(uploadToFolder, fileName);
+		try {
+			return azureStorageBlobService.uploadFromPath(blobName, path, isOverwrite);
+		} catch (Exception e) {
+			throw new RuntimeException(e);
+		}
+	}
+
+	@Override
+	public String upload(byte[] content, String fileName) throws Exception {
+		return azureStorageBlobService.uploadFromFile(fileName, content, true);
+	}
+
+	@Override
+	public String upload(byte[] content, String fileName, String uploadToFolder, boolean isOverwrite) throws Exception {
+		String blobName = createBlobPath(uploadToFolder, fileName);
+		return azureStorageBlobService.uploadFromFile(blobName, content, isOverwrite);
+	}
+
+	@Override
+	public String uploadFromUrl(String url) {
+		String fileName = getFileNameFromUrl(url);
+		return azureStorageBlobService.uploadFromUrl(fileName, url, true);
+	}
+
+	@Override
+	public String uploadFromUrl(String url, String uploadToFolder, boolean isOverwrite) {
+		String fileName = getFileNameFromUrl(url);
+		String blobName = createBlobPath(uploadToFolder, fileName);
+
+		return azureStorageBlobService.uploadFromUrl(blobName, url, isOverwrite);
+	}
+
 	@Override
 	public boolean delete(String blobName) {
-		BlobClient blobClient = getBlobClient(blobName);
-		
-		Response<Boolean> response = blobClient.deleteIfExistsWithResponse(DeleteSnapshotsOptionType.INCLUDE, null, null, null);
-	    return response.getStatusCode() != HttpStatus.SC_NOT_FOUND;
+		return azureStorageBlobService.delete(blobName);
 	}
-	
+
+	@Override
+	public void delete(Date date) {
+		List<BlobItem> bi = azureStorageContainerService.getBlobs().stream()
+				.filter(b -> isSameDate(b, date))
+				.collect(Collectors.toList());
+		bi.forEach(blob -> delete(blob.getName()));
+	}
+
 	@Override
 	public void restore(String blobName) {
-		BlobClient blobClient = getBlobClient(blobName);
-		blobClient.undelete();
+		azureStorageBlobService.undelete(blobName);
+
 	}
-	
+
 	@Override
 	public byte[] downloadContent(String blobName) {
-		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
-		BinaryData data = blockBlobClient.downloadContent();
-		return data.toBytes();
+		byte[] content = azureStorageBlobService.downloadContent(blobName);
+		return content;
 	}
 
 	@Override
 	public void downloadToFile(String blobName, String filePath) {
-		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
-		long blogSize = blockBlobClient.getProperties().getBlobSize();
-		if (blogSize >= FIVE_MB) {
-			downloadFileWithLargeSize(blobName, filePath);
-		} else {
-			blockBlobClient.downloadToFile(filePath);
+		azureStorageBlobService.downloadToFile(blobName, filePath);
+	}
+
+	@Override
+	public ByteArrayOutputStream downloadStream(String blobName) {
+		return azureStorageBlobService.downloadStream(blobName);
+	}
+
+	@Override
+	public String getDownloadLink(String blobName) {
+		try {
+			BlobItem blobItem = azureStorageBlobService.getBlob(blobName);
+
+			String sasToken = azureStorageSASService.generateUserDelegationSas(blobName, downloadLinkLiveTime);
+			String downloadLink = blobItem.getUrl() + "?" + sasToken;
+			return downloadLink;
+		} catch (Exception e) {
+			Ivy.log().warn("Get download link for blob {}. Error message {}.", e, blobName, e.getMessage());
+			return EMPTY;
 		}
 	}
 
 	@Override
-	public ByteArrayOutputStream downloadStream(String blobName) throws IOException {
-		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
-		try (ByteArrayOutputStream outputStream = new ByteArrayOutputStream()) {
-			blockBlobClient.downloadStream(outputStream);
-			return outputStream;
-		} catch (IOException e) {
-			throw new IOException ("download file error. Exception message: " + e.getMessage(), e);
-		}
+	public List<BlobItem> getBlobs() {
+		List<BlobItem> blobItems = azureStorageContainerService.getBlobs();
+		return blobItems;
 	}
-	
+
 	@Override
-	public BlobClient getBlobClient(String blobName) {
-		return this.destinationContainer.getBlobClient(blobName);
+	public boolean exists(String blobName) {
+		BlobItem blobItem = azureStorageBlobService.getBlob(blobName);
+		return blobItem != null;
 	}
 	
-	private void downloadFileWithLargeSize(String blobName, String filePath) {
-		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
-		ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
-		        .setBlockSizeLong(FOUR_MB)
-		        .setMaxConcurrency(MAX_CONCURRENCY);
-
-		BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(filePath);
-		options.setParallelTransferOptions(parallelTransferOptions);
-
-		blockBlobClient.downloadToFileWithResponse(options, null, null);
-	}
-	
-	private BlobContainerClient getBlobContainerClient(BlobServiceClient blobServiceClient, String container) {
-		if (ObjectUtils.anyNull(container)) {
-			throw new NullPointerException("The container are not allow null.");
+	private String getEndPoint(String enpoint) {
+		if (enpoint.endsWith(Constants.SLASH)) {
+			return enpoint.substring(0, enpoint.length() - 1);
 		}
-
-		BlobContainerClient blobContainerClient = blobServiceClient.createBlobContainerIfNotExists(container);
-		return blobContainerClient;
+		return enpoint;
 	}
 
-	private static String getFileNameFromUrl(String url) {
+	private boolean isSameDate(BlobItem bi, Date date) {
+		String creationTime2String = bi.getProperties().getCreationTime().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
+		String date2String =  new SimpleDateFormat(DATE_PATTERN).format(date); 
+		return creationTime2String.equals(date2String);
+	}
+	
+	private String createBlobPath(String folderName, String fileName) {
+		if (isNotBlank(folderName)) {
+			return String.format("%s/%s", folderName, fileName);
+		}
+		return fileName;
+	}
+
+	private String getFileNameFromUrl(String url) {
 		try {
 			return Paths.get(new URI(url).getPath()).getFileName().toString();
 		} catch (URISyntaxException e) {
@@ -191,62 +209,15 @@ public class AzureBlobStorageService implements StorageService {
 		return StringUtils.EMPTY;
 	}
 	
-	private String createBlobPath(String folderName, String fileName) {
-		String path = StringUtils.isNotBlank(folderName) ? folderName + "/" : StringUtils.EMPTY;
-		return path + fileName;
-	}
-
-	@Override
-	public String uploadFromUrl(String url) {
-		String blobName = getFileNameFromUrl(url);
-		BlobClient destination = getBlobClient(blobName);
-		destination.getBlockBlobClient().uploadFromUrl(url, false);
-		return destination.getBlockBlobClient().getBlobName();
-	}
-
-	@Override
-	public String uploadFromFile(String path) {
-		String blobName = FilenameUtils.getName(path);
-		BlobClient blobClient = getBlobClient(blobName);
-		blobClient.uploadFromFile(path);
-		return blobClient.getBlockBlobClient().getBlobName();
-	}
-
-	@Override
-	public String upload(byte[] content, String fileName) throws Exception {
-		BlockBlobClient blockBlobClient = getBlobClient(fileName).getBlockBlobClient();
-
-		try (ByteArrayInputStream dataStream = new ByteArrayInputStream(content)) {
-			blockBlobClient.upload(dataStream, content.length);
-			return blockBlobClient.getBlobName();
-		} catch (Exception ex) {
-			throw new Exception("Upload file error. Exception message: " + ex.getMessage(), ex);
-		}
-	}
-
-	@Override
-	public List<BlobItem> getBlobs() {
-		List<BlobItem> blobItems = new ArrayList<>();
-		ListBlobsOptions options = new ListBlobsOptions()
-				.setDetails(new BlobListDetails().setRetrieveDeletedBlobs(true));
-		Iterable<PagedResponse<BlobItem>> blobPages = destinationContainer.listBlobs(options, null).iterableByPage();
-		for (PagedResponse<BlobItem> page : blobPages) {
-			page.getElements().forEach(blob -> blobItems.add(blob));
-		}
-		return blobItems;
-	}
-	
-	@Override
-	public void delete(Date date) {
-		List<BlobItem> bi = destinationContainer.listBlobs().stream()
-				.filter(blobItem -> isSameDate(blobItem, date))
-				.collect(Collectors.toList());
-		bi.forEach(blob -> delete(blob.getName()));
-	}
-	
-	private boolean isSameDate(BlobItem blobItem, Date date) {
-		String creationTime2String = blobItem.getProperties().getCreationTime().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
-		String date2String =  new SimpleDateFormat(DATE_PATTERN).format(date); 
-		return creationTime2String.equals(date2String);
-	}
+//	private void downloadFileWithLargeSize(String blobName, String filePath) {
+//		BlockBlobClient blockBlobClient = getBlobClient(blobName).getBlockBlobClient();
+//		ParallelTransferOptions parallelTransferOptions = new ParallelTransferOptions()
+//		        .setBlockSizeLong(FOUR_MB)
+//		        .setMaxConcurrency(MAX_CONCURRENCY);
+//
+//		BlobDownloadToFileOptions options = new BlobDownloadToFileOptions(filePath);
+//		options.setParallelTransferOptions(parallelTransferOptions);
+//
+//		blockBlobClient.downloadToFileWithResponse(options, null, null);
+//	}
 }

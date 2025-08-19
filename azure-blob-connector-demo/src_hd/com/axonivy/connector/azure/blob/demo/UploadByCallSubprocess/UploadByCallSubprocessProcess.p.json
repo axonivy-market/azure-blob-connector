@@ -131,15 +131,15 @@
     }, {
       "id" : "f18",
       "type" : "HtmlDialogMethodStart",
-      "name" : "getLink(String)",
+      "name" : "getLink(Blob)",
       "config" : {
         "signature" : "getLink",
         "input" : {
           "params" : [
-            { "name" : "blobName", "type" : "String", "desc" : "" }
+            { "name" : "blob", "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob", "desc" : "" }
           ],
           "map" : {
-            "out.bean.blobName" : "param.blobName"
+            "out.blob" : "param.blob"
           }
         },
         "guid" : "19010CAC30297BE7"
@@ -1093,13 +1093,13 @@
         "processCall" : "BlobStorage:getLinkDownload(String)",
         "call" : {
           "map" : {
-            "param.blobName" : "in.bean.blobName"
+            "param.blobName" : "in.blob.blobItem.getName()"
           }
         },
         "output" : {
           "map" : {
             "out" : "in",
-            "out.link" : "result.linkDownload"
+            "out.blob.linkDownLoad" : "result.linkDownload"
           }
         }
       },

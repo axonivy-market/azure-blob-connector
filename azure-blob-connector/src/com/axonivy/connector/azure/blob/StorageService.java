@@ -5,8 +5,7 @@ import java.io.IOException;
 import java.util.Date;
 import java.util.List;
 
-import com.azure.storage.blob.BlobClient;
-import com.azure.storage.blob.models.BlobItem;
+import com.axonivy.connector.azure.blob.model.BlobItem;
 
 public interface StorageService {
 	
@@ -111,7 +110,7 @@ public interface StorageService {
 	 * The API to get the list blob
 	 * */
 	public List<BlobItem> getBlobs();
-	
+		
 	/**
 	 * The API to create a temporary download link with expired time 
 	 * @param blobName - The blob name
@@ -120,9 +119,9 @@ public interface StorageService {
 	public String getDownloadLink(String blobName);
 	
 	/**
-	 * The API to get blob client
-	 * @param blobName - The blob name
-	 * @return BlobClient
-	 * */
-	public BlobClient getBlobClient(String blobName);
+	 * The API to check exists a blob
+	 * @param blobName
+	 * @return true|false
+	 */
+	public boolean exists(String blobName);
 }
