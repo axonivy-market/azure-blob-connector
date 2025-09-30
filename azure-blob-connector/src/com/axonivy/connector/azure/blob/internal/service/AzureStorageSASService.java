@@ -1,6 +1,5 @@
 package com.axonivy.connector.azure.blob.internal.service;
 
-
 import static com.axonivy.connector.azure.blob.internal.constant.Constants.ISO_8601_UTC_DATE_FORMATTER;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 import static org.apache.commons.lang3.StringUtils.isEmpty;
@@ -34,109 +33,93 @@ import com.axonivy.connector.azure.blob.internal.model.UserDelegationSign;
 import com.axonivy.connector.azure.blob.internal.model.request.KeyInfo;
 import com.axonivy.connector.azure.blob.internal.model.response.UserDelegationKey;
 
-
 public class AzureStorageSASService extends AbstractAzureStorage {
 	private static final String READ_PERMISSION = "r";
-    private static final String SAS_BLOB_CONSTANT = "b";
-    private static final String SAS_CONTAINER_CONSTANT = "c";
+	private static final String SAS_BLOB_CONSTANT = "b";
+	private static final String SAS_CONTAINER_CONSTANT = "c";
 	private static final String HTTPS_PROTOCOL = "https";
-    
-    private static UserDelegationKey delegationKey;
-    private AzureStorageBlobClient ivyClient;
+
+	private static UserDelegationKey delegationKey;
+	private AzureStorageBlobClient ivyClient;
 	private String container;
 
 	public AzureStorageSASService(Credential credential, UUID ivyRestClientId, String container) {
 		this.container = container;
-		
+
 		AuthorizationManager manager = getAuthorizationManager(credential);
 		this.ivyClient = new AzureStorageBlobClient(ivyRestClientId, manager);
 	}
 
 	public String generateUserDelegationSas(String blobName, Duration liveTime) throws Exception {
-		if(delegationKey == null || delegationKey.getSignedStart().isBefore(OffsetDateTime.now().minusMinutes(5))) {
-			delegationKey = getUserDelegationKey(liveTime);	
+		if (delegationKey == null || delegationKey.getSignedStart().isBefore(OffsetDateTime.now().minusMinutes(5))) {
+			delegationKey = getUserDelegationKey(liveTime);
 		}
-		
+
 		String accountName = EncryptionHelper.getAccountName(ivyClient.getURL());
-		String canonicalizedResource  = getCanonicalizedResource(accountName, this.container, blobName);
-		
+		String canonicalizedResource = getCanonicalizedResource(accountName, this.container, blobName);
+
 		OffsetDateTime now = OffsetDateTime.now();
 		UserDelegationSign sign = new UserDelegationSign();
 		sign.setSignedPermissions(READ_PERMISSION);
 		sign.setSignedStart(ISO_8601_UTC_DATE_FORMATTER.format(now.minusMinutes(1)));
-		sign.setSignedExpiry(ISO_8601_UTC_DATE_FORMATTER.format(now.plusSeconds(liveTime.getSeconds())));		
+		sign.setSignedExpiry(ISO_8601_UTC_DATE_FORMATTER.format(now.plusSeconds(liveTime.getSeconds())));
 		sign.setCanonicalizedResource(canonicalizedResource);
-		
+
 		sign.setSignedKeyObjectId(toString(delegationKey.getSignedObjectId()));
 		sign.setSignedKeyTenantId(toString(delegationKey.getSignedTenantId()));
 		sign.setSignedKeyStart(ISO_8601_UTC_DATE_FORMATTER.format((delegationKey.getSignedStart())));
 		sign.setSignedKeyExpiry(ISO_8601_UTC_DATE_FORMATTER.format((delegationKey.getSignedExpiry())));
 		sign.setSignedKeyService(toString(delegationKey.getSignedService()));
 		sign.setSignedKeyVersion(toString(delegationKey.getSignedVersion()));
-		
-		
+
 		sign.setSignedAuthorizedUserObjectId(EMPTY);
-		sign.setSignedUnauthorizedUserObjectId (EMPTY);
-		sign.setSignedCorrelationId (EMPTY);
+		sign.setSignedUnauthorizedUserObjectId(EMPTY);
+		sign.setSignedCorrelationId(EMPTY);
 		sign.setSignedIP(EMPTY);
 		sign.setSignedProtocol(HTTPS_PROTOCOL);
 		sign.setSignedVersion(Constants.MS_VERSION);
 		sign.setSignedResource(getResource(blobName));
 		sign.setSignedEncryptionScope(EMPTY);
-		
+
 		String stringToSign = stringToSign(sign);
-		
+
 		String signature = EncryptionHelper.computeHMac256(delegationKey.getValue(), stringToSign);
-		String encodeValue = encode(sign, signature); 
+		String encodeValue = encode(sign, signature);
 		return encodeValue;
 	}
 
-	private String getCanonicalizedResource (String account, String containerName, String blobName) {
+	private String getCanonicalizedResource(String account, String containerName, String blobName) {
 		// Container: "/blob/account/containername"
 		// Blob: "/blob/account/containername/blobname"
-		
+
 		String blob = Objects.toString(blobName, EMPTY).replace('\\', '/');
-		String canonicalName = Stream.of("blob", account, containerName, blob).filter(StringUtils::isNoneEmpty).collect(Collectors.joining("/"));
+		String canonicalName = Stream.of("blob", account, containerName, blob).filter(StringUtils::isNoneEmpty)
+				.collect(Collectors.joining("/"));
 		return String.format("/%s", canonicalName);
 	}
-	 
+
 	private String stringToSign(UserDelegationSign sign) {
-		String stringToSign = String.join(StringUtils.LF, 
-				sign.getSignedPermissions(), 
-				sign.getSignedStart(),
-				sign.getSignedExpiry(),
-				sign.getCanonicalizedResource() ,
-				
-				sign.getSignedKeyObjectId(), 
-				sign.getSignedKeyTenantId(),
-				sign.getSignedKeyStart(),
-				sign.getSignedKeyExpiry(),
-				sign.getSignedKeyService(), 
-				sign.getSignedKeyVersion(),
-				
-				toString(sign.getSignedAuthorizedUserObjectId()),
-				toString(sign.getSignedUnauthorizedUserObjectId()),				
-				toString(sign.getSignedCorrelationId()),
-				EMPTY,
-				EMPTY,				
-				toString(sign.getSignedIP()),
-				toString(sign.getSignedProtocol()),
-				toString(sign.getSignedVersion()),
-				toString(sign.getSignedResource()),
-				toString(sign.getSignedSnapshotTime()),
+		String stringToSign = String.join(StringUtils.LF, sign.getSignedPermissions(), sign.getSignedStart(),
+				sign.getSignedExpiry(), sign.getCanonicalizedResource(),
+
+				sign.getSignedKeyObjectId(), sign.getSignedKeyTenantId(), sign.getSignedKeyStart(),
+				sign.getSignedKeyExpiry(), sign.getSignedKeyService(), sign.getSignedKeyVersion(),
+
+				toString(sign.getSignedAuthorizedUserObjectId()), toString(sign.getSignedUnauthorizedUserObjectId()),
+				toString(sign.getSignedCorrelationId()), EMPTY, EMPTY, toString(sign.getSignedIP()),
+				toString(sign.getSignedProtocol()), toString(sign.getSignedVersion()),
+				toString(sign.getSignedResource()), toString(sign.getSignedSnapshotTime()),
 				toString(sign.getSignedEncryptionScope()),
-								 
-				toString(sign.getCacheControl()),
-				toString(sign.getContentDisposition()), 
-				toString(sign.getContentEncoding()), 
-				toString(sign.getContentLanguage()), 
+
+				toString(sign.getCacheControl()), toString(sign.getContentDisposition()),
+				toString(sign.getContentEncoding()), toString(sign.getContentLanguage()),
 				toString(sign.getContentType()));
-	                		
+
 		return stringToSign;
 	}
-	
+
 	private String encode(UserDelegationSign sign, String signature) {
-		
+
 		Map<String, String> queries = new LinkedHashMap<>();
 		queries.put(SASParam.SAS_SIGNED_PERMISSIONS, sign.getSignedPermissions());
 		queries.put(SASParam.SAS_START_TIME, sign.getSignedStart());
@@ -157,8 +140,7 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 
 		queries.put(SASParam.SAS_SIGNATURE, signature);
 
-		String endcode = queries.entrySet().stream()
-				.filter(entry -> StringUtils.isNotBlank(entry.getValue()))
+		String endcode = queries.entrySet().stream().filter(entry -> StringUtils.isNotBlank(entry.getValue()))
 				.map(it -> getQueryParameter(it.getKey(), it.getValue()))
 				.collect(Collectors.joining(Constants.AND_SYMBOL));
 
@@ -172,7 +154,7 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 			return SAS_BLOB_CONSTANT;
 		}
 	}
-	
+
 	private static String getQueryParameter(String param, String value) {
 		String encodeValue = null;
 		if (value != null) {
@@ -200,7 +182,7 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 		Map<String, String> headers = new HashMap<>();
 		headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
 		Response response = this.ivyClient.post(EMPTY, keyInfoBody, headers, queries);
-		
+
 		UserDelegationKey userDelegationKey = getBody(response, UserDelegationKey.class);
 		if (userDelegationKey != null) {
 			return userDelegationKey;
@@ -209,7 +191,7 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 		String message = "Get user delegation key is error. Status code " + response.getStatus();
 		throw new Exception(message);
 	}
-	
+
 	private String toString(Object value) {
 		return Objects.toString(value, EMPTY);
 	}

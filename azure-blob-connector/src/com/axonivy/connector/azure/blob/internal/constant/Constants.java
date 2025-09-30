@@ -13,12 +13,12 @@ public final class Constants {
 			.ofPattern("EEE, dd MMM yyyy HH:mm:ss 'GMT'").withZone(ZoneOffset.UTC).withLocale(Locale.US);
 
 	public static final String MS_VERSION = "2025-07-05";
-	
+
 	public static final String SLASH = "/";
 	public static final String COMMA = ",";
 	public static final String COLON = ":";
 	public static final String AND_SYMBOL = "&";
-	
+
 	private Constants() {
 	}
 }

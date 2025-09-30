@@ -28,7 +28,7 @@ import com.axonivy.connector.azure.blob.model.BlobItem;
 import ch.ivyteam.ivy.environment.Ivy;
 
 public class UploadBean extends AbstractDemoBean {
-	
+
 	private StorageService storageService = null;
 
 	public void init() {
@@ -39,7 +39,7 @@ public class UploadBean extends AbstractDemoBean {
 		String tenantId = Ivy.var().get("AzureBlob.TenantId");
 		String containerName = Ivy.var().get("AzureBlob.ContainterName");
 		String restClientUUID = Ivy.var().get("AzureBlob.RestClientUUID");
-		
+
 		Credential credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
 		storageService = new AzureBlobStorageService(credential, UUID.fromString(restClientUUID), containerName);
 
@@ -112,23 +112,20 @@ public class UploadBean extends AbstractDemoBean {
 	public void showCopiedMessage() {
 		doAddInfoMessageForInstance("Download link is copied");
 	}
-	
+
 	public StreamedContent downloadFile(Blob blob) throws IOException {
 		var data = storageService.downloadStream(blob.getBlobItem().getName());
 
 		InputStream is = new ByteArrayInputStream(data.toByteArray());
 
-		return DefaultStreamedContent.builder()
-				.name(blob.getBlobItem().getName())
-				.contentType(blob.getBlobItem().getProperties().getContentType())
-				.stream(() -> is).build();
+		return DefaultStreamedContent.builder().name(blob.getBlobItem().getName())
+				.contentType(blob.getBlobItem().getProperties().getContentType()).stream(() -> is).build();
 	}
 
-	
 	public void downloadToFile(Blob blob, String filePath) {
 		storageService.downloadToFile(blob.getBlobItem().getName(), filePath);
 	}
-	
+
 	private void fetchAllBlobsAndAddMessage(String message) {
 		this.blobs = getAllBlobs();
 		doAddInfoMessageForInstance(message);
@@ -147,13 +144,12 @@ public class UploadBean extends AbstractDemoBean {
 	}
 
 	private boolean isFileAlreadyExist(String folderName, String name, boolean isOverwriteFile) {
-		if(isOverwriteFile) {
+		if (isOverwriteFile) {
 			return false;
 		}
-		
+
 		String blobName = isNotBlank(folderName) ? String.format("%s/%s", folderName, name) : name;
-		boolean isExistFile = storageService.exists(blobName);
-		return isExistFile;
+		return storageService.exists(blobName);
 	}
 
 	private void doAddInfoMessageForInstance(String message) {

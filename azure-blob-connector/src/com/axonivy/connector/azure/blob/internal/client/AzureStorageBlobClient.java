@@ -48,7 +48,7 @@ public class AzureStorageBlobClient {
 		this.authorizationManager = authorizationManager;
 		ivyClient = Ivy.rest().client(ivyRestClientId);
 	}
-	
+
 	public URL getURL() throws MalformedURLException {
 		return ivyClient.getUri().toURL();
 	}
@@ -66,7 +66,7 @@ public class AzureStorageBlobClient {
 		Response response = excute(path, POST, body, EMPTY_HEADERS, EMPTY_QUERIES);
 		return response;
 	}
-	
+
 	public Response post(String path, Object body, Map<String, String> headers, Map<String, String> queries) {
 		Response response = excute(path, POST, body, headers, queries);
 		return response;
@@ -98,17 +98,13 @@ public class AzureStorageBlobClient {
 		return response;
 	}
 
-	private Response excute(String path, String httpMethod, Object body, Map<String, String> headers, Map<String, String> queries) {
+	private Response excute(String path, String httpMethod, Object body, Map<String, String> headers,
+			Map<String, String> queries) {
 		Map<String, String> allHeaders = combineWithCommonHeader(headers);
-		
-		IvyClientRequest request = IvyClientRequest.builder()
-				.path(path)
-				.body(body)
-				.httpMethod(httpMethod)
-				.headers(allHeaders)
-				.queries(queries)
-				.build();
-		
+
+		IvyClientRequest request = IvyClientRequest.builder().path(path).body(body).httpMethod(httpMethod)
+				.headers(allHeaders).queries(queries).build();
+
 		String accessKey = EMPTY;
 		if (authorizationManager instanceof StorageTokenAuthorizationManager) {
 			accessKey = this.authorizationManager.getToken();
@@ -120,11 +116,10 @@ public class AzureStorageBlobClient {
 		mapWithAuth.putAll(allHeaders);
 
 		WebTarget webTarget = request.getWebTarget(this.ivyClient);
-		Builder builder = webTarget.request(MediaType.APPLICATION_XML)
-				.headers(toMultivaluedMap(mapWithAuth));
-		
+		Builder builder = webTarget.request(MediaType.APPLICATION_XML).headers(toMultivaluedMap(mapWithAuth));
+
 		Entity<?> entity = buildEntity(httpMethod, body);
-		
+
 		switch (httpMethod) {
 		case HttpMethod.GET:
 			return builder.get();
@@ -137,13 +132,13 @@ public class AzureStorageBlobClient {
 		}
 		throw new NotSupportedException(String.format("Http Method %s is not support", httpMethod));
 	}
-	
-	private Entity<?> buildEntity(String httpMethod, Object body ){
+
+	private Entity<?> buildEntity(String httpMethod, Object body) {
 		if (PUT.equals(httpMethod) || POST.equals(httpMethod)) {
 			String mediaType = WebTargetHelper.getMediaType(httpMethod, body);
-			return Entity.entity(body != null ? body : EMPTY, mediaType);	
+			return Entity.entity(body != null ? body : EMPTY, mediaType);
 		}
-		
+
 		return null;
 	}
 

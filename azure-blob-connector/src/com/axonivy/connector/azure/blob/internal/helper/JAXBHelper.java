@@ -17,12 +17,12 @@ import ch.ivyteam.ivy.environment.Ivy;
 
 public class JAXBHelper {
 	private static final List<String> INVALID_CHARACTER_AT_BEGIN = List.of("\uFEFF");
-	
+
 	/**
 	 * Unmarshal an XML string
 	 */
 	public static <T> T unmarshal(String xml, Class<T> type) {
-		
+
 		try {
 			JAXBContext jaxbContext = JAXBContext.newInstance(type);
 			Unmarshaller jaxbUnmarshaller = jaxbContext.createUnmarshaller();
@@ -60,7 +60,7 @@ public class JAXBHelper {
 			return null;
 		}
 	}
-	
+
 	private static String removeInvalidCharacter(String xml) {
 		AtomicReference<String> validXml = new AtomicReference<>(xml);
 		INVALID_CHARACTER_AT_BEGIN.stream().filter(it -> xml.startsWith(it)).forEach(it -> {

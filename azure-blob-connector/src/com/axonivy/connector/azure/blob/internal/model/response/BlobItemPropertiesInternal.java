@@ -17,8 +17,6 @@ import com.axonivy.connector.azure.blob.internal.enums.LeaseStateType;
 import com.axonivy.connector.azure.blob.internal.enums.LeaseStatusType;
 import com.axonivy.connector.azure.blob.internal.helper.OffsetDateTimeRFC1123Adapter;
 
-
-
 @XmlRootElement(name = "Properties")
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class BlobItemPropertiesInternal implements Serializable {

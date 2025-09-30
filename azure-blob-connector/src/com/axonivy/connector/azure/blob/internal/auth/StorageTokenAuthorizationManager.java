@@ -47,7 +47,7 @@ public class StorageTokenAuthorizationManager implements AuthorizationManager {
 	public String getSharedKey(WebTarget webTarget, IvyClientRequest ivyClientRequest) {
 		throw new UnsupportedOperationException("Unsuport Share Key With ClientSecretCredential");
 	}
-	
+
 	private AzureStorageToken getAzureStorageToken(ClientSecretCredential clientSecretCredential) {
 		Form formData = new Form();
 		formData.param("client_id", clientSecretCredential.getClientId());

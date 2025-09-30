@@ -37,7 +37,7 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 		AuthorizationManager manager = getAuthorizationManager(credential);
 		this.ivyClient = new AzureStorageBlobClient(restClientUUID, manager);
 	}
-	
+
 	public String upload(String blobName, String contentBody) {
 		Map<String, String> headers = createUploadHeader(false);
 
@@ -49,7 +49,7 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 	public String uploadFromUrl(String blobName, String url, boolean isOverwrite) {
 		Map<String, String> headers = createUploadHeader(isOverwrite);
 		headers.put(MSHeader.X_MS_COPY_SOURCE, url);
-				
+
 		String blobPath = getBlobPath(blobName);
 		var response = this.ivyClient.put(blobPath, headers);
 		if (isHttpCreated(response)) {
@@ -62,7 +62,7 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 	public String uploadFromFile(String blobName, byte[] content, boolean isOverwrite) throws Exception {
 		Objects.requireNonNull(content, "Upload content must be not null");
 		Map<String, String> headers = createUploadHeader(isOverwrite);
-		
+
 		String blobPath = getBlobPath(blobName);
 		var response = this.ivyClient.put(blobPath, content, headers);
 		if (isHttpCreated(response)) {
@@ -104,7 +104,7 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 	public BlobItem getBlob(String blobName) {
 		String blobPath = getBlobPath(blobName);
 		var response = this.ivyClient.get(blobPath);
-		
+
 		if (isHttpOk(response)) {
 			String endpoint = getEndpoint(ivyClient);
 			String url = String.format("%s/%s", endpoint, blobPath);
@@ -119,11 +119,10 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 		String blobPath = getBlobPath(blobName);
 		Response response = this.ivyClient.get(blobPath);
 		if (!isHttpOk(response)) {
-			throw createDownloadException(blobName, response);	
+			throw createDownloadException(blobName, response);
 		}
-		
-		byte[] data = response.readEntity(byte[].class);
-		return data;		
+
+		return response.readEntity(byte[].class);
 	}
 
 	public String downloadToFile(String blobName, String filePath) throws IOException {
@@ -142,11 +141,11 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 	public ByteArrayOutputStream downloadStream(String blobName) {
 		String blobPath = getBlobPath(blobName);
 		Response response = this.ivyClient.get(blobPath);
-		
+
 		if (!isHttpOk(response)) {
-			throw createDownloadException(blobName, response);	
+			throw createDownloadException(blobName, response);
 		}
-		
+
 		try {
 			ByteArrayOutputStream targetStream = new ByteArrayOutputStream();
 			response.readEntity(InputStream.class).transferTo(targetStream);
@@ -155,7 +154,7 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 			throw new RuntimeException("Error while stream data from " + blobPath, e);
 		}
 	}
-	
+
 	private String getEndpoint(AzureStorageBlobClient client) {
 		try {
 			return client.getURL().toString();

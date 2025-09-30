@@ -15,7 +15,7 @@ import com.fasterxml.jackson.annotation.JsonProperty;
 public final class BlobTags implements Serializable {
 
 	private static final long serialVersionUID = 8166874613358489776L;
-	
+
 	@JsonProperty(value = "TagSet", required = true)
 	private List<BlobTag> blobTagSet;
 

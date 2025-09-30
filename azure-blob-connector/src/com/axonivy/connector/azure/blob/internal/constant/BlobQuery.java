@@ -14,7 +14,7 @@ public final class BlobQuery {
 		public static final String USERDELEGATIONKEY = "userdelegationkey";
 		public static final String UNDELETE = "undelete";
 		public static final String CONTAINER = "container";
-		public static final String PROPERTIES = "properties";		
+		public static final String PROPERTIES = "properties";
 		public static final String LIST = "list";
 		public static final String COPY = "copy";
 	}

@@ -238,12 +238,12 @@
 				appendTo="@(body)" visible="false" header="Link Download"
 				closeOnEscape="true" width="500">
 
-				<div class="grid">
-					<div class="col">
+				<div class="flex">
+					<div class="w-9">
 						<p:inputText id="link" value="#{data.blob.linkDownLoad}"
 							styleClass="w-full" />
 					</div>
-					<div class="col-fixed" style="width: 100px">
+					<div class="w-3">
 						<p:commandButton id="btnCopy" value="Copy" icon="pi pi-copy"
 							styleClass="ml-2" />
 						<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"
@@ -259,23 +259,25 @@
 				appendTo="@(body)" visible="false" header="Path to save"
 				closeOnEscape="true" width="500">
 
-				<p:ajax event="close" update="downloadToFileDialog" resetValues="true" />
+				<p:ajax event="close" update="downloadToFileDialog"
+					resetValues="true" />
 
 				<h:form id="downloadToFile">
-					<div class="grid">
-						<div class="col-fixed" style="width: 50px">
+					<div class="flex">
+						<div class="w-2">
 							<p:outputLabel for="pathToSave" value="Path" />
 						</div>
-						<div class="col">
+						<div class="w-8">
 							<p:inputText id="pathToSave" value="#{data.filePath}"
 								required="true" placeholder="C:\yourFolder\fileNameToSave"
 								styleClass="w-full" />
 						</div>
-						<div class="col-fixed" style="width: 100px">
+						<div class="w-2">
 							<p:commandButton id="btnSaveToPath" value="OK"
 								actionListener="#{logic.downloadToFile}"
 								oncomplete="if (!args.validationFailed) {PF('downloadToFileDialog').hide()}"
-								update="form:growl pathToSave" process="downloadToFile" styleClass="ml-2" />
+								update="form:growl pathToSave" process="downloadToFile"
+								styleClass="ml-2" />
 						</div>
 					</div>
 				</h:form>

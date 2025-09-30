@@ -4,3 +4,14 @@
 # You can define here your project Variables.
 #
 Variables:
+  AzureBlob:
+    # The application ID that's assigned to your app.
+    ClientId: ""
+    # The client secret that you generated for your app in the app registration portal.
+    ClientSecret: ""
+    # The directory tenant the application plans to operate against, in GUID or domain-name format.
+    TenantId: ""
+    # Your container name.
+    ContainterName: ""
+    # The uuid of rest client to storage endpoint
+    RestClientUUID: a61f273e-f451-4fe3-a2b7-9f62fddb7bf3
