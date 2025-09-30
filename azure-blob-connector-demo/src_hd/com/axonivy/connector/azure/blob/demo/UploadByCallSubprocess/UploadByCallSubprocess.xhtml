@@ -25,7 +25,7 @@
 								required="#{empty data.bean.fileName}" dragDropSupport="false"
 								listener="#{logic.uploadFileHandle}" mode="simple"
 								label="Choose" update="uploadWithPrimefaces" />
-							<br />							
+							<br />
 							<p:outputLabel rendered="#{not empty data.bean.fileName}"
 								value="#{data.bean.fileName}" styleClass="w-full" />
 						</div>
@@ -216,12 +216,12 @@
 				appendTo="@(body)" visible="false" header="Link Download"
 				closeOnEscape="true" width="500">
 
-				<div class="grid">
-					<div class="col">
+				<div class="flex">
+					<div class="w-9">
 						<p:inputText id="link" value="#{data.blob.linkDownLoad}"
 							styleClass="w-full" />
 					</div>
-					<div class="col-fixed" style="width: 100px">
+					<div class="w-3">
 						<p:commandButton id="btnCopy" value="Copy" icon="pi pi-copy"
 							styleClass="ml-2" />
 						<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"

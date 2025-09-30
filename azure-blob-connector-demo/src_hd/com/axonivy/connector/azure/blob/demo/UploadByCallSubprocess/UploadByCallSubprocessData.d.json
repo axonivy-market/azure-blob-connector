@@ -17,7 +17,6 @@
     "type" : "String"
   }, {
     "name" : "blob",
-    "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob"
   } ]
 }

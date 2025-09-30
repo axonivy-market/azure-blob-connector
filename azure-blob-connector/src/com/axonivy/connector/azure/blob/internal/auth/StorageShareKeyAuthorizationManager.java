@@ -56,25 +56,20 @@ public class StorageShareKeyAuthorizationManager implements AuthorizationManager
 
 	private String buildStringToSign(WebTarget root, IvyClientRequest request, AzureNamedKeyCredential credential) {
 		String contentLength = WebTargetHelper.getContentLength(request.getHttpMethod(), request.getBody());
-		String getContentType = WebTargetHelper.getMediaType(request.getHttpMethod(), request.getBody()); 
+		String getContentType = WebTargetHelper.getMediaType(request.getHttpMethod(), request.getBody());
 		Map<String, String> headers = request.getHeaders();
-		
-		String stringToSign = String.join(StringUtils.LF, 
-				request.getHttpMethod(),
+
+		String stringToSign = String.join(StringUtils.LF, request.getHttpMethod(),
 				headers.getOrDefault(HttpHeaders.CONTENT_ENCODING, EMPTY),
-				headers.getOrDefault(HttpHeaders.CONTENT_LANGUAGE, EMPTY),
-				contentLength,
-				headers.getOrDefault(HttpHeaders.CONTENT_MD5, EMPTY),				
-				getContentType,
-				EMPTY,
+				headers.getOrDefault(HttpHeaders.CONTENT_LANGUAGE, EMPTY), contentLength,
+				headers.getOrDefault(HttpHeaders.CONTENT_MD5, EMPTY), getContentType, EMPTY,
 				headers.getOrDefault(HttpHeaders.IF_MODIFIED_SINCE, EMPTY),
 				headers.getOrDefault(HttpHeaders.IF_MATCH, EMPTY),
 				headers.getOrDefault(HttpHeaders.IF_NONE_MATCH, EMPTY),
 				headers.getOrDefault(HttpHeaders.IF_UNMODIFIED_SINCE, EMPTY),
-				headers.getOrDefault(HttpHeaders.RANGE, EMPTY),
-				getAdditionalXmsHeaders(headers),
+				headers.getOrDefault(HttpHeaders.RANGE, EMPTY), getAdditionalXmsHeaders(headers),
 				getCanonicalizedResource(root, request, credential));
-		
+
 		Ivy.log().info(stringToSign);
 
 		return stringToSign;
@@ -108,30 +103,31 @@ public class StorageShareKeyAuthorizationManager implements AuthorizationManager
 		return canonicalizedHeaders.toString();
 	}
 
-	private String getCanonicalizedResource(WebTarget root, IvyClientRequest request,  AzureNamedKeyCredential credential) {
+	private String getCanonicalizedResource(WebTarget root, IvyClientRequest request,
+			AzureNamedKeyCredential credential) {
 
 		// Resource path
 		String resourcePath = credential.getAccountName();
 		WebTarget webTarget = request.getWebTarget(root);
-		
-		// Note that AbsolutePath starts with a '/'.		
+
+		// Note that AbsolutePath starts with a '/'.
 		String absolutePath = webTarget.getUri().getPath();
-				
+
 		String resourceRequestPath = Constants.SLASH + resourcePath + absolutePath;
-		
-		// check for no query params and return	
+
+		// check for no query params and return
 		Map<String, String> queries = request.getQueries();
 		if (MapUtils.isEmpty(queries)) {
 			return resourceRequestPath;
 		}
-		
-		List<String>  resources = new ArrayList<>();
+
+		List<String> resources = new ArrayList<>();
 		resources.add(resourceRequestPath);
-		
+
 		List<Map.Entry<String, String>> sortedQuery = queries.entrySet().stream()
-				.sorted(Comparator.comparing(Map.Entry::getKey)).toList(); 
-		
-		for(Map.Entry<String, String> query : sortedQuery) {
+				.sorted(Comparator.comparing(Map.Entry::getKey)).toList();
+
+		for (Map.Entry<String, String> query : sortedQuery) {
 			String queryParam = String.format("%s:%s", query.getKey(), query.getValue());
 			resources.add(queryParam);
 		}
@@ -139,6 +135,5 @@ public class StorageShareKeyAuthorizationManager implements AuthorizationManager
 		// append to main string builder the join of completed params with new line
 		return resources.stream().collect(Collectors.joining(StringUtils.LF));
 	}
-	
-	
+
 }

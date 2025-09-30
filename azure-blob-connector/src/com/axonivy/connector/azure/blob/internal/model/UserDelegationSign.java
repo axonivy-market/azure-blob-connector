@@ -5,14 +5,14 @@ public class UserDelegationSign {
 	private String signedStart;
 	private String signedExpiry;
 	private String canonicalizedResource;
-	
+
 	private String signedKeyObjectId;
 	private String signedKeyTenantId;
 	private String signedKeyStart;
 	private String signedKeyExpiry;
 	private String signedKeyService;
 	private String signedKeyVersion;
-	
+
 	private String signedAuthorizedUserObjectId;
 	private String signedUnauthorizedUserObjectId;
 	private String signedCorrelationId;

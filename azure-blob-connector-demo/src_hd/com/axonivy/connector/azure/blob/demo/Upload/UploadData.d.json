@@ -11,11 +11,9 @@
     "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob"
   }, {
     "name" : "fileContent",
-    "type" : "org.primefaces.model.StreamedContent",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "org.primefaces.model.StreamedContent"
   }, {
     "name" : "filePath",
-    "type" : "String",
-    "modifiers" : [ "PERSISTENT" ]
+    "type" : "String"
   } ]
 }

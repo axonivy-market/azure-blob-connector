@@ -10,7 +10,6 @@ import javax.xml.bind.annotation.adapters.XmlJavaTypeAdapter;
 
 import com.axonivy.connector.azure.blob.internal.helper.OffsetDateTimeAdapter;
 
-
 @XmlRootElement(name = "UserDelegationKey")
 @XmlAccessorType(XmlAccessType.FIELD)
 public final class UserDelegationKey {

@@ -30,7 +30,7 @@ import ch.ivyteam.ivy.environment.Ivy;
 public class AzureBlobStorageService implements StorageService {
 	private static final String DATE_PATTERN = "yyyy-MM-dd";
 	private Duration downloadLinkLiveTime = Duration.ofHours(8);
-	
+
 	private AzureStorageContainerService azureStorageContainerService;
 	private AzureStorageSASService azureStorageSASService;
 	private AzureStorageBlobService azureStorageBlobService;
@@ -40,11 +40,12 @@ public class AzureBlobStorageService implements StorageService {
 	 * ivyRestClientId and container
 	 * 
 	 * @param tokenCredential - The credential type
-	 * @param restClientUUID - The Ivy rest client UUID
+	 * @param restClientUUID  - The Ivy rest client UUID
 	 * @param container       - The container name
 	 */
 	public AzureBlobStorageService(Credential tokenCredential, UUID restClientUUID, String container) {
-		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, restClientUUID, container);
+		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, restClientUUID,
+				container);
 		this.azureStorageSASService = new AzureStorageSASService(tokenCredential, restClientUUID, container);
 		this.azureStorageBlobService = new AzureStorageBlobService(tokenCredential, restClientUUID, container);
 	}
@@ -58,14 +59,16 @@ public class AzureBlobStorageService implements StorageService {
 	 * @param container            - The container name
 	 * @param downloadLinkLiveTime - The time live of download link
 	 */
-	public AzureBlobStorageService(Credential tokenCredential, UUID ivyRestClientId, String container, Duration downloadLinkLiveTime) {
-		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, ivyRestClientId, container);
+	public AzureBlobStorageService(Credential tokenCredential, UUID ivyRestClientId, String container,
+			Duration downloadLinkLiveTime) {
+		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, ivyRestClientId,
+				container);
 		this.azureStorageSASService = new AzureStorageSASService(tokenCredential, ivyRestClientId, container);
 		this.azureStorageBlobService = new AzureStorageBlobService(tokenCredential, ivyRestClientId, container);
-		
+
 		this.downloadLinkLiveTime = downloadLinkLiveTime;
 	}
-	
+
 	@Override
 	public String upload(String content, String fileName) {
 		return azureStorageBlobService.upload(fileName, content);
@@ -124,8 +127,7 @@ public class AzureBlobStorageService implements StorageService {
 
 	@Override
 	public void delete(Date date) {
-		List<BlobItem> bi = azureStorageContainerService.getBlobs().stream()
-				.filter(b -> isSameDate(b, date))
+		List<BlobItem> bi = azureStorageContainerService.getBlobs().stream().filter(b -> isSameDate(b, date))
 				.collect(Collectors.toList());
 		bi.forEach(blob -> delete(blob.getName()));
 	}
@@ -138,8 +140,7 @@ public class AzureBlobStorageService implements StorageService {
 
 	@Override
 	public byte[] downloadContent(String blobName) {
-		byte[] content = azureStorageBlobService.downloadContent(blobName);
-		return content;
+		return azureStorageBlobService.downloadContent(blobName);
 	}
 
 	@Override
@@ -183,11 +184,12 @@ public class AzureBlobStorageService implements StorageService {
 	}
 
 	private boolean isSameDate(BlobItem bi, Date date) {
-		String creationTime2String = bi.getProperties().getCreationTime().format(DateTimeFormatter.ofPattern(DATE_PATTERN));
-		String date2String =  new SimpleDateFormat(DATE_PATTERN).format(date); 
+		String creationTime2String = bi.getProperties().getCreationTime()
+				.format(DateTimeFormatter.ofPattern(DATE_PATTERN));
+		String date2String = new SimpleDateFormat(DATE_PATTERN).format(date);
 		return creationTime2String.equals(date2String);
 	}
-	
+
 	private String createBlobPath(String folderName, String fileName) {
 		if (isNotBlank(folderName)) {
 			return String.format("%s/%s", folderName, fileName);

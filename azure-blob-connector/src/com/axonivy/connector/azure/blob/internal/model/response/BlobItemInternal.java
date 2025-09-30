@@ -29,7 +29,7 @@ public final class BlobItemInternal implements Serializable {
 	@XmlElement(name = "IsCurrentVersion")
 	private Boolean isCurrentVersion;
 
-	@XmlElement(name = "Properties")	
+	@XmlElement(name = "Properties")
 	private BlobItemPropertiesInternal properties;
 
 	@XmlElement(name = "Metadata")

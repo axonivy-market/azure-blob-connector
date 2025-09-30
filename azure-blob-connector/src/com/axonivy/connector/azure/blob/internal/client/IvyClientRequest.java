@@ -45,11 +45,11 @@ public class IvyClientRequest {
 	public WebTarget getWebTarget(WebTarget root) {
 		return WebTargetHelper.buildWebTarget(root, path, queries);
 	}
-	
+
 	public static Builder builder() {
 		return new Builder();
 	}
-	
+
 	// Builder
 	public static class Builder {
 		private String path;

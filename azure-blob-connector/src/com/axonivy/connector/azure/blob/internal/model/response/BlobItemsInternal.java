@@ -16,7 +16,7 @@ public final class BlobItemsInternal implements Serializable {
 
 	@XmlElement(name = "Blob")
 	private List<BlobItemInternal> blobItemInternals;
-	
+
 	public BlobItemsInternal() {
 	}
 
