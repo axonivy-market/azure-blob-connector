@@ -9,7 +9,6 @@ import java.io.InputStream;
 import java.util.ArrayList;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 
 import javax.faces.application.FacesMessage;
 import javax.faces.context.FacesContext;
@@ -38,10 +37,10 @@ public class UploadBean extends AbstractDemoBean {
 		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
 		String tenantId = Ivy.var().get("AzureBlob.TenantId");
 		String containerName = Ivy.var().get("AzureBlob.ContainterName");
-		String restClientUUID = Ivy.var().get("AzureBlob.RestClientUUID");
+		String storageAccount = Ivy.var().get("AzureBlob.StorageAccount");
 
 		Credential credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-		storageService = new AzureBlobStorageService(credential, UUID.fromString(restClientUUID), containerName);
+		storageService = new AzureBlobStorageService(credential, storageAccount, containerName);
 
 		this.blobs = getAllBlobs();
 	}

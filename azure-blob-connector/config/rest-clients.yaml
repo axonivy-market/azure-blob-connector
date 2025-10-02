@@ -3,6 +3,6 @@ RestClients:
   #URI: https://<storage-account>.blob.core.windows.net
   Azure Blob Storage:
     UUID: a61f273e-f451-4fe3-a2b7-9f62fddb7bf3
-    Url: https://storage-account.blob.core.windows.net
+    Url: https://{storage.account}.blob.core.windows.net
     Features:
     - ch.ivyteam.ivy.rest.client.mapper.JsonFeature

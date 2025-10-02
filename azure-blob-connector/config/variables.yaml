@@ -13,5 +13,5 @@ Variables:
     TenantId: ""
     # Your container name.
     ContainterName: ""
-    # The uuid of rest client to storage endpoint
-    RestClientUUID: a61f273e-f451-4fe3-a2b7-9f62fddb7bf3
+    # The azure storage account
+    StorageAccount: ""
