@@ -12,7 +12,6 @@ import java.time.Duration;
 import java.time.format.DateTimeFormatter;
 import java.util.Date;
 import java.util.List;
-import java.util.UUID;
 import java.util.stream.Collectors;
 
 import org.apache.commons.io.FilenameUtils;
@@ -36,35 +35,33 @@ public class AzureBlobStorageService implements StorageService {
 	private AzureStorageBlobService azureStorageBlobService;
 
 	/**
-	 * Create a AzureBlobStorageService with the give identity credential,
-	 * ivyRestClientId and container
+	 * Create a AzureBlobStorageService with the give identity credential, storage
+	 * account and container
 	 * 
-	 * @param tokenCredential - The credential type
-	 * @param restClientUUID  - The Ivy rest client UUID
-	 * @param container       - The container name
+	 * @param credential - The credential type
+	 * @param account    - The storage account
+	 * @param container  - The container name
 	 */
-	public AzureBlobStorageService(Credential tokenCredential, UUID restClientUUID, String container) {
-		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, restClientUUID,
-				container);
-		this.azureStorageSASService = new AzureStorageSASService(tokenCredential, restClientUUID, container);
-		this.azureStorageBlobService = new AzureStorageBlobService(tokenCredential, restClientUUID, container);
+	public AzureBlobStorageService(Credential credential, String account, String container) {
+		this.azureStorageContainerService = new AzureStorageContainerService(credential, account, container);
+		this.azureStorageSASService = new AzureStorageSASService(credential, account, container);
+		this.azureStorageBlobService = new AzureStorageBlobService(credential, account, container);
 	}
 
 	/**
-	 * Create a AzureBlobStorageService with the give identity credential,
-	 * ivyRestClientId and container
+	 * Create a AzureBlobStorageService with the give identity credential, storage
+	 * account and container
 	 * 
-	 * @param tokenCredential      - The credential types
-	 * @param ivyRestClientId      - The Ivy rest client UUID
+	 * @param credential           - The credential types
+	 * @param account              - The storage account
 	 * @param container            - The container name
 	 * @param downloadLinkLiveTime - The time live of download link
 	 */
-	public AzureBlobStorageService(Credential tokenCredential, UUID ivyRestClientId, String container,
+	public AzureBlobStorageService(Credential credential, String account, String container,
 			Duration downloadLinkLiveTime) {
-		this.azureStorageContainerService = new AzureStorageContainerService(tokenCredential, ivyRestClientId,
-				container);
-		this.azureStorageSASService = new AzureStorageSASService(tokenCredential, ivyRestClientId, container);
-		this.azureStorageBlobService = new AzureStorageBlobService(tokenCredential, ivyRestClientId, container);
+		this.azureStorageContainerService = new AzureStorageContainerService(credential, account, container);
+		this.azureStorageSASService = new AzureStorageSASService(credential, account, container);
+		this.azureStorageBlobService = new AzureStorageBlobService(credential, account, container);
 
 		this.downloadLinkLiveTime = downloadLinkLiveTime;
 	}

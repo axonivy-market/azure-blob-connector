@@ -10,7 +10,6 @@ import java.util.HashMap;
 import java.util.LinkedHashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 import java.util.stream.Collectors;
 import java.util.stream.Stream;
 
@@ -43,11 +42,11 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 	private AzureStorageBlobClient ivyClient;
 	private String container;
 
-	public AzureStorageSASService(Credential credential, UUID ivyRestClientId, String container) {
+	public AzureStorageSASService(Credential credential, String account, String container) {
 		this.container = container;
 
 		AuthorizationManager manager = getAuthorizationManager(credential);
-		this.ivyClient = new AzureStorageBlobClient(ivyRestClientId, manager);
+		this.ivyClient = new AzureStorageBlobClient(account, manager);
 	}
 
 	public String generateUserDelegationSas(String blobName, Duration liveTime) throws Exception {

@@ -11,7 +11,6 @@ import java.net.MalformedURLException;
 import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
-import java.util.UUID;
 
 import javax.ws.rs.core.Response;
 
@@ -31,11 +30,11 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 
 	private AzureStorageBlobClient ivyClient;
 
-	public AzureStorageBlobService(Credential credential, UUID restClientUUID, String container) {
+	public AzureStorageBlobService(Credential credential, String account, String container) {
 		this.container = container;
 
 		AuthorizationManager manager = getAuthorizationManager(credential);
-		this.ivyClient = new AzureStorageBlobClient(restClientUUID, manager);
+		this.ivyClient = new AzureStorageBlobClient(account, manager);
 	}
 
 	public String upload(String blobName, String contentBody) {

@@ -7,7 +7,6 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Optional;
-import java.util.UUID;
 
 import com.axonivy.connector.azure.blob.internal.auth.Credential;
 import com.axonivy.connector.azure.blob.internal.client.AuthorizationManager;
@@ -26,11 +25,11 @@ public class AzureStorageContainerService extends AbstractAzureStorage {
 
 	private AzureStorageBlobClient ivyClient;
 
-	public AzureStorageContainerService(Credential credential, UUID ivyRestClientId, String container) {
+	public AzureStorageContainerService(Credential credential, String account, String container) {
 		this.container = container;
 
 		AuthorizationManager manager = getAuthorizationManager(credential);
-		this.ivyClient = new AzureStorageBlobClient(ivyRestClientId, manager);
+		this.ivyClient = new AzureStorageBlobClient(account, manager);
 
 		createContainerIfNotExists(container);
 	}
