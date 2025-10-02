@@ -17,6 +17,7 @@ public final class Constants {
 	public static final String SLASH = "/";
 	public static final String COMMA = ",";
 	public static final String COLON = ":";
+	public static final String SEMI_COLON = ";";
 	public static final String AND_SYMBOL = "&";
 
 	private Constants() {

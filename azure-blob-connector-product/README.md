@@ -31,8 +31,8 @@ Variables:
     ClientSecret: ''
     # The directory tenant the application plans to operate against, in GUID or domain-name format.
     TenantId: ''
-    # The uuid of rest client to storage endpoint
-    RestClientUUID: ''
+    # The azure storage account
+    StorageAccount: ''
     # Your container name.
     ContainterName: ''
 ```
@@ -53,14 +53,14 @@ Variables:
 **1. Call the constructor to set some basic information.**
 ```java
 	/**
-	 * Create a AzureBlobStorageService with the give identity credential, restClientUUID
+	 * Create a AzureBlobStorageService with the give identity credential, storage account
 	 * and container
 	 * 
 	 * @param tokenCredential - The credential type
-	 * @param restClientUUID - The Ivy rest client UUID
+	 * @param account 		  - The storage account
 	 * @param container       - The container name
 	 */	
-	public AzureBlobStorageService(Credential tokenCredential, UUID restClientUUID, String container) {}
+	public AzureBlobStorageService(Credential tokenCredential, String account, String container) {}
 ```
 
 **2. Application requests to Azure Blob Storage must be authorized. You must to create a Credential.**
@@ -112,7 +112,7 @@ Variables:
 Below is a simple example for upload a file from url and get temporary download link.
 ``` java
 	Credential tokenCredential = new ClientSecretCredential(TENANT_ID, CLIENT_ID, SECRET_VALUE);
-	storageService = new AzureBlobStorageService(tokenCredential, REST_CLIENT_UUID, TEST_CONTAINTER);
+	storageService = new AzureBlobStorageService(tokenCredential, STORAGE_ACCOUNT, TEST_CONTAINTER);
 	
 	// Upload file from url
 	String blobName = storageService.uploadFromUrl("https://sample.com/video.mp4");

@@ -1,7 +1,5 @@
 package com.axonivy.connector.azure.blob.internal.bean;
 
-import java.util.UUID;
-
 import com.axonivy.connector.azure.blob.StorageService;
 import com.axonivy.connector.azure.blob.internal.AzureBlobStorageService;
 import com.axonivy.connector.azure.blob.internal.auth.ClientSecretCredential;
@@ -18,10 +16,10 @@ public class AzureBlobStorageBean {
 		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
 		String tenantId = Ivy.var().get("AzureBlob.TenantId");
 		String containerName = Ivy.var().get("AzureBlob.ContainterName");
-		String restClientUUID = Ivy.var().get("AzureBlob.RestClientUUID");
-		
+		String storageAccount = Ivy.var().get("AzureBlob.StorageAccount");
+
 		Credential credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-		this.azureBlobStorageService = new AzureBlobStorageService(credential, UUID.fromString(restClientUUID), containerName);
+		this.azureBlobStorageService = new AzureBlobStorageService(credential, storageAccount, containerName);
 	}
 
 	public StorageService getAzureBlobStorageService() {
