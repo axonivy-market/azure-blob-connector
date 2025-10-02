@@ -35,8 +35,8 @@ public class AzureBlobStorageServiceTest extends AbstractIntegrationTest {
 
 	@BeforeAll
 	public static void setup(AppFixture fixture) {
-		fixture.config("RestClients.AzureBlobStorageTest.Url", getEndpoint());
-		storageService = new AzureBlobStorageService(getCredential(), REST_CLIENT_TEST, TEST_CONTAINTER);
+		fixture.config("RestClients.Azure Blob Storage.Url", blobEndpoint);
+		storageService = new AzureBlobStorageService(getCredential(), accountKey, TEST_CONTAINTER);
 	}
 
 	@Test

@@ -1,7 +1,0 @@
-# yaml-language-server: $schema=https://json-schema.axonivy.com/app/13.1.0/rest-clients.json
-RestClients:
-  AzureBlobStorageTest:
-    UUID: b6cd1c14-6fc8-4aa0-bf47-39e8f1fd8ba5
-    Url: http://127.0.0.1:1000/devstoreaccount1
-    Features:
-    - ch.ivyteam.ivy.rest.client.mapper.JsonFeature

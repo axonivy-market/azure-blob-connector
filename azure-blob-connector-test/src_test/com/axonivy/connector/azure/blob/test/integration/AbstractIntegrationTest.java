@@ -1,46 +1,53 @@
 package com.axonivy.connector.azure.blob.test.integration;
 
-import java.util.UUID;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.azure.AzuriteContainer;
 import org.testcontainers.utility.DockerImageName;
 
 import com.axonivy.connector.azure.blob.internal.auth.AzureNamedKeyCredential;
 import com.axonivy.connector.azure.blob.internal.auth.Credential;
+import com.axonivy.connector.azure.blob.internal.constant.Constants;
 
 abstract class AbstractIntegrationTest {
 
-	private static final int BLOB_PORT = 10000;
+	private static final String ACCOUNT_NAME_EQUAL = "AccountName=";
+	private static final String ACCOUNT_KEY_EQUAL = "AccountKey=";
+	private static final String BLOB_ENDPOINT_EQUAL = "BlobEndpoint=";
 
-	protected static final UUID REST_CLIENT_TEST = UUID.fromString("b6cd1c14-6fc8-4aa0-bf47-39e8f1fd8ba5");
 	protected static final String TEST_CONTAINTER = "test-container";
-	protected static final String ACCOUNT_NAME = "devstoreaccount1";
-	protected static final String END_POINT_FORMAT = "http://127.0.0.1:%s/devstoreaccount1";
-	// This is a well known key from Azurite
- /**
-  * Dear Bug Hunter,
-  * This credential is intentionally included for educational purposes only and does not provide access to any production systems.
-  * Please do not submit it as part of our bug bounty program.
-  */
-	protected static final String ACCOUNT_KEY_TEST = "Eby8vdM02xNOcqFlqUwJPLlmEtlCDXJ1OUzFT50uSRZ6IFsuFq2UVErCz4I6tq/K1SZFPTOtr/KBHBeksoGMGw==";
-
 	protected static final String EXTENSION_TEST = ".test";
 	protected static final String CONTENT_TEST_BLOB_NAME = "testContent.txt";
 
-	@SuppressWarnings("resource")
-	public static final GenericContainer<?> azure = new GenericContainer<>(
-			DockerImageName.parse("mcr.microsoft.com/azure-storage/azurite:3.35.0")).withExposedPorts(BLOB_PORT);
+	protected static String accountName = null;
+	protected static String accountKey = null;
+	protected static String blobEndpoint = null;
+
+	private static AzuriteContainer azurite = new AzuriteContainer(
+			DockerImageName.parse("mcr.microsoft.com/azure-storage/azurite:3.35.0"));
 
 	static {
-		azure.start();
-		Runtime.getRuntime().addShutdownHook(new Thread(azure::stop));
+		azurite.start();
+
+		String connectionString = azurite.getConnectionString();
+		accountName = getAttributeValue(connectionString, ACCOUNT_NAME_EQUAL);
+		accountKey = getAttributeValue(connectionString, ACCOUNT_KEY_EQUAL);
+		blobEndpoint = getAttributeValue(connectionString, BLOB_ENDPOINT_EQUAL);
+
+		Runtime.getRuntime().addShutdownHook(new Thread(azurite::stop));
 	}
 
 	protected static Credential getCredential() {
-		return new AzureNamedKeyCredential(ACCOUNT_NAME, ACCOUNT_KEY_TEST);
+		return new AzureNamedKeyCredential(accountName, accountKey);
 	}
 
-	protected static String getEndpoint() {
-		return String.format(END_POINT_FORMAT, azure.getMappedPort(BLOB_PORT));
+	private static String getAttributeValue(String connectionString, String key) {
+		for (String part : connectionString.split(Constants.SEMI_COLON)) {
+			if (part.startsWith(key)) {
+
+				return part.substring(key.length());
+			}
+		}
+		return EMPTY;
 	}
 }
