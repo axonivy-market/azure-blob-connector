@@ -42,11 +42,11 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 	private AzureStorageBlobClient ivyClient;
 	private String container;
 
-	public AzureStorageSASService(Credential credential, String account, String container) {
+	public AzureStorageSASService(Credential credential, String container) {
 		this.container = container;
 
-		AuthorizationManager manager = getAuthorizationManager(credential);
-		this.ivyClient = new AzureStorageBlobClient(account, manager);
+		AuthorizationManager authManager = getAuthorizationManager(credential);
+		this.ivyClient = new AzureStorageBlobClient(authManager);
 	}
 
 	public String generateUserDelegationSas(String blobName, Duration liveTime) throws Exception {
