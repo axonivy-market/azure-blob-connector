@@ -16,10 +16,9 @@ public class AzureBlobStorageBean {
 		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
 		String tenantId = Ivy.var().get("AzureBlob.TenantId");
 		String containerName = Ivy.var().get("AzureBlob.ContainterName");
-		String storageAccount = Ivy.var().get("AzureBlob.StorageAccount");
-
+		
 		Credential credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
-		this.azureBlobStorageService = new AzureBlobStorageService(credential, storageAccount, containerName);
+		this.azureBlobStorageService = new AzureBlobStorageService(credential, containerName);
 	}
 
 	public StorageService getAzureBlobStorageService() {
