@@ -25,11 +25,11 @@ public class AzureStorageContainerService extends AbstractAzureStorage {
 
 	private AzureStorageBlobClient ivyClient;
 
-	public AzureStorageContainerService(Credential credential, String account, String container) {
+	public AzureStorageContainerService(Credential credential, String container) {
 		this.container = container;
 
-		AuthorizationManager manager = getAuthorizationManager(credential);
-		this.ivyClient = new AzureStorageBlobClient(account, manager);
+		AuthorizationManager authManager = getAuthorizationManager(credential);
+		this.ivyClient = new AzureStorageBlobClient(authManager);
 
 		createContainerIfNotExists(container);
 	}

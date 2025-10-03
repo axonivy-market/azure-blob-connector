@@ -30,11 +30,11 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 
 	private AzureStorageBlobClient ivyClient;
 
-	public AzureStorageBlobService(Credential credential, String account, String container) {
+	public AzureStorageBlobService(Credential credential, String container) {
 		this.container = container;
 
-		AuthorizationManager manager = getAuthorizationManager(credential);
-		this.ivyClient = new AzureStorageBlobClient(account, manager);
+		AuthorizationManager authManager = getAuthorizationManager(credential);
+		this.ivyClient = new AzureStorageBlobClient(authManager);
 	}
 
 	public String upload(String blobName, String contentBody) {

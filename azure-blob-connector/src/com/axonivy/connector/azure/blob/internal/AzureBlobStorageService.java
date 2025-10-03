@@ -35,33 +35,29 @@ public class AzureBlobStorageService implements StorageService {
 	private AzureStorageBlobService azureStorageBlobService;
 
 	/**
-	 * Create a AzureBlobStorageService with the give identity credential, storage
-	 * account and container
+	 * Create a AzureBlobStorageService with the give identity credential and container
 	 * 
 	 * @param credential - The credential type
-	 * @param account    - The storage account
 	 * @param container  - The container name
 	 */
-	public AzureBlobStorageService(Credential credential, String account, String container) {
-		this.azureStorageContainerService = new AzureStorageContainerService(credential, account, container);
-		this.azureStorageSASService = new AzureStorageSASService(credential, account, container);
-		this.azureStorageBlobService = new AzureStorageBlobService(credential, account, container);
+	public AzureBlobStorageService(Credential credential, String container) {
+		this.azureStorageContainerService = new AzureStorageContainerService(credential, container);
+		this.azureStorageSASService = new AzureStorageSASService(credential, container);
+		this.azureStorageBlobService = new AzureStorageBlobService(credential, container);
 	}
 
 	/**
-	 * Create a AzureBlobStorageService with the give identity credential, storage
-	 * account and container
+	 * Create a AzureBlobStorageService with the give identity credential and container
 	 * 
 	 * @param credential           - The credential types
-	 * @param account              - The storage account
 	 * @param container            - The container name
 	 * @param downloadLinkLiveTime - The time live of download link
 	 */
-	public AzureBlobStorageService(Credential credential, String account, String container,
+	public AzureBlobStorageService(Credential credential, String container,
 			Duration downloadLinkLiveTime) {
-		this.azureStorageContainerService = new AzureStorageContainerService(credential, account, container);
-		this.azureStorageSASService = new AzureStorageSASService(credential, account, container);
-		this.azureStorageBlobService = new AzureStorageBlobService(credential, account, container);
+		this.azureStorageContainerService = new AzureStorageContainerService(credential, container);
+		this.azureStorageSASService = new AzureStorageSASService(credential, container);
+		this.azureStorageBlobService = new AzureStorageBlobService(credential, container);
 
 		this.downloadLinkLiveTime = downloadLinkLiveTime;
 	}
