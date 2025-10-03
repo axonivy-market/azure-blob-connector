@@ -11,7 +11,7 @@ Variables:
     ClientSecret: ""
     # The directory tenant the application plans to operate against, in GUID or domain-name format.
     TenantId: ""
+    # The storage endpoint: https://<storage-account>.blob.core.windows.net
+    BaseUrl: ""
     # Your container name.
     ContainterName: ""
-    # The azure storage account
-    StorageAccount: ""

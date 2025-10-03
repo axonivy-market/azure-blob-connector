@@ -31,8 +31,8 @@ Variables:
     ClientSecret: ''
     # The directory tenant the application plans to operate against, in GUID or domain-name format.
     TenantId: ''
-    # The azure storage account
-    StorageAccount: ''
+    # The storage endpoint: https://<storage-account>.blob.core.windows.net
+    BaseUrl: ''
     # Your container name.
     ContainterName: ''
 ```
@@ -56,8 +56,7 @@ Variables:
 	 * Create a AzureBlobStorageService with the give identity credential, storage account
 	 * and container
 	 * 
-	 * @param tokenCredential - The credential type
-	 * @param account 		  - The storage account
+	 * @param tokenCredential - The credential type	 
 	 * @param container       - The container name
 	 */	
 	public AzureBlobStorageService(Credential tokenCredential, String account, String container) {}
@@ -77,7 +76,7 @@ Variables:
 	public ClientSecretCredential(String tenantId, String clientId, String clientSecret) {}
 ```
 
- -  This credential authenticates the created service principal through its account and key. 
+ -  This credential authenticates the created service principal through its account and key.
 ```java	
 	/**
 	 * Creates a credential with specified {@code name} that authorizes request with
@@ -100,7 +99,7 @@ Variables:
 	public String uploadFromUrl(String url);
 	
 	/**
-	 * The API to create a temporary download link with expired time 
+	 * The API to create a temporary download link with expired time
 	 * @param url - The blob name
 	 * @return - The url for download
 	 */
@@ -138,9 +137,9 @@ docker pull mcr.microsoft.com/azure-storage/azurite
 docker run -p 10000:10000 -p 10001:10001 -p 10002:10002 mcr.microsoft.com/azure-storage/azurite
 ```
 
-`-p 10000:10000` will expose blob service's default listening port.  
-`-p 10001:10001` will expose queue service's default listening port.  
-`-p 10002:10002` will expose table service's default listening port.  
+`-p 10000:10000` will expose blob service's default listening port.
+`-p 10001:10001` will expose queue service's default listening port.
+`-p 10002:10002` will expose table service's default listening port.
 
 #### Installation with  docker compose 
 
