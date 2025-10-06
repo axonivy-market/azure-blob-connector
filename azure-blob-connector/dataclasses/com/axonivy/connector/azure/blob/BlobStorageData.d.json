@@ -1,5 +1,5 @@
 {
-  "$schema" : "https://json-schema.axonivy.com/data-class/12.0.0/data-class.json",
+  "$schema" : "https://json-schema.axonivy.com/data-class/13.2.0/data-class.json",
   "simpleName" : "BlobStorageData",
   "namespace" : "com.axonivy.connector.azure.blob",
   "isBusinessCaseData" : false,
@@ -14,7 +14,7 @@
     "type" : "Boolean"
   }, {
     "name" : "blobItems",
-    "type" : "java.util.List<com.azure.storage.blob.models.BlobItem>"
+    "type" : "List<com.axonivy.connector.azure.blob.model.BlobItem>"
   }, {
     "name" : "blobName",
     "type" : "String"

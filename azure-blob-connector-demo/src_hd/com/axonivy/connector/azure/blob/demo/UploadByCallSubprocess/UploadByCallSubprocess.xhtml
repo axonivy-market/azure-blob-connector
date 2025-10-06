@@ -12,140 +12,226 @@
 		<ui:define name="content">
 
 			<h:form id="form" enctype="multipart/form-data">
-			<p:growl id="growl" showDetail="false" />
-				<p:fieldset id="uploadWithPrimefaces"
-					legend="Upload by Primefaces">
-					<p:panelGrid layout="grid" columns="3"
-						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
-						styleClass="ui-panelgrid-blank">
-						<p:outputLabel value="Upload File" />
-						<p:fileUpload id="fileUploader" auto="true"
-							dragDropSupport="false" listener="#{logic.uploadFileHandle}"
-							mode="advanced" label="Choose" />
-						<p:commandButton id="addBlob" actionListener="#{logic.addBlob}" styleClass="margin-top-15px"
-							icon="fa fa-plus" value="Add file" update="blobTable growl existFilePanel"/>
-					</p:panelGrid>
-					<p:panelGrid layout="grid" columns="3" columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3">
-						<p:outputLabel value="Upload to folder" />
-						<p:inputText value="#{data.bean.uploadToFolderByPrimefaces}" placeholder="h1 or h1/h2" />
-					</p:panelGrid>
-					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanel">
-						<h:outputText value="The following file already exist: #{data.combineFileNameAndFolder}" rendered="#{data.bean.isFileAlreadyExist}" styleClass="text-red"/>
-					</p:panelGrid>
-					<p:panelGrid layout="grid" columns="1"
-						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
-						<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFile}"
-							itemLabel="Overwrite if files already exist">
-							<p:ajax update="existFilePanel" listener="#{logic.overwriteFile}"/>
-						</p:selectBooleanCheckbox>
-					</p:panelGrid>
+				<p:growl id="growl" showDetail="false" />
+				<p:fieldset id="uploadWithPrimefaces" legend="Upload by Primefaces">
+
+					<div class="grid">
+						<div class="col-2">
+							<p:outputLabel for="fileUploader" value="Upload File" />
+						</div>
+
+						<div class="col-4">
+							<p:fileUpload id="fileUploader" auto="true"
+								required="#{empty data.bean.fileName}" dragDropSupport="false"
+								listener="#{logic.uploadFileHandle}" mode="simple"
+								label="Choose" update="uploadWithPrimefaces" />
+							<br />
+							<p:outputLabel rendered="#{not empty data.bean.fileName}"
+								value="#{data.bean.fileName}" styleClass="w-full" />
+						</div>
+
+						<div class="col-6">
+							<p:commandButton id="addBlob" process="uploadWithPrimefaces"
+								actionListener="#{logic.addBlob}" styleClass="margin-top-15px"
+								icon="fa fa-plus" value="Add file"
+								update="blobTable growl existFilePanel" />
+						</div>
+
+						<div class="col-2">
+							<p:outputLabel value="Upload to folder" />
+						</div>
+
+						<div class="col-4">
+							<p:inputText value="#{data.bean.uploadToFolderByPrimefaces}"
+								placeholder="h1 or h1/h2" styleClass="w-full" />
+						</div>
+
+						<div class="col-6">
+							<h:panelGroup id="existFilePanel">
+								<h:outputText
+									value="The following file already exist: #{data.bean.fileName}"
+									rendered="#{data.bean.isFileAlreadyExist}"
+									styleClass="text-red-500" />
+							</h:panelGroup>
+						</div>
+
+						<div class="col-2" />
+
+						<div class="col-10">
+							<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFile}"
+								itemLabel="Overwrite if files already exist">
+								<p:ajax update="existFilePanel"
+									listener="#{logic.overwriteFile}" />
+							</p:selectBooleanCheckbox>
+						</div>
+					</div>
 				</p:fieldset>
-				
-				<p:fieldset id="uploadByLocalPath" styleClass="upload-fieldset"
+
+				<p:fieldset id="uploadByLocalPath" styleClass="mt-2"
 					legend="Upload by local path">
-					<p:panelGrid layout="grid" columns="3"
-						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
-						styleClass="ui-panelgrid-blank">
-						<p:outputLabel value="Upload File" />
-						<p:inputText value="#{data.bean.localPath}" placeholder="C:\yourFolder\yourPicture.png" />
-						<p:commandButton id="addBlobByLocalPath" actionListener="#{logic.addBlobByLocalPath}"
-							icon="fa fa-plus" value="Add file" update="blobTable growl existFilePanelPath"/>
-					</p:panelGrid>
-					<p:panelGrid layout="grid" columns="3" columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3">
-						<p:outputLabel value="Upload to folder" />
-						<p:inputText value="#{data.bean.uploadToFolderByLocalPath}" placeholder="h1 or h1/h2" />
-					</p:panelGrid>
-					
-					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanelPath">
-						<h:outputText value="The following file already exist: #{data.combineFileNameAndFolder}" rendered="#{data.bean.isFileAlreadyExistPath}" styleClass="color-red"/>
-					</p:panelGrid>
-					<p:panelGrid layout="grid" columns="1"
-						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
-						<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFilePath}"
-							itemLabel="Overwrite if files already exist">
-							<p:ajax update="existFilePanelPath" listener="#{logic.overwriteFilePath}"/>
-						</p:selectBooleanCheckbox>
-					</p:panelGrid>
-					
+					<div class="grid">
+						<div class="col-2">
+							<p:outputLabel for="inputPath" value="Upload File" />
+						</div>
+
+						<div class="col-4">
+							<p:inputText id="inputPath" required="true"
+								value="#{data.bean.localPath}"
+								placeholder="C:\yourFolder\yourPicture.png" styleClass="w-full" />
+						</div>
+
+						<div class="col-6">
+							<p:commandButton id="addBlobByLocalPath"
+								process="uploadByLocalPath"
+								actionListener="#{logic.addBlobByLocalPath}" icon="fa fa-plus"
+								value="Add file" update="blobTable growl existFilePanelPath" />
+						</div>
+
+						<div class="col-2">
+							<p:outputLabel value="Upload to folder" />
+						</div>
+						<div class="col-4">
+							<p:inputText value="#{data.bean.uploadToFolderByLocalPath}"
+								placeholder="h1 or h1/h2" styleClass="w-full" />
+						</div>
+
+						<div class="col-6">
+							<h:panelGroup id="existFilePanelPath">
+								<h:outputText
+									value="The following file already exist: #{data.bean.fileNamePath}"
+									rendered="#{data.bean.isFileAlreadyExistPath}"
+									styleClass="text-red-500" />
+							</h:panelGroup>
+						</div>
+
+						<div class="col-2" />
+
+						<div class="col-10">
+							<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFilePath}"
+								itemLabel="Overwrite if files already exist">
+								<p:ajax update="existFilePanelPath"
+									listener="#{logic.overwriteFilePath}" />
+							</p:selectBooleanCheckbox>
+						</div>
+					</div>
+
 				</p:fieldset>
-				
-				<p:fieldset id="uploadByURL" styleClass="upload-fieldset"
+
+				<p:fieldset id="uploadByURL" styleClass="mt-2"
 					legend="Upload by URL">
-					<p:panelGrid layout="grid" columns="3"
-						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
-						styleClass="ui-panelgrid-blank">
-						<p:outputLabel value="Upload File" />
-						<p:inputText value="#{data.bean.url}"/>
-						<p:commandButton id="addBlobByURL" actionListener="#{logic.addBlobByURL}"
-							icon="fa fa-plus" value="Add file" update="blobTable growl existFilePanelURL"/>
-					</p:panelGrid>
-					<p:panelGrid layout="grid" columns="3" columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3">
-						<p:outputLabel value="Upload to folder" />
-						<p:inputText value="#{data.bean.uploadToFolderByURL}" placeholder="h1 or h1/h2"/>
-					</p:panelGrid>
-					
-					<p:panelGrid layout="grid" columns="1" columnClasses="ui-g-12 ui-md-6 ui-lg-8"  id="existFilePanelURL">
-						<h:outputText value="The following file already exist: #{data.bean.fileNameURL}" rendered="#{data.bean.isFileAlreadyExistURL}" styleClass="color-red"/>
-					</p:panelGrid>
-					<p:panelGrid layout="grid" columns="1"
-						columnClasses="ui-g-12 ui-md-6 ui-lg-6">
-						<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFileURL}"
-							itemLabel="Overwrite if files already exist">
-							<p:ajax update="existFilePanelURL" listener="#{logic.overwriteFileURL}"/>
-						</p:selectBooleanCheckbox>
-					</p:panelGrid>
+
+					<div class="grid">
+						<div class="col-2">
+							<p:outputLabel for="inputUrl" value="Upload File" />
+						</div>
+						<div class="col-4">
+							<p:inputText id="inputUrl" required="true"
+								value="#{data.bean.url}" styleClass="w-full" />
+						</div>
+						<div class="col-6">
+							<p:commandButton id="addBlobByURL" process="uploadByURL"
+								actionListener="#{logic.addBlobByURL}" icon="fa fa-plus"
+								value="Add file" update="blobTable growl existFilePanelURL" />
+						</div>
+
+						<div class="col-2">
+							<p:outputLabel value="Upload to folder" />
+						</div>
+						<div class="col-4">
+							<p:inputText value="#{data.bean.uploadToFolderByURL}"
+								placeholder="h1 or h1/h2" styleClass="w-full" />
+						</div>
+						<div class="col-6">
+							<h:panelGroup id="existFilePanelURL">
+								<h:outputText
+									value="The following file already exist: #{data.bean.fileNameURL}"
+									rendered="#{data.bean.isFileAlreadyExistURL}"
+									styleClass="text-red-500" />
+							</h:panelGroup>
+						</div>
+
+						<div class="col-2" />
+						<div class="col-10">
+							<p:selectBooleanCheckbox value="#{data.bean.isOverwriteFileURL}"
+								itemLabel="Overwrite if files already exist">
+								<p:ajax update="existFilePanelURL"
+									listener="#{logic.overwriteFileURL}" />
+							</p:selectBooleanCheckbox>
+						</div>
+					</div>
 				</p:fieldset>
-				
-				<p:fieldset legend="Delete blob" styleClass="upload-fieldset">
-					<p:panelGrid columns="3" layout="grid"
-						columnClasses="ui-g-12 ui-md-6 ui-lg-2,ui-g-12 ui-md-6 ui-lg-3,ui-g-12 ui-md-6 ui-lg-3"
-						styleClass="ui-panelgrid-blank">
-						<p:outputLabel value="Date"/>
-						<p:datePicker id="basic" value="#{data.bean.startDate}" />
-						<p:commandButton id="deleteBlob" actionListener="#{logic.deleteBlobs}"
-							icon="fa fa-trash" value="Delete blob" update="blobTable growl"/>
-					</p:panelGrid>
+
+				<p:fieldset id="deleteBlobs" legend="Delete blob" styleClass="mt-2">
+					<div class="formgroup-inline">
+						<div class="field">
+							<p:outputLabel for="basic" value="Date" />
+							<p:datePicker id="basic" required="true"
+								value="#{data.bean.startDate}" />
+						</div>
+
+						<p:commandButton id="deleteBlob" process="deleteBlobs"
+							actionListener="#{logic.deleteBlobs}" icon="fa fa-trash"
+							value="Delete blob" update="blobTable growl" />
+					</div>
 				</p:fieldset>
-				
-				<div>
-					<p:dataTable id="blobTable"
-						value="#{data.bean.blobs}" var="blob">
-						<p:column id="name" headerText="Name" styleClass="column-name">
-							<h:outputText value="#{blob.blobItem.name}" id="blobName" />
-						</p:column>
-						<p:column id="status" headerText="Status" styleClass="column-status">
-							<h:outputText value="#{blob.blobItem.deleted eq 'true' ? 'Deleted' : 'Current version'}" id="statusName" />
-						</p:column>
-						<p:column id="createDate" headerText="Creation Date" styleClass="column-created-date">
-							<h:outputText value="#{blob.blobItem.properties.creationTime}" />
-						</p:column>
-						<p:column styleClass="column-action">
-							<p:commandButton id="btnGetLink" 
-								actionListener="#{logic.getLink(blob.blobItem.name)}" oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
-								value="Get link" rendered="#{!blob.blobItem.deleted}"
-								update="linkDownloadDialog"/>
-							<p:commandButton id= "btnDeleteBlob" value="Delete" actionListener="#{logic.deleteBlob(blob.blobItem.name)}" update="blobTable form:growl" icon="fa fa-trash" rendered="#{!blob.blobItem.deleted}"/>
-							<p:commandButton id= "btnUnDeleteBlob" value="Undelete" actionListener="#{logic.unDeleteBlob(blob.blobItem.name)}" update="blobTable form:growl" icon="fa fa-undo" rendered="#{blob.blobItem.deleted}"/>
-						</p:column>
-					</p:dataTable>
-				</div>
+
+
+				<p:dataTable id="blobTable" value="#{data.bean.blobs}" var="blob">
+					<p:column id="name" headerText="Name" styleClass="column-name">
+						<h:outputText value="#{blob.blobItem.name}" id="blobName" />
+					</p:column>
+					<p:column id="status" headerText="Status"
+						styleClass="column-status">
+						<h:outputText
+							value="#{blob.blobItem.deleted eq 'true' ? 'Deleted' : 'Current version'}"
+							id="statusName" />
+					</p:column>
+					<p:column id="createDate" headerText="Creation Date"
+						styleClass="column-created-date">
+						<h:outputText value="#{blob.blobItem.properties.creationTime}" />
+					</p:column>
+					<p:column styleClass="column-action">
+						<p:commandButton id="btnGetLink" process="@this"
+							actionListener="#{logic.getLink(blob)}"
+							oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
+							value="Get link" rendered="#{!blob.blobItem.deleted}"
+							update="linkDownloadDialog" />
+
+						<p:commandButton id="btnDeleteBlob" value="Delete" process="@this"
+							actionListener="#{logic.deleteBlob(blob.blobItem.name)}"
+							update="blobTable form:growl" icon="fa fa-trash"
+							rendered="#{!blob.blobItem.deleted}" />
+
+						<p:commandButton id="btnUnDeleteBlob" value="Undelete"
+							process="@this"
+							actionListener="#{logic.unDeleteBlob(blob.blobItem.name)}"
+							update="blobTable form:growl" icon="fa fa-undo"
+							rendered="#{blob.blobItem.deleted}" />
+					</p:column>
+				</p:dataTable>
+
 			</h:form>
 
 			<p:dialog widgetVar="linkDownloadDialog" id="linkDownloadDialog"
-				appendTo="@(body)" visible="false" header="Link Download" width="500">
-				<div class="field grid">
-					<p:inputText id="link" value="#{data.link}" styleClass="link-input" />
-					<p:commandButton id="btnCopy" value="Copy" icon="pi pi-copy"
-						styleClass="copy-action" />
-					<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy" target="link" >
-						<p:ajax event="success" listener="#{logic.showCopiedMessage}" update="form:growl" />
-					</pe:clipboard>
+				appendTo="@(body)" visible="false" header="Link Download"
+				closeOnEscape="true" width="500">
+
+				<div class="flex">
+					<div class="w-9">
+						<p:inputText id="link" value="#{data.blob.linkDownLoad}"
+							styleClass="w-full" />
+					</div>
+					<div class="w-3">
+						<p:commandButton id="btnCopy" value="Copy" icon="pi pi-copy"
+							styleClass="ml-2" />
+						<pe:clipboard id="clipCopy" trigger="btnCopy" action="copy"
+							target="link">
+							<p:ajax event="success" listener="#{logic.showCopiedMessage}"
+								update="form:growl" />
+						</pe:clipboard>
+					</div>
 				</div>
-				<br/>
-				<p:commandButton value="close" styleClass="float-right"
-					process="@this"
-					oncomplete="PF('linkDownloadDialog').hide()" icon="fa fa-check">
-				</p:commandButton>
+
 			</p:dialog>
 		</ui:define>
 	</ui:composition>

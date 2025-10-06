@@ -1,69 +1,53 @@
 package com.axonivy.connector.azure.blob.test.integration;
 
-import java.io.IOException;
-import java.util.Properties;
-import java.util.UUID;
+import static org.apache.commons.lang3.StringUtils.EMPTY;
 
-import org.apache.commons.lang3.StringUtils;
-import org.testcontainers.containers.GenericContainer;
+import org.testcontainers.azure.AzuriteContainer;
 import org.testcontainers.utility.DockerImageName;
 
-import com.axonivy.connector.azure.blob.BlobServiceClientHelper;
-import com.azure.storage.blob.BlobContainerClient;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
+import com.axonivy.connector.azure.blob.internal.auth.AzureNamedKeyCredential;
+import com.axonivy.connector.azure.blob.internal.auth.Credential;
+import com.axonivy.connector.azure.blob.internal.constant.Constants;
 
 abstract class AbstractIntegrationTest {
 
+	private static final String ACCOUNT_NAME_EQUAL = "AccountName=";
+	private static final String ACCOUNT_KEY_EQUAL = "AccountKey=";
+	private static final String BLOB_ENDPOINT_EQUAL = "BlobEndpoint=";
+
 	protected static final String TEST_CONTAINTER = "test-container";
-	private static final String END_POINT_FORMAT = "http://127.0.0.1:%s/%s";
-
 	protected static final String EXTENSION_TEST = ".test";
-	protected static final String CONTENT_TEST = "testContent.txt";
-	private static final int BLOB_PORT = 10000;
+	protected static final String CONTENT_TEST_BLOB_NAME = "testContent.txt";
 
-	@SuppressWarnings("resource")
-	public static final GenericContainer<?> azure = new GenericContainer<>(
-			DockerImageName.parse("mcr.microsoft.com/azure-storage/azurite")).withExposedPorts(BLOB_PORT);
+	protected static String accountName = null;
+	protected static String accountKey = null;
+	protected static String blobEndpoint = null;
+
+	private static AzuriteContainer azurite = new AzuriteContainer(
+			DockerImageName.parse("mcr.microsoft.com/azure-storage/azurite:3.35.0"));
 
 	static {
-		azure.start();
-		Runtime.getRuntime().addShutdownHook(new Thread(azure::stop));
+		azurite.start();
+
+		String connectionString = azurite.getConnectionString();
+		accountName = getAttributeValue(connectionString, ACCOUNT_NAME_EQUAL);
+		accountKey = getAttributeValue(connectionString, ACCOUNT_KEY_EQUAL);
+		blobEndpoint = getAttributeValue(connectionString, BLOB_ENDPOINT_EQUAL);
+
+		Runtime.getRuntime().addShutdownHook(new Thread(azurite::stop));
 	}
 
-	protected static BlobServiceClient getBlobServiceClient() throws IOException {
-		String account = System.getProperty("azureBlobAccount");
-		String key = System.getProperty("azureBlobKey");
+	protected static Credential getCredential() {
+		return new AzureNamedKeyCredential(accountName, accountKey);
+	}
 
-		if (StringUtils.isEmpty(account)) {
-			try (var in = AbstractIntegrationTest.class.getResourceAsStream("credentials.properties")) {
-				if (in != null) {
-					Properties props = new Properties();
-					props.load(in);
-					account = (String) props.get("account");
-					key = (String) props.get("key");
-				}
+	private static String getAttributeValue(String connectionString, String key) {
+		for (String part : connectionString.split(Constants.SEMI_COLON)) {
+			if (part.startsWith(key)) {
+
+				return part.substring(key.length());
 			}
 		}
-
-		final String endpoint = String.format(END_POINT_FORMAT, azure.getMappedPort(BLOB_PORT), account);
-		return BlobServiceClientHelper.getBlobServiceClient(account, key, endpoint);
-	}
-
-	protected static BlockBlobClient getBlockBlobClient(BlobServiceClient blobServiceClient, String blobName) {
-		BlobContainerClient blobContainerClient = getBlobContainerClient(blobServiceClient);
-		BlockBlobClient blobClient = blobContainerClient.getBlobClient(blobName).getBlockBlobClient();
-		return blobClient;
-	}
-
-	protected static BlobContainerClient getBlobContainerClient(BlobServiceClient blobServiceClient) {
-		BlobContainerClient blobContainerClient = blobServiceClient.createBlobContainerIfNotExists(TEST_CONTAINTER);
-		return blobContainerClient;
-	}
-
-	protected boolean isUUIDFomart(String value, String expectedExtension) {
-		String uuid = value.split("\\.")[0];
-
-		return UUID.fromString(uuid) != null && value.endsWith("." + expectedExtension);
+		return EMPTY;
 	}
 }

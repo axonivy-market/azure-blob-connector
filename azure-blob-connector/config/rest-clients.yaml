@@ -1,2 +1,8 @@
-# yaml-language-server: $schema=https://json-schema.axonivy.com/app/0.0.1/rest-clients.json
+# yaml-language-server: $schema=https://json-schema.axonivy.com/app/13.1.0/rest-clients.json
 RestClients:
+  #URI: https://<storage-account>.blob.core.windows.net
+  Azure Blob Storage:
+    UUID: a61f273e-f451-4fe3-a2b7-9f62fddb7bf3
+    Url: ${ivy.var.AzureBlob.BaseUrl}
+    Features:
+    - ch.ivyteam.ivy.rest.client.mapper.JsonFeature
