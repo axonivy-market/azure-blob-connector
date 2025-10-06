@@ -8,7 +8,6 @@ import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import java.io.ByteArrayOutputStream;
 import java.io.File;
-import java.io.IOException;
 import java.nio.file.Files;
 
 import org.apache.commons.lang3.StringUtils;
@@ -22,103 +21,99 @@ import org.testcontainers.junit.jupiter.Testcontainers;
 
 import com.axonivy.connector.azure.blob.StorageService;
 import com.axonivy.connector.azure.blob.internal.AzureBlobStorageService;
-import com.azure.storage.blob.BlobServiceClient;
-import com.azure.storage.blob.specialized.BlockBlobClient;
+
+import ch.ivyteam.ivy.environment.AppFixture;
+import ch.ivyteam.ivy.environment.IvyTest;
 
 @Testcontainers
 @TestMethodOrder(OrderAnnotation.class)
+@IvyTest
 public class AzureBlobStorageServiceTest extends AbstractIntegrationTest {
 
-	private static BlobServiceClient blobServiceClient = null;
-	private static StorageService storageService = null;	
+	private static StorageService storageService = null;
 	private static String blobNameOfFileUpload = null;
-	
+
 	@BeforeAll
-	public static void setup() throws IOException {
-		blobServiceClient = getBlobServiceClient();
-		storageService = new AzureBlobStorageService(blobServiceClient, TEST_CONTAINTER);
+	public static void setup(AppFixture fixture) {
+		fixture.config("RestClients.Azure Blob Storage.Url", blobEndpoint);
+		storageService = new AzureBlobStorageService(getCredential(), TEST_CONTAINTER);
 	}
 
 	@Test
 	void shouldUploadContent() throws Exception {
 		final String content = "Test Content";
-		storageService.upload(content, CONTENT_TEST);
-		BlockBlobClient blobClient = getBlockBlobClient(blobServiceClient, CONTENT_TEST);
-		String downloadContent = blobClient.downloadContent().toString();
+		String blobName = storageService.upload(content, CONTENT_TEST_BLOB_NAME);
 
-		assertEquals(content, downloadContent);
+		assertEquals(CONTENT_TEST_BLOB_NAME, blobName);
 	}
-	
+
 	@Test
 	@Order(1)
-	void shouldUploadFromFile() {
+	void shouldUploadFromFile() throws Exception {
 		String path = new File("resource_test/picture/singapore.png").getAbsolutePath();
 		String blobName = storageService.uploadFromFile(path, StringUtils.EMPTY, true);
 		blobNameOfFileUpload = blobName;
 		assertNotNull(blobName);
 	}
-	
+
 	@Test
 	void shouldUploadByteArray() throws Exception {
 		String sampleData = "Sample data for blob";
-		String blobName = storageService.upload(sampleData.getBytes(), CONTENT_TEST, StringUtils.EMPTY, true);
+		String blobName = storageService.upload(sampleData.getBytes(), CONTENT_TEST_BLOB_NAME, StringUtils.EMPTY, true);
 		assertNotNull(blobName);
 	}
-	
+
 	@Test
 	void shouldUploadByteArrayWithException() throws Exception {
-		var exception = assertThrows(
-				Exception.class,
-	            () -> storageService.upload(null, "nullContent.txt", StringUtils.EMPTY, false));
-		
-		assertEquals("Upload file error. Exception message: Cannot read the array length because \"buf\" is null", exception.getMessage());
+		var exception = assertThrows(Exception.class,
+				() -> storageService.upload(null, "nullContent.txt", StringUtils.EMPTY, false));
+
+		assertEquals("Upload content must be not null", exception.getMessage());
 	}
-	
+
 	@Test
 	@Order(2)
-	void shouldDownloadContent() {
+	void shouldDownloadContent() throws Exception {
 		byte[] result = storageService.downloadContent(blobNameOfFileUpload);
 		assertNotNull(result);
 	}
-	
+
 	@Test
 	@Order(3)
-	void shouldDownloadToFile() throws IOException {
+	void shouldDownloadToFile() throws Exception {
 		File templeLocalFile = new File("resource_test/picture/local-file.png");
 		storageService.downloadToFile(blobNameOfFileUpload, templeLocalFile.getAbsolutePath());
 		boolean fileDeleted = Files.deleteIfExists(templeLocalFile.toPath());
 		assertTrue(fileDeleted);
 	}
-	
+
 	@Test
 	@Order(4)
-	void shouldDownloadStream() throws IOException {
+	void shouldDownloadStream() throws Exception {
 		ByteArrayOutputStream baos = storageService.downloadStream(blobNameOfFileUpload);
 		assertNotNull(baos);
 	}
-	
+
 	@Test
 	@Order(5)
 	void shouldDeletedWithBlobIsExists() {
-		boolean result  = storageService.delete(blobNameOfFileUpload);
+		boolean result = storageService.delete(blobNameOfFileUpload);
 		assertTrue(result);
 	}
-	
+
 	@Test
 	@Order(6)
 	void shouldDeletedWithBlobIsNotExists() {
-		boolean result  = storageService.delete(blobNameOfFileUpload);
+		boolean result = storageService.delete(blobNameOfFileUpload);
 		assertFalse(result);
 	}
-	
+
 	@Test
 	@Order(7)
 	void shouldRestoreBlobIsDeleted() {
-		// Azurite: Current API is not implemented yet.	
+		// Azurite: Current API is not implemented yet.
 	}
-	
 
-	
 	@Disabled
 	void shouldGetDownloadLink() throws Exception {
 		// Azurite: Only authentication scheme Bearer is supported

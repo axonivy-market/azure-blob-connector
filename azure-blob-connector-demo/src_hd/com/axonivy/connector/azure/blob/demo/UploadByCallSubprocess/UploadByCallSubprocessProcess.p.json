@@ -131,15 +131,15 @@
     }, {
       "id" : "f18",
       "type" : "HtmlDialogMethodStart",
-      "name" : "getLink(String)",
+      "name" : "getLink(Blob)",
       "config" : {
         "signature" : "getLink",
         "input" : {
           "params" : [
-            { "name" : "blobName", "type" : "String", "desc" : "" }
+            { "name" : "blob", "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob", "desc" : "" }
           ],
           "map" : {
-            "out.bean.blobName" : "param.blobName"
+            "out.blob" : "param.blob"
           }
         },
         "guid" : "19010CAC30297BE7"
@@ -407,10 +407,12 @@
       },
       "connect" : [
         { "id" : "f62", "to" : "f61", "label" : {
-            "name" : "no"
+            "name" : "no",
+            "offset" : { "x" : -39, "y" : -10 }
           } },
         { "id" : "f64", "to" : "f63", "label" : {
-            "name" : "yes"
+            "name" : "yes",
+            "offset" : { "x" : 17, "y" : -6 }
           } }
       ]
     }, {
@@ -423,7 +425,8 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 504, "y" : 432 }
+        "at" : { "x" : 504, "y" : 431 },
+        "size" : { "width" : 152, "height" : 63 }
       },
       "connect" : [
         { "id" : "f65", "to" : "f15", "via" : [ { "x" : 1240, "y" : 432 } ] }
@@ -446,11 +449,13 @@
       },
       "connect" : [
         { "id" : "f69", "to" : "f68", "label" : {
-            "name" : "yes"
+            "name" : "yes",
+            "offset" : { "x" : -11, "y" : -10 }
           } },
         { "id" : "f70", "to" : "f15", "via" : [ { "x" : 816, "y" : 280 }, { "x" : 1240, "y" : 280 } ], "label" : {
             "name" : "no",
-            "segment" : 1.47
+            "segment" : 1.47,
+            "offset" : { "x" : -182, "y" : 22 }
           } }
       ]
     }, {
@@ -694,11 +699,13 @@
       },
       "connect" : [
         { "id" : "f85", "to" : "f44", "label" : {
-            "name" : "yes"
+            "name" : "yes",
+            "offset" : { "x" : -11, "y" : -10 }
           } },
         { "id" : "f86", "to" : "f43", "via" : [ { "x" : 352, "y" : 1328 }, { "x" : 808, "y" : 1328 } ], "label" : {
             "name" : "no",
-            "segment" : 1.49
+            "segment" : 1.49,
+            "offset" : { "x" : -206, "y" : -10 }
           } }
       ]
     }, {
@@ -716,11 +723,13 @@
       },
       "connect" : [
         { "id" : "f82", "to" : "f79", "label" : {
-            "name" : "yes"
+            "name" : "yes",
+            "offset" : { "x" : -11, "y" : 14 }
           } },
         { "id" : "f83", "to" : "f33", "via" : [ { "x" : 352, "y" : 1016 }, { "x" : 808, "y" : 1016 } ], "label" : {
             "name" : "no",
-            "segment" : 1.49
+            "segment" : 1.49,
+            "offset" : { "x" : -214, "y" : 22 }
           } }
       ]
     }, {
@@ -750,7 +759,8 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 520, "y" : 712 }
+        "at" : { "x" : 520, "y" : 719 },
+        "size" : { "width" : 172, "height" : 63 }
       },
       "connect" : [
         { "id" : "f22", "to" : "f23", "via" : [ { "x" : 1200, "y" : 712 } ] }
@@ -800,11 +810,13 @@
       },
       "connect" : [
         { "id" : "f97", "to" : "f94", "label" : {
-            "name" : "yes"
+            "name" : "yes",
+            "offset" : { "x" : -23, "y" : -10 }
           } },
         { "id" : "f102", "to" : "f23", "via" : [ { "x" : 776, "y" : 552 }, { "x" : 1200, "y" : 552 } ], "label" : {
             "name" : "no",
-            "segment" : 1.48
+            "segment" : 1.48,
+            "offset" : { "x" : -194, "y" : 30 }
           } }
       ]
     }, {
@@ -916,7 +928,8 @@
         }
       },
       "visual" : {
-        "at" : { "x" : 520, "y" : 928 }
+        "at" : { "x" : 520, "y" : 928 },
+        "size" : { "width" : 172, "height" : 64 }
       },
       "connect" : [
         { "id" : "f118", "to" : "f28", "via" : [ { "x" : 1208, "y" : 928 } ] }
@@ -966,11 +979,13 @@
       },
       "connect" : [
         { "id" : "f114", "to" : "f108", "label" : {
-            "name" : "yes"
+            "name" : "yes",
+            "offset" : { "x" : -15, "y" : -10 }
           } },
         { "id" : "f27", "to" : "f28", "via" : [ { "x" : 776, "y" : 776 }, { "x" : 1208, "y" : 776 } ], "label" : {
             "name" : "no",
-            "segment" : 1.49
+            "segment" : 1.49,
+            "offset" : { "x" : -202, "y" : 14 }
           } }
       ]
     }, {
@@ -1093,13 +1108,13 @@
         "processCall" : "BlobStorage:getLinkDownload(String)",
         "call" : {
           "map" : {
-            "param.blobName" : "in.bean.blobName"
+            "param.blobName" : "in.blob.blobItem.getName()"
           }
         },
         "output" : {
           "map" : {
             "out" : "in",
-            "out.link" : "result.linkDownload"
+            "out.blob.linkDownLoad" : "result.linkDownload"
           }
         }
       },

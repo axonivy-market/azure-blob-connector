@@ -18,7 +18,7 @@
         },
         "result" : {
           "params" : [
-            { "name" : "blobItems", "type" : "java.util.List<com.azure.storage.blob.models.BlobItem>", "desc" : "" }
+            { "name" : "blobItems", "type" : "List<com.axonivy.connector.azure.blob.model.BlobItem>", "desc" : "" }
           ],
           "map" : {
             "result.blobItems" : "in.blobItems"
@@ -33,7 +33,7 @@
         "description" : [
           "Description: Get all blobs",
           "Result:",
-          "- blobItems: java.util.List<com.azure.storage.blob.models.BlobItem>"
+          "- blobItems: java.util.List<com.axonivy.connector.azure.blob.model.BlobItem>"
         ],
         "icon" : "res:/webContent/icon/azure-blob-icon.png?small"
       },
