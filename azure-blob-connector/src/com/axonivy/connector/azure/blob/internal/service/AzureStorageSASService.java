@@ -50,6 +50,7 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 	}
 
 	public String generateUserDelegationSas(String blobName, Duration liveTime) throws Exception {
+		// Keep UserDelegationKey if it is just created less than 5 minus ago
 		if (delegationKey == null || delegationKey.getSignedStart().isBefore(OffsetDateTime.now().minusMinutes(5))) {
 			delegationKey = getUserDelegationKey(liveTime);
 		}
