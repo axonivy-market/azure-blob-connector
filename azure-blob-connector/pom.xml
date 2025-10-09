@@ -10,7 +10,7 @@
  
   <groupId>com.axonivy.connector.azure.blob</groupId>
   <artifactId>azure-blob-connector</artifactId>
-  <version>13.1.3</version>
+  <version>13.1.4-SNAPSHOT</version>
   <packaging>iar</packaging>
  
   <repositories>
