@@ -135,7 +135,10 @@ public class UploadBean extends AbstractDemoBean {
 		for (BlobItem item : blobItems) {
 			Blob b = new Blob();
 			b.setBlobItem(item);
-			b.setLinkDownLoad(null);
+
+			String downloadLink = storageService.getDownloadLink(item.getName());
+			b.setLinkDownLoad(downloadLink);
+
 			blobs.add(b);
 		}
 		return blobs;

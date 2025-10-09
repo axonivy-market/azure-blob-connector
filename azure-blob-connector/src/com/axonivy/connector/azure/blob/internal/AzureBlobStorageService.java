@@ -35,7 +35,8 @@ public class AzureBlobStorageService implements StorageService {
 	private AzureStorageBlobService azureStorageBlobService;
 
 	/**
-	 * Create a AzureBlobStorageService with the give identity credential and container
+	 * Create a AzureBlobStorageService with the give identity credential and
+	 * container
 	 * 
 	 * @param credential - The credential type
 	 * @param container  - The container name
@@ -47,14 +48,14 @@ public class AzureBlobStorageService implements StorageService {
 	}
 
 	/**
-	 * Create a AzureBlobStorageService with the give identity credential and container
+	 * Create a AzureBlobStorageService with the give identity credential and
+	 * container
 	 * 
 	 * @param credential           - The credential types
 	 * @param container            - The container name
 	 * @param downloadLinkLiveTime - The time live of download link
 	 */
-	public AzureBlobStorageService(Credential credential, String container,
-			Duration downloadLinkLiveTime) {
+	public AzureBlobStorageService(Credential credential, String container, Duration downloadLinkLiveTime) {
 		this.azureStorageContainerService = new AzureStorageContainerService(credential, container);
 		this.azureStorageSASService = new AzureStorageSASService(credential, container);
 		this.azureStorageBlobService = new AzureStorageBlobService(credential, container);
@@ -153,10 +154,10 @@ public class AzureBlobStorageService implements StorageService {
 	@Override
 	public String getDownloadLink(String blobName) {
 		try {
-			BlobItem blobItem = azureStorageBlobService.getBlob(blobName);
+			String blobUrl = azureStorageBlobService.getBlobUrl(blobName);
 
 			String sasToken = azureStorageSASService.generateUserDelegationSas(blobName, downloadLinkLiveTime);
-			String downloadLink = blobItem.getUrl() + "?" + sasToken;
+			String downloadLink = String.format("%s?%s", blobUrl, sasToken);
 			return downloadLink;
 		} catch (Exception e) {
 			Ivy.log().warn("Get download link for blob {0}. Error message {1}.", e, blobName, e.getMessage());
