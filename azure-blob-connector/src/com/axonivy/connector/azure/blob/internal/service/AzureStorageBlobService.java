@@ -114,6 +114,12 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 		return null;
 	}
 
+	public String getBlobUrl(String blobName) {
+		String blobPath = getBlobPath(blobName);
+		String endpoint = getEndpoint(ivyClient);
+		return String.format("%s/%s", endpoint, blobPath);
+	}
+
 	public byte[] downloadContent(String blobName) {
 		String blobPath = getBlobPath(blobName);
 		Response response = this.ivyClient.get(blobPath);

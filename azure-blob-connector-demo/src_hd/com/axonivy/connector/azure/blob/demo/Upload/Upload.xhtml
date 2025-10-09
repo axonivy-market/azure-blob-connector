@@ -181,6 +181,10 @@
 
 				<p:dataTable id="blobTable" value="#{data.bean.blobs}" var="blob"
 					resizableColumns="true">
+					<p:column id="preview" headerText="Preview">
+						<p:graphicImage rendered="#{blob.isImage}"
+							url="#{blob.linkDownLoad}" width="100px" height="100px" />
+					</p:column>
 
 					<p:column id="name" headerText="Name">
 						<h:outputText value="#{blob.blobItem.name}" id="blobName" />

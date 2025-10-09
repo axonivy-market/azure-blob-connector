@@ -8,7 +8,11 @@ import org.apache.commons.lang3.StringUtils;
 
 import ch.ivyteam.ivy.environment.Ivy;
 
-public class UploadUtils {
+public final class UploadUtils {
+	
+	private UploadUtils() {
+		
+	}
 	
 	public static String getFileNameFromUrl(String url) {
 		try {
