@@ -36,7 +36,7 @@ public class UploadBean extends AbstractDemoBean {
 		String clientId = Ivy.var().get("AzureBlob.ClientId");
 		String clientSecret = Ivy.var().get("AzureBlob.ClientSecret");
 		String tenantId = Ivy.var().get("AzureBlob.TenantId");
-		String containerName = Ivy.var().get("AzureBlob.ContainterName");
+		String containerName = Ivy.var().get("AzureBlob.ContainerName");
 
 		Credential credential = new ClientSecretCredential(tenantId, clientId, clientSecret);
 		storageService = new AzureBlobStorageService(credential, containerName);

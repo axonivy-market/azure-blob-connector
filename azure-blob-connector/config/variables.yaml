@@ -14,4 +14,4 @@ Variables:
     # The storage endpoint: https://<storage-account>.blob.core.windows.net
     BaseUrl: ""
     # Your container name.
-    ContainterName: ""
+    ContainerName: ""
