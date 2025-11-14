@@ -34,8 +34,11 @@ Variables:
     # The storage endpoint: https://<storage-account>.blob.core.windows.net
     BaseUrl: ''
     # Your container name.
-    ContainterName: ''
+    ContainerName: ''
 ```
+
+> [!NOTE]
+> The variable `AzureBlob.ContainterName` is renamed to `AzureBlob.ContainerName` from 13.1.4.
 
 ### For Process GUI
 **1. What is supported in BlobStorage Callable Sub Process?**
@@ -111,7 +114,7 @@ Variables:
 Below is a simple example for upload a file from url and get temporary download link.
 ``` java
 	Credential tokenCredential = new ClientSecretCredential(TENANT_ID, CLIENT_ID, SECRET_VALUE);
-	storageService = new AzureBlobStorageService(tokenCredential, STORAGE_ACCOUNT, TEST_CONTAINTER);
+	storageService = new AzureBlobStorageService(tokenCredential, STORAGE_ACCOUNT, TEST_CONTAINER);
 	
 	// Upload file from url
 	String blobName = storageService.uploadFromUrl("https://sample.com/video.mp4");

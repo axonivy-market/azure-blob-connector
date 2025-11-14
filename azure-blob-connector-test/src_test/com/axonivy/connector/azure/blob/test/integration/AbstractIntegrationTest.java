@@ -15,7 +15,7 @@ abstract class AbstractIntegrationTest {
 	private static final String ACCOUNT_KEY_EQUAL = "AccountKey=";
 	private static final String BLOB_ENDPOINT_EQUAL = "BlobEndpoint=";
 
-	protected static final String TEST_CONTAINTER = "test-container";
+	protected static final String TEST_CONTAINER = "test-container";
 	protected static final String EXTENSION_TEST = ".test";
 	protected static final String CONTENT_TEST_BLOB_NAME = "testContent.txt";
 
