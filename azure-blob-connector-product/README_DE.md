@@ -1,24 +1,24 @@
-# Himmelblau Blob Speicher
+# Azure Blob Storage
 
-Himmelblau Blob Speicher ist eine Wolke-basisbezogener Objekt Speicher
-#bespringen versehen bei #Microsoft Azur. Es erlaubt du zu lagern große Beträge
-von unstructured #Daten, wie Images, Videos, und Dokumente, herein #ein scalable
-und preisgünstige Art. #Daten ist gelagert in Behälter innerhalb ein Speicher
-Konto, und es kann sein zugegriffen via HTTP/HTTPS, machend ihm ideal für die
-Integration in euren #Axon Efeu Dienstliche Arbeitsgänge.
+Azure Blob Storage ist ein cloudbasierter Objektspeicherdienst von Microsoft
+Azure. Damit können Sie große Mengen unstrukturierter Daten wie Bilder, Videos
+und Dokumente skalierbar und kostengünstig speichern. Die Daten werden in
+Containern innerhalb eines Speicherkontos gespeichert und sind über HTTP/HTTPS
+zugänglich, sodass sie sich ideal für die Integration in Ihre Axon
+Ivy-Geschäftsprozesse eignen.
 
-Dieser Anschluss:
-- Unterstützt du in implementieren Zugang zu Himmelblau Blob Speicher.
-- Unterstützt du in #hochladen #einverstanden zu eure Himmelblaues Blob Speicher
-  - direkt von einen #Axon Efeu dienstlichen Arbeitsgang.
-- Schafft ein #Herunterladen Band mit ein expiry Datum.
+Dieser Konnektor:
+- Unterstützt Sie bei der Implementierung des Zugriffs auf Azure Blob Storage.
+- Unterstützt Sie beim Hochladen von Inhalten in Ihren Azure Blob Storage –
+  direkt aus einem Axon Ivy-Geschäftsprozess heraus.
+- Erstellt einen Download-Link mit einem Ablaufdatum.
 
 ## Einrichtung
 
-In dem Projekt, du zufügen nur die Kolonie herein eure pom.xml Und rufen
-öffentlich APIs
+In dem Projekt fügen Sie lediglich die Abhängigkeit in Ihre pom.xml ein und
+rufen öffentliche APIs auf.
 
-**1. Füg zu Kolonie**
+**1. Abhängigkeit hinzufügen**
 ```XML
 	<dependency>
 		<groupId>com.axonivy.connector</groupId>
@@ -26,10 +26,10 @@ In dem Projekt, du zufügen nur die Kolonie herein eure pom.xml Und rufen
 		<version>${process.analyzer.version}</version>
 	</dependency>
 ```
-**2. Himmelblau Blob Zusammenhang in Variablen**
+**2. Azure Blob-Verbindung in Variablen**
 
-Du brauchst zu versehen Himmelblau Blob Zusammenhang in Variablen.yaml. Unten
-ist ein Beispiel für koppeln bei Kunden Geheimnis
+Sie müssen die Azure Blob-Verbindung in variables.yaml angeben. Nachfolgend
+finden Sie ein Beispiel für die Verbindung über einen geheimen Client-Schlüssel.
 ```yaml
 Variables:
   AzureBlob:
@@ -45,26 +45,26 @@ Variables:
     ContainerName: ''
 ```
 
-> [!BEACHTE] Die Variable `AzureBlob.ContainterName` Ist #umbenennen zu
-> `AzureBlob.ContainerName` Von 13.1.4.
+> [!HINWEIS] Die Variable „ `“ „AzureBlob.ContainterName“ „` “ wurde ab Version
+> 13.1.4 in „ `“ „AzureBlob.ContainerName“ „` “ umbenannt.
 
-### Für Arbeitsgang #grafische Benutzeroberfläche
-**1. Was ist unterstützt herein BlobStorage Callable Ersatz Arbeitsgang?**
-![Himmelblau-blob-Anschluss](images/BlobStorageFunctions.png)
+### Für Prozess-GUI
+**1. Was wird in BlobStorage Callable Sub Process
+unterstützt?**![azure-blob-connector](images/BlobStorageFunctions.png)
 
-**2. Wie zu rufen ein Ereignis von BlobStorage Callable Ersatz Arbeitsgang?**
-- Von den "Extensionen"-Menue in die Tool Bar, wir können sehen #kein
-  BlobStorage Element
-  ![Himmelblau-blob-Anschluss](images/ElementInExtensions.png)
+**2. Wie ruft man ein Ereignis aus dem BlobStorage Callable Sub Process auf?**
+- Im Menü „Erweiterungen” in der Symbolleiste sehen wir nun ein
+  BlobStorage-Element ![azure-blob-connector](images/ElementInExtensions.png)
 
-- Wir können einen Arbeitsgang zeichnen mit uploadFromUrl Auslese und #auffangen
-  einige Auskunft gleichnamig: Extern url, blob Name, das Telefonbuch auf
-  Himmelblau Blob Behälter, ..
+- Wir können einen Prozess mit der Auswahl „uploadFromUrl“ erstellen und einige
+  Informationen eingeben, wie z. B.: externe URL, Blob-Name, Verzeichnis auf
+  Azure Blob Container, ...
 
-![Himmelblau-blob-Anschluss](images/AddBlobStorageAndCallFunction.png)
+![azure-blob-connector](images/AddBlobStorageAndCallFunction.png)
 
-### Für #Java Entwickler
-**1. Ruf den Erbauer zu setzen einige einfache Auskunft.**
+### Für Java-Entwickler
+**1. Rufen Sie den Konstruktor auf, um einige grundlegende Informationen
+festzulegen.**
 ```java
 	/**
 	 * Create a AzureBlobStorageService with the give identity credential, storage account
@@ -76,11 +76,11 @@ Variables:
 	public AzureBlobStorageService(Credential tokenCredential, String account, String container) {}
 ```
 
-**2. Antrag Bitten zu Himmelblau Blob Speicher muss sein autorisiert. Du musst
-einen #Berechtigungsnachweis zu schaffen.**
+**2. Anwendungsanfragen an Azure Blob Storage müssen autorisiert werden. Sie
+müssen eine Anmeldeinformation erstellen.**
 
-  -  Dieser #Berechtigungsnachweis beglaubigt die geschaffene Bedienung
-     Schulleiter durch sein Kunden Geheimnis
+  -  Diese Anmeldeinformation authentifiziert den erstellten Dienstprinzipal
+     über sein Clientgeheimnis.
 ```java	
 	/**
 	 * Creates a ClientSecretCredential with the given identity client options.
@@ -92,8 +92,8 @@ einen #Berechtigungsnachweis zu schaffen.**
 	public ClientSecretCredential(String tenantId, String clientId, String clientSecret) {}
 ```
 
- -  Dieser #Berechtigungsnachweis beglaubigt die geschaffene Bedienung
-    Schulleiter durch sein Konto und wesentlich.
+ -  Diese Anmeldeinformationen authentifizieren den erstellten Dienstprinzipal
+    über sein Konto und seinen Schlüssel.
 ```java	
 	/**
 	 * Creates a credential with specified {@code name} that authorizes request with
@@ -106,8 +106,9 @@ einen #Berechtigungsnachweis zu schaffen.**
 
 ```
 
-**3. Du kannst rufen `uploadFromUrl` zu #hochladen eine Datei von url,
-`getDownloadLink` zu bekommen #Herunterladen Band von ein blob.**
+**3. Sie können „uploadFromUrl“ aufrufen, um eine Datei von einer URL
+hochzuladen, und „getDownloadLink“, um den Download-Link eines Blobs
+abzurufen.**
 ```java
 	/**
 	 * The API to copy operation from a source object URL
@@ -126,8 +127,8 @@ einen #Berechtigungsnachweis zu schaffen.**
 
 ### Beispiel
 
-Unten ist ein simples Beispiel für #hochladen eine Datei von url und bekommen
-temporäres #Herunterladen Band.
+Nachfolgend finden Sie ein einfaches Beispiel für das Hochladen einer Datei von
+einer URL und das Abrufen eines temporären Download-Links.
 ``` java
 	Credential tokenCredential = new ClientSecretCredential(TENANT_ID, CLIENT_ID, SECRET_VALUE);
 	storageService = new AzureBlobStorageService(tokenCredential, STORAGE_ACCOUNT, TEST_CONTAINER);
@@ -140,13 +141,13 @@ temporäres #Herunterladen Band.
 
 ## Demo
 
-### Gerannt Einheimische mit #Azurit Hafenarbeiter Image
+### Lokal mit Azurite Docker Image ausführen
 
-Start Hafenarbeiter zu testen Himmelblau Blob Speicher örtlich.
+Starten Sie Docker, um Azure Blob Storage lokal zu testen.
 
-##### Zug #Azurit V3 Hafenarbeiter Image und rennen ihm
+##### Rufen Sie das Azurite V3-Docker-Image ab und führen Sie es aus.
 
-> Note. Finde #mehr Hafenarbeiter Images Anhängsel herein
+> Hinweis: Weitere Docker-Image-Tags finden Sie unter
 > <https://mcr.microsoft.com/v2/azure-storage/azurite/tags/list>
 
 ```bash
@@ -157,33 +158,33 @@ docker pull mcr.microsoft.com/azure-storage/azurite
 docker run -p 10000:10000 -p 10001:10001 -p 10002:10002 mcr.microsoft.com/azure-storage/azurite
 ```
 
-`-p 10000:10000` wollen darlegen blob Bedienung#voreingestellt Abhorchen
-Hafenstadt. `-p 10001:10001` wollen darlegen Reihe Bedienungs #voreingestellt
-Abhorchen Hafenstadt. `-p 10002:10002` wollen darlegen Tisch Bedienungs
-#voreingestellt Abhorchen Hafenstadt.
+`-p 10000:10000` macht den Standard-Listening-Port des Blob-Dienstes sichtbar.
+`-p 10001:10001` macht den Standard-Listening-Port des Queue-Dienstes sichtbar.
+`-p 10002:10002` macht den Standard-Listening-Port des Table-Dienstes sichtbar.
 
-#### Installation mit Hafenarbeiter fasst ab
+#### Installation mit Docker Compose
 
-Gerannt an Wurz Ordner von dem Projekt:
+Führen Sie im Stammverzeichnis des Projekts folgenden Befehl aus:
 ```
 make app_local_compose_up
 ```
 
-Für anderen Wege, Kontrolle
-[DockerHub](https://github.com/Azure/Azurite/blob/main/README.md#dockerhub)
+Weitere Möglichkeiten finden Sie unter
+[DockerHub](https://github.com/Azure/Azurite/blob/main/README.md#dockerhub).
 
-### Wie zu Forscher #der #Daten?
+### Wie kann man die Daten erkunden?
 
-- Installier
-  https://Himmelblau.microsoft.com/en-Uns/Produkte/Speicher/Speicher-Forscher
-- Einrichtung zu zugreifen ihm
+- Installieren Sie
+  „https://azure.microsoft.com/en-us/products/storage/storage-explorer“.
+- Einrichtung für den Zugriff darauf
 
-#Fern Auskunft kann auch sein gefunden an die [Speicher
-Forscher](https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer)
+Weitere Informationen finden Sie auch im [Storage
+Explorer](https://learn.microsoft.com/en-us/azure/storage/storage-explorer/vs-azure-tools-storage-manage-with-storage-explorer).
 
-Versieh einen Konto Namen und verrechne wesentlich in Variablen.yaml Mit [Kuhle
-Bekannt Speicher Konto Und
-Wesentlich](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage#well-known-storage-account-and-key)
+Geben Sie einen Kontonamen und einen Kontoschlüssel in variables.yaml mit [Well
+Known Storage Account And
+Key](https://learn.microsoft.com/en-us/azure/storage/common/storage-use-azurite?tabs=visual-studio%2Cblob-storage#well-known-storage-account-and-key)
+an.
 
 [StorageAccountAndKey](images/DevAccountKey.png)
 
