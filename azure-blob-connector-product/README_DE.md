@@ -13,7 +13,7 @@ Dieser Konnektor:
   direkt aus einem Axon Ivy-Geschäftsprozess heraus.
 - Erstellt einen Download-Link mit einem Ablaufdatum.
 
-## Einrichtung
+## Setup
 
 In dem Projekt fügen Sie lediglich die Abhängigkeit in Ihre pom.xml ein und
 rufen öffentliche APIs auf.
