@@ -2,13 +2,14 @@
 package com.axonivy.connector.azure.blob.internal.model.request;
 
 import java.io.Serializable;
+import java.util.Arrays;
+import java.util.Objects;
 
 import javax.xml.bind.annotation.XmlAccessType;
 import javax.xml.bind.annotation.XmlAccessorType;
 import javax.xml.bind.annotation.XmlElement;
 import javax.xml.bind.annotation.XmlRootElement;
 
-import com.google.common.base.Objects;
 
 @XmlRootElement(name = "KeyInfo")
 @XmlAccessorType(XmlAccessType.FIELD)
@@ -56,11 +57,11 @@ public class KeyInfo implements Serializable {
 			return false;
 		}
 		KeyInfo keyInfo = (KeyInfo) other;
-		return Objects.equal(this.start, keyInfo.start) && Objects.equal(this.expiry, keyInfo.expiry);
+		return Objects.equals(this.start, keyInfo.start) && Objects.equals(this.expiry, keyInfo.expiry);
 	}
 
 	@Override
 	public int hashCode() {
-		return Objects.hashCode(start, expiry);
+		return Arrays.hashCode(new Object[]{start, expiry});
 	}
 }
