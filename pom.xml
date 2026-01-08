@@ -7,14 +7,14 @@
   <packaging>pom</packaging>
 
   <modules>
-    <module>${project.name}</module>
-    <module>${project.name}-demo</module>
-    <module>${project.name}-test</module>
-    <module>${project.name}-product</module>
+    <module>azure-blob-connector</module>
+    <module>azure-blob-connector-demo</module>
+    <module>azure-blob-connector-test</module>
+    <module>azure-blob-connector-product</module>
   </modules>
 
   <scm>
-    <developerConnection>scm:git:https://github.com/axonivy-market/${project.name}.git</developerConnection>
+    <developerConnection>scm:git:https://github.com/axonivy-market/azure-blob-connector.git</developerConnection>
     <tag>HEAD</tag>
   </scm>
 
