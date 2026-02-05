@@ -15,5 +15,7 @@ permissions:
 jobs:
   build:
     uses: axonivy-market/github-workflows/.github/workflows/ci.yml@v6
+    with:
+      cspellConfig: cspell.json
     secrets:
       mvnArgs: -Dazureblob.account=${{ secrets.AZURE_BLOB_ACCOUNT }} -Dazureblob.key=${{ secrets.AZURE_BLOB_ACCOUNT_KEY }}
