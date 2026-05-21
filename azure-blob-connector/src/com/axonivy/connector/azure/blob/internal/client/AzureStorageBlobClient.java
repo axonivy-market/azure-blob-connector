@@ -36,12 +36,10 @@ import com.axonivy.connector.azure.blob.internal.helper.WebTargetHelper;
 import ch.ivyteam.ivy.environment.Ivy;
 
 public class AzureStorageBlobClient {
-
-	private static final UUID REST_CLIENT_UUID = UUID.fromString("a61f273e-f451-4fe3-a2b7-9f62fddb7bf3");
-
 	private static final Map<String, String> EMPTY_HEADERS = emptyMap();
 	private static final Map<String, String> EMPTY_QUERIES = emptyMap();
 	private static final Map<String, String> NO_BODY = null;
+	private static final String REST_CLIENT_NAME = "AzureBlobStorage";
 
 	private AuthorizationManager authorizationManager;
 	private WebTarget ivyClient;
@@ -49,7 +47,7 @@ public class AzureStorageBlobClient {
 	public AzureStorageBlobClient(AuthorizationManager authorizationManager) {
 		this.authorizationManager = authorizationManager;
 
-		ivyClient = Ivy.rest().client(REST_CLIENT_UUID);
+		ivyClient = Ivy.rest().client(REST_CLIENT_NAME);
 	}
 
 	public URL getURL() throws MalformedURLException {
