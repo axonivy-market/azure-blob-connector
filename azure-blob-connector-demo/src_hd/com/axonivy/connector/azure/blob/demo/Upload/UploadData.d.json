@@ -1,19 +1,21 @@
 {
-  "$schema" : "https://json-schema.axonivy.com/data-class/13.1.0/data-class.json",
+  "$schema" : "https://json-schema.axonivy.com/14.0-dev/project/data-class.json",
   "simpleName" : "UploadData",
   "namespace" : "com.axonivy.connector.azure.blob.demo.Upload",
-  "isBusinessCaseData" : false,
   "fields" : [ {
     "name" : "bean",
-    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadBean"
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadBean",
+    "modifiers" : [ ]
   }, {
     "name" : "blob",
-    "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob"
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob",
+    "modifiers" : [ ]
   }, {
     "name" : "fileContent",
-    "type" : "org.primefaces.model.StreamedContent"
+    "type" : "org.primefaces.model.StreamedContent",
+    "modifiers" : [ ]
   }, {
     "name" : "filePath",
-    "type" : "String"
+    "modifiers" : [ ]
   } ]
 }
