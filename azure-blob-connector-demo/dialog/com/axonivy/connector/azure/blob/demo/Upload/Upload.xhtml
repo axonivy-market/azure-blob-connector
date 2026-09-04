@@ -1,11 +1,11 @@
 
 <html xmlns="http://www.w3.org/1999/xhtml"
-	xmlns:f="http://xmlns.jcp.org/jsf/core"
-	xmlns:h="http://xmlns.jcp.org/jsf/html"
-	xmlns:ui="http://xmlns.jcp.org/jsf/facelets"
+	xmlns:f="jakarta.faces.core"
+	xmlns:h="jakarta.faces.html"
+	xmlns:ui="jakarta.faces.facelets"
 	xmlns:ic="http://ivyteam.ch/jsf/component"
-	xmlns:p="http://primefaces.org/ui"
-	xmlns:pe="http://primefaces.org/ui/extensions">
+	xmlns:p="primefaces"
+	xmlns:pe="primefaces.extensions">
 <h:body>
 	<ui:composition template="/layouts/frame-10-full-width.xhtml">
 		<ui:define name="title">UploadDialog</ui:define>
@@ -13,6 +13,7 @@
 
 			<h:form id="form" enctype="multipart/form-data">
 				<p:growl id="growl" showDetail="false" />
+
 				<p:fieldset id="uploadWithPrimefaces" legend="Upload by Primefaces">
 
 					<div class="grid">
@@ -65,10 +66,12 @@
 							</p:selectBooleanCheckbox>
 						</div>
 					</div>
+
 				</p:fieldset>
 
 				<p:fieldset id="uploadByLocalPath" styleClass="mt-2"
 					legend="Upload by local path">
+
 					<div class="grid">
 						<div class="col-2">
 							<p:outputLabel for="inputPath" value="Upload File" />
@@ -159,6 +162,7 @@
 							</p:selectBooleanCheckbox>
 						</div>
 					</div>
+
 				</p:fieldset>
 
 				<p:fieldset id="deleteBlobs" legend="Delete blob" styleClass="mt-2">
@@ -175,41 +179,63 @@
 					</div>
 				</p:fieldset>
 
+				<p:dataTable id="blobTable" value="#{data.bean.blobs}" var="blob"
+					resizableColumns="true">
+					<p:column id="preview" headerText="Preview">
+						<p:graphicImage rendered="#{blob.isImage}"
+							url="#{blob.linkDownLoad}" width="100px" height="100px" />
+					</p:column>
 
-				<p:dataTable id="blobTable" value="#{data.bean.blobs}" var="blob">
-					<p:column id="name" headerText="Name" styleClass="column-name">
+					<p:column id="name" headerText="Name">
 						<h:outputText value="#{blob.blobItem.name}" id="blobName" />
 					</p:column>
-					<p:column id="status" headerText="Status"
-						styleClass="column-status">
+
+					<p:column id="status" headerText="Status">
 						<h:outputText
 							value="#{blob.blobItem.deleted eq 'true' ? 'Deleted' : 'Current version'}"
 							id="statusName" />
 					</p:column>
-					<p:column id="createDate" headerText="Creation Date"
-						styleClass="column-created-date">
+
+					<p:column id="createDate" headerText="Creation Date">
 						<h:outputText value="#{blob.blobItem.properties.creationTime}" />
 					</p:column>
-					<p:column styleClass="column-action">
+
+					<p:column id="actions">
+
+						<p:commandButton id="btnDownloadBlob" process="@this"
+							actionListener="#{logic.downloadFile(blob)}" update="form:growl"
+							title="Download" rendered="#{!blob.blobItem.deleted}"
+							icon="fa-solid fa-download">
+							<p:fileDownload value="#{data.fileContent}" />
+						</p:commandButton>
+
+						<p:commandButton id="btnDownloadBlobToFile" process="@this"
+							actionListener="#{logic.selectBlob(blob)}"
+							oncomplete="PF('downloadToFileDialog').show();"
+							title="Download to file" update="form:growl downloadToFileDialog"
+							rendered="#{!blob.blobItem.deleted}"
+							icon="fa-solid fa-file-arrow-down">
+						</p:commandButton>
+
 						<p:commandButton id="btnGetLink" process="@this"
 							actionListener="#{logic.getLink(blob)}"
-							oncomplete="PF('linkDownloadDialog').show();" icon="fa fa-plus"
-							value="Get link" rendered="#{!blob.blobItem.deleted}"
-							update="linkDownloadDialog" />
+							oncomplete="PF('linkDownloadDialog').show();"
+							icon="fa-solid fa-link" rendered="#{!blob.blobItem.deleted}"
+							update="linkDownloadDialog" title="Get download link" />
 
-						<p:commandButton id="btnDeleteBlob" value="Delete" process="@this"
+						<p:commandButton id="btnDeleteBlob" process="@this"
 							actionListener="#{logic.deleteBlob(blob.blobItem.name)}"
 							update="blobTable form:growl" icon="fa fa-trash"
-							rendered="#{!blob.blobItem.deleted}" />
+							rendered="#{!blob.blobItem.deleted}" title="Delete a blob" />
 
 						<p:commandButton id="btnUnDeleteBlob" value="Undelete"
 							process="@this"
 							actionListener="#{logic.unDeleteBlob(blob.blobItem.name)}"
 							update="blobTable form:growl" icon="fa fa-undo"
-							rendered="#{blob.blobItem.deleted}" />
+							rendered="#{blob.blobItem.deleted}" title="Restore a blob" />
 					</p:column>
-				</p:dataTable>
 
+				</p:dataTable>
 			</h:form>
 
 			<p:dialog widgetVar="linkDownloadDialog" id="linkDownloadDialog"
@@ -231,8 +257,36 @@
 						</pe:clipboard>
 					</div>
 				</div>
-
 			</p:dialog>
+
+			<p:dialog widgetVar="downloadToFileDialog" id="downloadToFileDialog"
+				appendTo="@(body)" visible="false" header="Path to save"
+				closeOnEscape="true" width="500">
+
+				<p:ajax event="close" update="downloadToFileDialog"
+					resetValues="true" />
+
+				<h:form id="downloadToFile">
+					<div class="flex">
+						<div class="w-2">
+							<p:outputLabel for="pathToSave" value="Path" />
+						</div>
+						<div class="w-8">
+							<p:inputText id="pathToSave" value="#{data.filePath}"
+								required="true" placeholder="C:\yourFolder\fileNameToSave"
+								styleClass="w-full" />
+						</div>
+						<div class="w-2">
+							<p:commandButton id="btnSaveToPath" value="OK"
+								actionListener="#{logic.downloadToFile}"
+								oncomplete="if (!args.validationFailed) {PF('downloadToFileDialog').hide()}"
+								update="form:growl pathToSave" process="downloadToFile"
+								styleClass="ml-2" />
+						</div>
+					</div>
+				</h:form>
+			</p:dialog>
+
 		</ui:define>
 	</ui:composition>
 </h:body>

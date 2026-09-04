@@ -3,7 +3,7 @@ package com.axonivy.connector.azure.blob.internal.client;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.ws.rs.client.WebTarget;
+import jakarta.ws.rs.client.WebTarget;
 
 import com.axonivy.connector.azure.blob.internal.helper.WebTargetHelper;
 
