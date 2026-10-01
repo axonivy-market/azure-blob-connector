@@ -1,7 +1,7 @@
 package com.axonivy.connector.azure.blob.internal.helper;
 
-import static javax.ws.rs.HttpMethod.POST;
-import static javax.ws.rs.HttpMethod.PUT;
+import static jakarta.ws.rs.HttpMethod.POST;
+import static jakarta.ws.rs.HttpMethod.PUT;
 import static org.apache.commons.lang3.StringUtils.EMPTY;
 
 import java.io.File;
@@ -9,9 +9,9 @@ import java.io.InputStream;
 import java.util.Map;
 import java.util.Objects;
 
-import javax.ws.rs.client.WebTarget;
-import javax.ws.rs.core.Form;
-import javax.ws.rs.core.MediaType;
+import jakarta.ws.rs.client.WebTarget;
+import jakarta.ws.rs.core.Form;
+import jakarta.ws.rs.core.MediaType;
 
 import org.apache.commons.io.FileUtils;
 import org.apache.commons.lang3.StringUtils;

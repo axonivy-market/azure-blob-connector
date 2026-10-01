@@ -1,0 +1,25 @@
+{
+  "$schema" : "https://json-schema.axonivy.com/14.0/project/data-class.json",
+  "simpleName" : "UploadByCallSubprocessData",
+  "namespace" : "com.axonivy.connector.azure.blob.demo.UploadByCallSubprocess",
+  "fields" : [ {
+    "name" : "bean",
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.UploadByCallSubprocess",
+    "modifiers" : [ ]
+  }, {
+    "name" : "isSuccess",
+    "type" : "Boolean",
+    "modifiers" : [ ]
+  }, {
+    "name" : "isExist",
+    "type" : "Boolean",
+    "modifiers" : [ ]
+  }, {
+    "name" : "combineFileNameAndFolder",
+    "modifiers" : [ ]
+  }, {
+    "name" : "blob",
+    "type" : "com.axonivy.connector.azure.blob.demo.bean.Blob",
+    "modifiers" : [ ]
+  } ]
+}

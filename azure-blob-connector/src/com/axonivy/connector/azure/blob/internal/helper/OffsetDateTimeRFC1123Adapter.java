@@ -2,7 +2,7 @@ package com.axonivy.connector.azure.blob.internal.helper;
 
 import java.time.OffsetDateTime;
 
-import javax.xml.bind.annotation.adapters.XmlAdapter;
+import jakarta.xml.bind.annotation.adapters.XmlAdapter;
 
 import com.axonivy.connector.azure.blob.internal.constant.Constants;
 

@@ -13,9 +13,9 @@ import java.net.http.HttpRequest.BodyPublishers;
 import java.nio.file.Paths;
 import java.util.Map;
 
-import javax.ws.rs.HttpMethod;
-import javax.ws.rs.core.HttpHeaders;
-import javax.ws.rs.core.UriBuilder;
+import jakarta.ws.rs.HttpMethod;
+import jakarta.ws.rs.core.HttpHeaders;
+import jakarta.ws.rs.core.UriBuilder;
 
 import org.apache.commons.lang3.ArrayUtils;
 
