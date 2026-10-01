@@ -2,7 +2,7 @@ package com.axonivy.connector.azure.blob.internal.enums;
 
 import java.util.stream.Stream;
 
-import javax.xml.bind.annotation.XmlEnumValue;
+import jakarta.xml.bind.annotation.XmlEnumValue;
 
 public enum BlobImmutabilityPolicyMode {
 	@XmlEnumValue("Mutable")
