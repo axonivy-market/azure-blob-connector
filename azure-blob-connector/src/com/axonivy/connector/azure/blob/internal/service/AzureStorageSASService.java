@@ -181,15 +181,16 @@ public class AzureStorageSASService extends AbstractAzureStorage {
 
 		Map<String, String> headers = new HashMap<>();
 		headers.put(HttpHeaders.CONTENT_TYPE, MediaType.APPLICATION_XML);
-		Response response = this.ivyClient.post(EMPTY, keyInfoBody, headers, queries);
+		try (Response response = this.ivyClient.post(EMPTY, keyInfoBody, headers, queries)) {
+			UserDelegationKey userDelegationKey = getBody(response, UserDelegationKey.class);
+			if (userDelegationKey != null) {
+				return userDelegationKey;
+			}
 
-		UserDelegationKey userDelegationKey = getBody(response, UserDelegationKey.class);
-		if (userDelegationKey != null) {
-			return userDelegationKey;
+			String message = "Get user delegation key is error. Status code " + response.getStatus()
+					+ errorDetails(response);
+			throw new Exception(message);
 		}
-
-		String message = "Get user delegation key is error. Status code " + response.getStatus();
-		throw new Exception(message);
 	}
 
 	private String toString(Object value) {
