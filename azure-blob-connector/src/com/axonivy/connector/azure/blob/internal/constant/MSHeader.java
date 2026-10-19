@@ -10,4 +10,5 @@ public final class MSHeader {
 	public static final String X_MS_COPY_SOURCE = "x-ms-copy-source";
 	public static final String X_MS_VERSION = "x-ms-version";
 	public static final String X_MS_DATE = "x-ms-date";
+	public static final String X_MS_ERROR_CODE = "x-ms-error-code";
 }

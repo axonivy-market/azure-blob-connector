@@ -37,12 +37,20 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 		this.ivyClient = new AzureStorageBlobClient(authManager);
 	}
 
+	// Every Response is closed: an unclosed response keeps its pooled connection, and once the pool is
+	// exhausted every further call waits forever.
+
 	public String upload(String blobName, String contentBody) {
 		Map<String, String> headers = createUploadHeader(false);
 
 		String blobPath = getBlobPath(blobName);
-		var response = this.ivyClient.put(blobPath, contentBody, headers);
-		return isHttpCreated(response) ? blobName : EMPTY;
+		try (Response response = this.ivyClient.put(blobPath, contentBody, headers)) {
+			if (isHttpCreated(response)) {
+				return blobName;
+			}
+			logFailedCall("Upload", blobName, response);
+			return EMPTY;
+		}
 	}
 
 	public String uploadFromUrl(String blobName, String url, boolean isOverwrite) {
@@ -50,12 +58,13 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 		headers.put(MSHeader.X_MS_COPY_SOURCE, url);
 
 		String blobPath = getBlobPath(blobName);
-		var response = this.ivyClient.put(blobPath, headers);
-		if (isHttpCreated(response)) {
-			return blobName;
-		}
+		try (Response response = this.ivyClient.put(blobPath, headers)) {
+			if (isHttpCreated(response)) {
+				return blobName;
+			}
 
-		throw createUploadException(blobName, response);
+			throw createUploadException(blobName, response);
+		}
 	}
 
 	public String uploadFromFile(String blobName, byte[] content, boolean isOverwrite) throws Exception {
@@ -63,32 +72,45 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 		Map<String, String> headers = createUploadHeader(isOverwrite);
 
 		String blobPath = getBlobPath(blobName);
-		var response = this.ivyClient.put(blobPath, content, headers);
-		if (isHttpCreated(response)) {
-			return blobName;
-		}
+		try (Response response = this.ivyClient.put(blobPath, content, headers)) {
+			if (isHttpCreated(response)) {
+				return blobName;
+			}
 
-		throw createUploadException(blobName, response);
+			throw createUploadException(blobName, response);
+		}
 	}
 
 	public String uploadFromPath(String blobName, String pathFile, boolean isOverwrite) throws Exception {
 		File fileTemp = new File(pathFile);
 		Map<String, String> headers = createUploadHeader(isOverwrite);
 		String blobPath = getBlobPath(blobName);
-		var response = this.ivyClient.put(blobPath, fileTemp, headers);
-		if (isHttpCreated(response)) {
-			return blobName;
+		try (Response response = this.ivyClient.put(blobPath, fileTemp, headers)) {
+			if (isHttpCreated(response)) {
+				return blobName;
+			}
+			throw createUploadException(blobName, response);
 		}
-		throw createUploadException(blobName, response);
 	}
 
+	/**
+	 * @return false if the blob was not deleted. A blob that does not exist (404) is not logged here: whether
+	 *         that is an error is up to the caller.
+	 */
 	public boolean delete(String blobName) {
 		Map<String, String> headers = new HashMap<>();
 		headers.put(MSHeader.X_MS_DELETE_SNAPSHOTS, DeleteSnapshotsOptionType.INCLUDE.getValue());
 
 		String blobPath = getBlobPath(blobName);
-		var response = this.ivyClient.delete(blobPath, headers);
-		return isHttpAccepted(response);
+		try (Response response = this.ivyClient.delete(blobPath, headers)) {
+			if (isHttpAccepted(response)) {
+				return true;
+			}
+			if (!isHttpNotFound(response)) {
+				logFailedCall("Delete", blobName, response);
+			}
+			return false;
+		}
 	}
 
 	public boolean undelete(String blobName) {
@@ -96,22 +118,31 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 		queries.put(BlobQuery.Parameter.COMP, BlobQuery.Value.UNDELETE);
 
 		String blobPath = getBlobPath(blobName);
-		var response = this.ivyClient.delete(blobPath, emptyMap(), queries);
-		return isHttpOk(response);
+		try (Response response = this.ivyClient.delete(blobPath, emptyMap(), queries)) {
+			if (isHttpOk(response)) {
+				return true;
+			}
+			logFailedCall("Undelete", blobName, response);
+			return false;
+		}
 	}
 
 	public BlobItem getBlob(String blobName) {
 		String blobPath = getBlobPath(blobName);
-		var response = this.ivyClient.get(blobPath);
+		try (Response response = this.ivyClient.get(blobPath)) {
+			if (isHttpOk(response)) {
+				String endpoint = getEndpoint(ivyClient);
+				String url = String.format("%s/%s", endpoint, blobPath);
 
-		if (isHttpOk(response)) {
-			String endpoint = getEndpoint(ivyClient);
-			String url = String.format("%s/%s", endpoint, blobPath);
-
-			BlobItem blobItem = BlobItem.Builder.builder().name(blobName).url(url).build();
-			return blobItem;
+				BlobItem blobItem = BlobItem.Builder.builder().name(blobName).url(url).build();
+				return blobItem;
+			}
+			// 404 is the normal answer of exists() for a missing blob
+			if (!isHttpNotFound(response)) {
+				logFailedCall("Get", blobName, response);
+			}
+			return null;
 		}
-		return null;
 	}
 
 	public String getBlobUrl(String blobName) {
@@ -122,41 +153,44 @@ public class AzureStorageBlobService extends AbstractAzureStorage {
 
 	public byte[] downloadContent(String blobName) {
 		String blobPath = getBlobPath(blobName);
-		Response response = this.ivyClient.get(blobPath);
-		if (!isHttpOk(response)) {
-			throw createDownloadException(blobName, response);
-		}
+		try (Response response = this.ivyClient.get(blobPath)) {
+			if (!isHttpOk(response)) {
+				throw createDownloadException(blobName, response);
+			}
 
-		return response.readEntity(byte[].class);
+			return response.readEntity(byte[].class);
+		}
 	}
 
 	public String downloadToFile(String blobName, String filePath) throws IOException {
 		String blobPath = getBlobPath(blobName);
-		Response response = this.ivyClient.get(blobPath);
-		if (isHttpOk(response)) {
-			InputStream in = response.readEntity(InputStream.class);
-			File targetFile = new File(filePath);
-			FileUtils.copyInputStreamToFile(in, targetFile);
-			return blobName;
-		}
+		try (Response response = this.ivyClient.get(blobPath)) {
+			if (isHttpOk(response)) {
+				try (InputStream in = response.readEntity(InputStream.class)) {
+					File targetFile = new File(filePath);
+					FileUtils.copyInputStreamToFile(in, targetFile);
+				}
+				return blobName;
+			}
 
-		throw createDownloadException(blobName, response);
+			throw createDownloadException(blobName, response);
+		}
 	}
 
 	public ByteArrayOutputStream downloadStream(String blobName) {
 		String blobPath = getBlobPath(blobName);
-		Response response = this.ivyClient.get(blobPath);
+		try (Response response = this.ivyClient.get(blobPath)) {
+			if (!isHttpOk(response)) {
+				throw createDownloadException(blobName, response);
+			}
 
-		if (!isHttpOk(response)) {
-			throw createDownloadException(blobName, response);
-		}
-
-		try {
-			ByteArrayOutputStream targetStream = new ByteArrayOutputStream();
-			response.readEntity(InputStream.class).transferTo(targetStream);
-			return targetStream;
-		} catch (Exception e) {
-			throw new RuntimeException("Error while stream data from " + blobPath, e);
+			try (InputStream in = response.readEntity(InputStream.class)) {
+				ByteArrayOutputStream targetStream = new ByteArrayOutputStream();
+				in.transferTo(targetStream);
+				return targetStream;
+			} catch (Exception e) {
+				throw new RuntimeException("Error while stream data from " + blobPath, e);
+			}
 		}
 	}
 

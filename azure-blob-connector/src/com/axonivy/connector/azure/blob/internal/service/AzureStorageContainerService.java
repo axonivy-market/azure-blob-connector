@@ -8,6 +8,8 @@ import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 
+import javax.ws.rs.core.Response;
+
 import com.axonivy.connector.azure.blob.internal.auth.Credential;
 import com.axonivy.connector.azure.blob.internal.client.AuthorizationManager;
 import com.axonivy.connector.azure.blob.internal.client.AzureStorageBlobClient;
@@ -42,11 +44,15 @@ public class AzureStorageContainerService extends AbstractAzureStorage {
 		Map<String, String> queries = new HashMap<>();
 		queries.put(BlobQuery.Parameter.RESTYPE, BlobQuery.Value.CONTAINER);
 
-		try {
-			var response = this.ivyClient.put(this.container, emptyMap(), queries);
-			return isHttpCreated(response);
+		try (Response response = this.ivyClient.put(this.container, emptyMap(), queries)) {
+			if (isHttpCreated(response)) {
+				return true;
+			}
+			Ivy.log().warn("The container {0} can not create. HttpStatus {1}{2}", this.container,
+					String.valueOf(response.getStatus()), errorDetails(response));
+			return false;
 		} catch (Exception e) {
-			Ivy.log().warn("The container {} can not create", e, this.container);
+			Ivy.log().warn("The container {0} can not create", e, this.container);
 			return false;
 		}
 	}
@@ -55,11 +61,10 @@ public class AzureStorageContainerService extends AbstractAzureStorage {
 		Map<String, String> queries = new HashMap<>();
 		queries.put(BlobQuery.Parameter.RESTYPE, BlobQuery.Value.CONTAINER);
 
-		try {
-			var response = this.ivyClient.get(this.container, queries);
+		try (Response response = this.ivyClient.get(this.container, queries)) {
 			return isHttpOk(response);
 		} catch (Exception e) {
-			Ivy.log().warn("The container {} is not exists", e, this.container);
+			Ivy.log().warn("The container {0} is not exists", e, this.container);
 			return false;
 		}
 	}
@@ -69,16 +74,19 @@ public class AzureStorageContainerService extends AbstractAzureStorage {
 		queries.put(BlobQuery.Parameter.RESTYPE, BlobQuery.Value.CONTAINER);
 		queries.put(BlobQuery.Parameter.COMP, BlobQuery.Value.LIST);
 
-		try {
-			var response = this.ivyClient.get(this.container, queries);
+		try (Response response = this.ivyClient.get(this.container, queries)) {
 			ContainerBlobs result = getBody(response, ContainerBlobs.class);
+			if (result == null) {
+				Ivy.log().warn("Get list blob of container {0} is error. HttpStatus {1}{2}", this.container,
+						String.valueOf(response.getStatus()), errorDetails(response));
+			}
 			List<BlobItemInternal> blobItemInternals = Optional.ofNullable(result)
 					.map(ContainerBlobs::getBlobItemsInternal).map(BlobItemsInternal::getBlobItemInternals)
 					.orElse(emptyList());
 
 			return blobItemInternals.stream().map(it -> convertToBlobItem(it)).toList();
 		} catch (Exception e) {
-			Ivy.log().warn("Get list blob of container {} is error", e, this.container);
+			Ivy.log().warn("Get list blob of container {0} is error", e, this.container);
 		}
 		return emptyList();
 	}
